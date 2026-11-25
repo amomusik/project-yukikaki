@@ -1,0 +1,996 @@
+{
+  "users": [
+    {
+      "key": "o-snow",
+      "role": "business",
+      "displayName": "高橋 誠",
+      "email": "makoto.takahashi@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-ramen",
+      "role": "business",
+      "displayName": "佐々木 美穂",
+      "email": "miho.sasaki@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-farm",
+      "role": "business",
+      "displayName": "森野 健一",
+      "email": "kenichi.morino@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-ryokan",
+      "role": "business",
+      "displayName": "小野寺 千秋",
+      "email": "chiaki.onodera@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-bakery",
+      "role": "business",
+      "displayName": "中村 さやか",
+      "email": "sayaka.nakamura@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-kyoto",
+      "role": "business",
+      "displayName": "西田 和子",
+      "email": "kazuko.nishida@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-sake",
+      "role": "business",
+      "displayName": "北村 浩二",
+      "email": "koji.kitamura@example.com",
+      "skills": []
+    },
+    {
+      "key": "o-care",
+      "role": "business",
+      "displayName": "工藤 由美",
+      "email": "yumi.kudo@example.com",
+      "skills": []
+    },
+    {
+      "key": "s-haruto",
+      "role": "student",
+      "displayName": "Haruto Sato (Hokkaido Univ.)",
+      "email": "haruto.sato@example.com",
+      "skills": [
+        "ai-automation",
+        "line-bot",
+        "data-analysis"
+      ]
+    },
+    {
+      "key": "s-aoi",
+      "role": "student",
+      "displayName": "Aoi Yamamoto (Hokkaido Univ.)",
+      "email": "aoi.yamamoto@example.com",
+      "skills": [
+        "spreadsheets",
+        "booking-automation"
+      ]
+    },
+    {
+      "key": "s-maya",
+      "role": "student",
+      "displayName": "Maya Chen (MIT)",
+      "email": "maya.chen@example.com",
+      "skills": [
+        "ai-automation",
+        "web",
+        "translation"
+      ]
+    },
+    {
+      "key": "s-ren",
+      "role": "student",
+      "displayName": "Ren Suzuki (Sapporo City Univ.)",
+      "email": "ren.suzuki@example.com",
+      "skills": [
+        "line-bot",
+        "booking-automation",
+        "social-media"
+      ]
+    },
+    {
+      "key": "s-yui",
+      "role": "student",
+      "displayName": "Yui Kobayashi (Otaru Univ. of Commerce)",
+      "email": "yui.kobayashi@example.com",
+      "skills": [
+        "email-automation",
+        "translation",
+        "social-media"
+      ]
+    },
+    {
+      "key": "s-daniel",
+      "role": "student",
+      "displayName": "Daniel Okafor (MIT)",
+      "email": "daniel.okafor@example.com",
+      "skills": [
+        "ai-automation",
+        "data-analysis",
+        "web"
+      ]
+    },
+    {
+      "key": "s-sota",
+      "role": "student",
+      "displayName": "Sota Watanabe (Asahikawa Univ.)",
+      "email": "sota.watanabe@example.com",
+      "skills": [
+        "spreadsheets",
+        "paperwork-automation",
+        "data-analysis"
+      ]
+    },
+    {
+      "key": "s-mio",
+      "role": "student",
+      "displayName": "Mio Ito (Hokkaido Univ.)",
+      "email": "mio.ito@example.com",
+      "skills": [
+        "paperwork-automation",
+        "bookkeeping"
+      ]
+    },
+    {
+      "key": "s-kenta",
+      "role": "student",
+      "displayName": "Kenta Fujii (Otaru Univ. of Commerce)",
+      "email": "kenta.fujii@example.com",
+      "skills": [
+        "paperwork-automation",
+        "ai-automation",
+        "spreadsheets"
+      ]
+    },
+    {
+      "key": "s-hana",
+      "role": "student",
+      "displayName": "Hana Matsumoto (Keio Univ.)",
+      "email": "hana.matsumoto@example.com",
+      "skills": [
+        "email-automation",
+        "bookkeeping",
+        "spreadsheets"
+      ]
+    },
+    {
+      "key": "s-takumi",
+      "role": "student",
+      "displayName": "Takumi Inoue (Univ. of Tokyo)",
+      "email": "takumi.inoue@example.com",
+      "skills": [
+        "inventory",
+        "data-analysis",
+        "ai-automation"
+      ]
+    },
+    {
+      "key": "s-sofia",
+      "role": "student",
+      "displayName": "Sofia Ramirez (MIT)",
+      "email": "sofia.ramirez@example.com",
+      "skills": [
+        "web",
+        "social-media",
+        "translation"
+      ]
+    },
+    {
+      "key": "s-riko",
+      "role": "student",
+      "displayName": "Riko Shimizu (Tokyo Univ. of Agriculture)",
+      "email": "riko.shimizu@example.com",
+      "skills": [
+        "inventory",
+        "spreadsheets"
+      ]
+    },
+    {
+      "key": "s-yuto",
+      "role": "student",
+      "displayName": "Yuto Kimura (Kanazawa Univ.)",
+      "email": "yuto.kimura@example.com",
+      "skills": [
+        "paperwork-automation",
+        "translation",
+        "email-automation"
+      ]
+    },
+    {
+      "key": "s-emma",
+      "role": "student",
+      "displayName": "Emma Lindqvist (Kyoto Univ.)",
+      "email": "emma.lindqvist@example.com",
+      "skills": [
+        "translation",
+        "ai-automation",
+        "line-bot",
+        "email-automation"
+      ]
+    }
+  ],
+  "businesses": [
+    {
+      "key": "b-snow",
+      "ownerKey": "o-snow",
+      "name": "ゆきもり除雪サービス",
+      "city": "Sapporo",
+      "ward": "東区",
+      "industry": "snow_removal"
+    },
+    {
+      "key": "b-ramen",
+      "ownerKey": "o-ramen",
+      "name": "麺処 ほしぞら",
+      "city": "Sapporo",
+      "ward": "中央区",
+      "industry": "ramen"
+    },
+    {
+      "key": "b-farm",
+      "ownerKey": "o-farm",
+      "name": "森野ファーム",
+      "city": "Asahikawa",
+      "ward": null,
+      "industry": "farm"
+    },
+    {
+      "key": "b-ryokan",
+      "ownerKey": "o-ryokan",
+      "name": "運河の宿 しおかぜ",
+      "city": "Otaru",
+      "ward": null,
+      "industry": "ryokan"
+    },
+    {
+      "key": "b-bakery",
+      "ownerKey": "o-bakery",
+      "name": "ベーカリー こむぎの木",
+      "city": "Setagaya",
+      "ward": null,
+      "industry": "bakery"
+    },
+    {
+      "key": "b-kyoto",
+      "ownerKey": "o-kyoto",
+      "name": "京小物 はんなり堂",
+      "city": "Kyoto",
+      "ward": "東山区",
+      "industry": "retail"
+    },
+    {
+      "key": "b-sake",
+      "ownerKey": "o-sake",
+      "name": "ほしみ酒造",
+      "city": "Kanazawa",
+      "ward": null,
+      "industry": "brewery"
+    },
+    {
+      "key": "b-care",
+      "ownerKey": "o-care",
+      "name": "デイサービス りんごの里",
+      "city": "Aomori",
+      "ward": null,
+      "industry": "care"
+    }
+  ],
+  "briefs": [
+    {
+      "slug": "sapporo-snow-dispatch",
+      "businessKey": "b-snow",
+      "status": "evaluated",
+      "content": {
+        "ja": {
+          "title": "除雪依頼の受付・配車を自動化したい",
+          "problem": "大雪の翌朝は電話とLINEで1日100件以上の除雪依頼が殺到し、社長と事務員2名が受付と配車の割り振りだけで午前中が終わってしまう。聞き漏れや二重手配も毎シーズン発生している。",
+          "current_process": "電話で住所・駐車場の広さ・契約種別を聞き取り、ホワイトボードと紙の台帳に書き込む。夜にExcelへ転記し、翌朝オペレーターごとに地図を見ながら手作業でルートを決めている。",
+          "desired_outcome": "LINEとWebフォームの依頼をAIが自動で聞き取り・分類し、契約情報と照合したうえでエリア別の配車リストを自動作成する。お客様には到着予定時間帯を自動返信し、電話対応を半分以下にしたい。"
+        },
+        "en": {
+          "title": "Automate snow-removal request intake and dispatch",
+          "problem": "On the morning after heavy snow we get 100+ removal requests a day by phone and LINE. The owner and two office staff spend the entire morning just taking requests and assigning crews, and missed or double-booked jobs happen every season.",
+          "current_process": "Staff take the address, parking-area size and contract type over the phone, write it on a whiteboard and paper ledger, retype it into Excel at night, and the next morning plan each operator's route by hand with a map.",
+          "desired_outcome": "An AI assistant collects and classifies requests from LINE and a web form, matches them to contract records, and generates an area-by-area dispatch list. Customers get an automatic reply with an estimated arrival window, cutting phone calls by at least half."
+        }
+      },
+      "transcript": "Agent: 一番時間を取られている作業は何ですか？\nOwner: 大雪の次の日の朝ですね。電話が鳴りっぱなしで、6時から11時までずっと受付です。\nAgent: 依頼はどんな内容が多いですか？\nOwner: 「駐車場を何時までに空けてほしい」とか「屋根の雪下ろしもお願いできるか」とか。契約のお客さんかどうか台帳をめくって確認するんです。\nAgent: 配車はどのように決めていますか？\nOwner: 紙の地図に磁石を置いて、東区のこっちはAさん、北区寄りはBさん、と。正直、勘ですね。\nAgent: 市のパートナーシップ排雪についての問い合わせもありますか？\nOwner: ありますね。うちじゃなくて町内会経由だって毎回説明してます。",
+      "toolsUsed": [
+        "電話",
+        "LINE公式アカウント",
+        "Excel",
+        "紙の台帳",
+        "ホワイトボード"
+      ],
+      "hoursLostPerWeek": 22,
+      "skillsNeeded": [
+        "ai-automation",
+        "line-bot",
+        "spreadsheets",
+        "data-analysis"
+      ],
+      "dataSensitivity": "private",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 88,
+        "issues": [
+          "顧客住所は個人情報のため、開発時は合成データを使用し本番データは社内環境のみで扱うこと"
+        ],
+        "pii_found": false,
+        "grounding_comment": "札幌市のパートナーシップ排雪制度・小型除雪機購入補助の公式ページで、市の除排雪と民間委託の役割分担を確認。問い合わせ対応シナリオに反映可能。"
+      }
+    },
+    {
+      "slug": "sapporo-ramen-reservations",
+      "businessKey": "b-ramen",
+      "status": "delivered",
+      "content": {
+        "ja": {
+          "title": "予約・問い合わせのLINE返信を自動化したい",
+          "problem": "カウンター10席の小さな店だが、観光客からの「並ばずに入れる時間は？」「ベジタリアン対応は？」といった問い合わせがLINEとInstagramに1日30件以上届く。仕込み中に返信できず、機会損失とクレームが増えている。",
+          "current_process": "店主がスマホで仕込みの合間に1件ずつ手打ちで返信。英語・中国語のメッセージは翻訳アプリにコピーして対応している。団体予約はノートに手書き。",
+          "desired_outcome": "よくある質問（営業時間、混雑状況、アレルギー・ベジ対応、団体予約）にAIが日本語・英語・中国語で即時返信し、団体予約は空き状況を確認して仮押さえまで自動化。店主は確認ボタンを押すだけにしたい。"
+        },
+        "en": {
+          "title": "Automate LINE replies for reservations and inquiries",
+          "problem": "We are a 10-seat counter shop, but tourists send 30+ messages a day on LINE and Instagram (\"When can we get in without queueing?\", \"Do you have vegetarian options?\"). I can't reply while prepping, so we lose customers and get complaints.",
+          "current_process": "The owner replies one by one on her phone between prep tasks. English and Chinese messages are pasted into a translation app. Group bookings are handwritten in a notebook.",
+          "desired_outcome": "An AI assistant instantly answers common questions (hours, wait times, allergy/vegetarian options, group bookings) in Japanese, English and Chinese, and pencils in group reservations after checking availability, so the owner only has to tap 'confirm'."
+        }
+      },
+      "transcript": "Agent: 問い合わせはどの時間帯に多いですか？\nOwner: 朝の仕込みの時間、9時から11時がピークです。スープを見てるので手が離せなくて。\nAgent: 外国のお客様からの連絡はどれくらいありますか？\nOwner: 半分くらいかな。冬は特に雪まつりの時期にどっと増えます。\nAgent: 予約はどう管理されていますか？\nOwner: 基本予約は取らないんですけど、6名以上の団体だけ14時から17時の間で受けてます。ノートに書いてます。\nAgent: 自動返信で一番困るのはどんな場面でしょう？\nOwner: アレルギーですね。間違ったことは絶対に言えないので、そこは私が最後に確認したいです。",
+      "toolsUsed": [
+        "LINE公式アカウント",
+        "Instagram DM",
+        "翻訳アプリ",
+        "紙のノート"
+      ],
+      "hoursLostPerWeek": 9,
+      "skillsNeeded": [
+        "line-bot",
+        "booking-automation",
+        "translation",
+        "ai-automation"
+      ],
+      "dataSensitivity": "synthetic_ok",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 84,
+        "issues": [
+          "アレルギー関連の回答は必ず店主確認を挟むフローにすること"
+        ],
+        "pii_found": false,
+        "grounding_comment": "札幌市観光統計（2025年度来札観光客数・外国人宿泊者数）で多言語問い合わせ需要を確認。札幌市の企業DX支援（デジタル化・AI導入補助）も導入費用の参考になる。"
+      }
+    },
+    {
+      "slug": "asahikawa-farm-subsidy-records",
+      "businessKey": "b-farm",
+      "status": "in_progress",
+      "content": {
+        "ja": {
+          "title": "補助金申請と作業記録の書類づくりを楽にしたい",
+          "problem": "水稲と野菜の家族経営。スマート農業機器の補助金申請や、出荷・防除の記録づくりに毎年冬じゅう追われている。書類の様式が毎年少しずつ変わり、JAとのやり取りも紙とFAXが中心。",
+          "current_process": "作業日誌は手帳とカレンダーへの手書き。申請時期になると妻が手帳を見ながらExcelに転記し、見積書・領収書を探して申請書を手で埋めている。",
+          "desired_outcome": "手書き日誌の写真やLINEでの音声メモから作業記録をAIで自動整理し、補助金の様式に沿った下書きと必要書類チェックリストを自動作成する。提出前の確認だけで済むようにしたい。"
+        },
+        "en": {
+          "title": "Make subsidy applications and farm-record paperwork easier",
+          "problem": "We are a family rice-and-vegetable farm. Every winter we are buried in paperwork for smart-farming equipment subsidies and for shipping and spraying records. The forms change slightly every year, and communication with the JA co-op is mostly paper and fax.",
+          "current_process": "Field work is logged by hand in a pocket diary and on a calendar. At application time my wife retypes everything into Excel, hunts for quotes and receipts, and fills in the forms by hand.",
+          "desired_outcome": "AI turns photos of the handwritten diary and LINE voice memos into structured work records, then drafts subsidy forms in the required format along with a checklist of supporting documents, so we only have to review before submitting."
+        }
+      },
+      "transcript": "Agent: 書類仕事は年間でどの時期に集中しますか？\nOwner: 春の申請前、3月から4月ですね。旭川市のスマート農業の補助も4月中に農協に出さないといけないので。\nAgent: どんな書類が必要になりますか？\nOwner: 見積書、導入計画、それから作業の記録。自動操舵を入れたいんですが、書類で心が折れそうで。\nAgent: 普段の記録はどうされていますか？\nOwner: 手帳です。雨の日に濡れて読めなくなったりもします（笑）。\nAgent: 音声メモなら現場でも使えそうですか？\nOwner: トラクターの上でもしゃべるだけならできますね。",
+      "toolsUsed": [
+        "手帳",
+        "紙のカレンダー",
+        "Excel",
+        "FAX",
+        "LINE"
+      ],
+      "hoursLostPerWeek": 7,
+      "skillsNeeded": [
+        "paperwork-automation",
+        "spreadsheets",
+        "ai-automation"
+      ],
+      "dataSensitivity": "private",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 79,
+        "issues": [
+          "補助金の最終提出判断は必ず農業者本人が行う旨を明記すること",
+          "様式は年度ごとに変わるため、テンプレート更新手順を引き継ぎ資料に含めること"
+        ],
+        "pii_found": false,
+        "grounding_comment": "旭川市のスマート農業・省力化技術導入支援事業（補助率1/2、JA経由の間接補助）と令和8年度農政部補助金一覧を確認。申請フローの前提として妥当。"
+      }
+    },
+    {
+      "slug": "otaru-ryokan-subsidy",
+      "businessKey": "b-ryokan",
+      "status": "approved",
+      "content": {
+        "ja": {
+          "title": "補助金申請と宿泊税まわりの事務を減らしたい",
+          "problem": "客室12室の小さな旅館。宿泊税の導入や観光関連補助金の公募が相次ぎ、要綱を読み込んで申請書を作るだけで女将が何日も取られる。外国人客の増加で多言語の問い合わせメールも増えている。",
+          "current_process": "市や道のホームページを女将が見回り、要綱PDFを印刷して蛍光ペンで読み込む。申請書はWordで一から作成し、見積書や写真を集めて郵送・窓口提出。問い合わせメールは翻訳サイトを使って返信。",
+          "desired_outcome": "公募情報を自動で収集・要約し、自館が対象になるかをAIが一次判定。申請書の下書きと添付書類リストを自動生成し、多言語メールにも下書き返信を用意する仕組みがほしい。"
+        },
+        "en": {
+          "title": "Cut subsidy-application and lodging-tax admin work",
+          "problem": "We are a small 12-room ryokan. With the new lodging tax and a stream of tourism subsidy calls, the okami spends days reading guidelines and writing applications. Rising foreign guest numbers have also increased multilingual inquiry emails.",
+          "current_process": "The okami checks city and prefectural websites, prints guideline PDFs and reads them with a highlighter. Applications are written from scratch in Word, quotes and photos are gathered and submitted by post or at the counter. Inquiry emails are answered with a translation site.",
+          "desired_outcome": "Automatically collect and summarize open subsidy calls, have AI do a first-pass eligibility check for our inn, generate application drafts and attachment checklists, and prepare draft replies to multilingual emails."
+        }
+      },
+      "transcript": "Agent: 最近の補助金で大変だったものは？\nOwner: 宿泊税のシステム整備の補助ですね。要綱を3回読んでもよくわからなくて、結局市役所に電話しました。\nAgent: 今年はほかにも検討されていますか？\nOwner: 北海道の観光地づくりの補助金。多言語の案内板とセルフチェックイン機を入れたいんですが、締め切りが10月末で。\nAgent: 申請書づくりにどれくらい時間がかかりますか？\nOwner: 1件で丸3日。その間、帳場が回らないんです。\nAgent: 外国のお客様からのメールはどの言語が多いですか？\nOwner: 英語と繁体字が多いです。最近は欧米の方も増えました。",
+      "toolsUsed": [
+        "Word",
+        "Excel",
+        "Gmail",
+        "翻訳サイト",
+        "紙の要綱"
+      ],
+      "hoursLostPerWeek": 8,
+      "skillsNeeded": [
+        "paperwork-automation",
+        "email-automation",
+        "translation",
+        "ai-automation"
+      ],
+      "dataSensitivity": "synthetic_ok",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 86,
+        "issues": [
+          "一次判定はあくまで参考とし、最終的な要件確認は自治体窓口で行う旨をUIに表示すること"
+        ],
+        "pii_found": false,
+        "grounding_comment": "小樽市の観光入込客数（令和7年度、宿泊客初の100万人超・外国人宿泊客過去最多）と、観光地づくり加速化補助金・宿泊税システム整備費補助金の公式案内を確認。"
+      }
+    },
+    {
+      "slug": "setagaya-bakery-ordering",
+      "businessKey": "b-bakery",
+      "status": "approved",
+      "content": {
+        "ja": {
+          "title": "仕込み量と材料発注を予測で決めたい",
+          "problem": "住宅街の小さなパン屋。天気や曜日で売れ行きが大きく変わり、売れ残りの廃棄と夕方の品切れが両方起きている。小麦粉・バターなどの発注も店主の勘と記憶に頼っている。",
+          "current_process": "閉店後にレジの日報を見て、翌日の仕込み量を店主が決める。材料の在庫は冷蔵庫を目視で確認し、卸業者にFAXと電話で発注。売上の記録はレジのレシートロールとノート。",
+          "desired_outcome": "レジデータ・天気予報・曜日から翌日の品目別仕込み量をAIが提案し、在庫が発注点を下回ったら発注書の下書きを自動作成する。廃棄を3割減らし、発注作業を週1回のチェックだけにしたい。"
+        },
+        "en": {
+          "title": "Forecast daily production and automate ingredient ordering",
+          "problem": "We are a small neighborhood bakery. Sales swing a lot with weather and day of week, so we end up with both waste at closing and sell-outs in the late afternoon. Orders for flour, butter and so on rely on the owner's gut and memory.",
+          "current_process": "After closing, the owner looks at the register's daily report and decides tomorrow's batch sizes. Stock is checked by eye in the fridge and ordered from wholesalers by fax and phone. Sales history lives on receipt rolls and in a notebook.",
+          "desired_outcome": "AI suggests next-day production per item from register data, the weather forecast and the day of week, and drafts purchase orders when stock falls below reorder points. Goal: 30% less waste and ordering reduced to a weekly check."
+        }
+      },
+      "transcript": "Agent: 一番もったいないと感じるのはどんな時ですか？\nOwner: 雨の日ですね。いつも通り焼くと、クロワッサンが20個くらい余るんです。\nAgent: 発注はどうされていますか？\nOwner: 粉は週2回、バターは週1回。FAXで送って、足りなければ電話です。うっかり忘れると翌日焼けない。\nAgent: レジのデータは取り出せますか？\nOwner: 今年からタブレットのレジにしたので、CSVは出せるみたいです。使い方はよくわかってないですけど。\nAgent: 区の補助金などは調べたことがありますか？\nOwner: 世田谷区の設備導入の補助があるとは聞きました。",
+      "toolsUsed": [
+        "タブレットPOSレジ",
+        "FAX",
+        "電話",
+        "紙のノート"
+      ],
+      "hoursLostPerWeek": 6,
+      "skillsNeeded": [
+        "inventory",
+        "data-analysis",
+        "spreadsheets",
+        "ai-automation"
+      ],
+      "dataSensitivity": "synthetic_ok",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 81,
+        "issues": [
+          "過去データが数か月分しかないため、初期は単純なルールベースと併用すること"
+        ],
+        "pii_found": false,
+        "grounding_comment": "世田谷区の主な事業者支援策（中小事業者等経営支援補助金など）と世田谷産業データNAVIを確認。区内小規模事業者の生産性向上ニーズと整合。"
+      }
+    },
+    {
+      "slug": "kyoto-retail-inbound",
+      "businessKey": "b-kyoto",
+      "status": "in_review",
+      "content": {
+        "ja": {
+          "title": "外国人観光客からの多言語問い合わせに対応したい",
+          "problem": "東山の小さな和雑貨店。海外のお客様から、在庫・海外発送・免税・営業時間についての問い合わせがメールとInstagramで毎日届くが、英語が得意なスタッフがおらず返信が数日遅れることもある。",
+          "current_process": "店主と家族がGoogle翻訳を使って1件ずつ返信。海外発送の送料は毎回郵便局のサイトで調べて計算している。同じ質問への返信を何度も書いている。",
+          "desired_outcome": "よくある質問への回答と在庫・送料の目安をAIが多言語で下書きし、店主が確認して送信するだけにしたい。商品説明の英語・中国語版も整えたい。"
+        },
+        "en": {
+          "title": "Handle multilingual inquiries from inbound tourists",
+          "problem": "We are a small Japanese-goods shop in Higashiyama. Overseas customers send daily emails and Instagram messages about stock, international shipping, tax-free shopping and opening hours, but none of our staff are confident in English, so replies sometimes take days.",
+          "current_process": "The owner and family reply one by one using Google Translate. International shipping costs are looked up and calculated on the post office website each time. We write the same answers over and over.",
+          "desired_outcome": "AI drafts multilingual answers to common questions with stock and shipping estimates, and the owner just reviews and sends. We would also like English and Chinese product descriptions."
+        }
+      },
+      "transcript": "Agent: 問い合わせはどんな内容が多いですか？\nOwner: 「この扇子はまだありますか」「アメリカに送れますか」が多いですね。\nAgent: 返信にはどれくらい時間がかかりますか？\nOwner: 1件15分くらい。翻訳がおかしくないか不安で、何度も読み直すので。\nAgent: 繁忙期はいつですか？\nOwner: 春の桜と秋の紅葉です。最近は一年中外国の方が多いですけど。\nAgent: 免税の質問にはどう答えていますか？\nOwner: うちは免税店ではないので、毎回それを説明しています。",
+      "toolsUsed": [
+        "Gmail",
+        "Instagram DM",
+        "Google翻訳",
+        "郵便局の料金検索"
+      ],
+      "hoursLostPerWeek": 8,
+      "skillsNeeded": [
+        "translation",
+        "email-automation",
+        "ai-automation",
+        "web"
+      ],
+      "dataSensitivity": "synthetic_ok",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 77,
+        "issues": [
+          "免税・関税に関する回答は誤案内のリスクがあるため、定型文に限定すること",
+          "在庫データの更新方法を明確にすること"
+        ],
+        "pii_found": false,
+        "grounding_comment": "令和7年京都観光総合調査（観光客数・外国人観光客数ともに過去最高）と京都市の事業者向け支援制度一覧を確認。インバウンド対応ニーズは十分に裏付けられる。"
+      }
+    },
+    {
+      "slug": "kanazawa-brewery-export",
+      "businessKey": "b-sake",
+      "status": "in_review",
+      "content": {
+        "ja": {
+          "title": "日本酒の輸出書類づくりを効率化したい",
+          "problem": "従業員8名の小さな酒蔵。台湾・米国向けの輸出が増えてきたが、輸出証明書の申請、インボイス・パッキングリストの作成、市の販路開拓補助の実績報告などの書類作業を専務が一人で抱えている。",
+          "current_process": "国ごとに異なる必要書類をExcelのメモで管理。インボイスとパッキングリストは過去のファイルをコピーして手で書き換え、数量や品目の転記ミスが時々起きる。",
+          "desired_outcome": "受注情報から国別の必要書類チェックリスト、インボイス、パッキングリストの下書きを自動生成し、輸出証明書システムへの入力項目もまとめて出力したい。補助金の実績報告用の集計も自動化したい。"
+        },
+        "en": {
+          "title": "Streamline sake export paperwork",
+          "problem": "We are a small brewery with eight staff. Exports to Taiwan and the US are growing, but the managing director handles all the paperwork alone: export certificate applications, invoices and packing lists, and performance reports for the city's market-development subsidy.",
+          "current_process": "Country-specific document requirements are tracked in Excel notes. Invoices and packing lists are made by copying old files and editing by hand, which occasionally causes quantity or item errors.",
+          "desired_outcome": "Generate country-specific document checklists, invoice and packing-list drafts from order data, and export the fields needed for the export-certificate system in one go. Also automate the tallies needed for subsidy performance reports."
+        }
+      },
+      "transcript": "Agent: 輸出の書類で一番時間がかかるのは？\nOwner: インボイスとパッキングリストですね。ラベルの表記も国ごとに違うので。\nAgent: 輸出証明書はどのように申請していますか？\nOwner: 国税庁のシステムからオンラインです。12月から新しいシステムに変わると聞いて、また覚え直しかと。\nAgent: 補助金も利用されていますか？\nOwner: 金沢市の海外販路の補助を使って台湾の見本市に出ました。終わってから1か月以内に実績報告を出すのが大変で。\nAgent: 書類のミスで困ったことは？\nOwner: 本数を一桁間違えて、通関で止まりかけたことがあります。",
+      "toolsUsed": [
+        "Excel",
+        "Word",
+        "輸出証明書発給システム",
+        "メール"
+      ],
+      "hoursLostPerWeek": 10,
+      "skillsNeeded": [
+        "paperwork-automation",
+        "spreadsheets",
+        "translation",
+        "ai-automation"
+      ],
+      "dataSensitivity": "private",
+      "aiReview": {
+        "recommendation": "approve",
+        "score": 74,
+        "issues": [
+          "国別規制は頻繁に変わるため、規制情報そのものはAIに判断させず一次情報へのリンク提示に留めること",
+          "取引先情報は匿名化して開発すること"
+        ],
+        "pii_found": false,
+        "grounding_comment": "金沢市の海外販路開拓チャレンジ事業（事業終了後1か月以内の実績報告）、金沢国税局の酒類情報、国税庁の輸出証明書ページ（令和8年12月に新システムJEXSへ移行予定）を確認。"
+      }
+    },
+    {
+      "slug": "aomori-care-shifts",
+      "businessKey": "b-care",
+      "status": "rejected",
+      "content": {
+        "ja": {
+          "title": "職員のシフト作成と記録業務を自動化したい",
+          "problem": "定員25名のデイサービス。職員16名のシフト作成に毎月まる2日かかり、急な欠勤の調整も管理者が電話で行っている。利用者ごとの記録・連絡帳の作成にも時間を取られている。",
+          "current_process": "希望休を紙で集め、Excelのシフト表に手で配置。資格要件や人員配置基準は管理者の頭の中にある。連絡帳は手書きで、同じ内容を介護記録ソフトにも入力している。",
+          "desired_outcome": "希望休・資格・配置基準を満たすシフト案をAIが自動作成し、欠勤時は代替候補を提示したい。連絡帳と介護記録の二重入力もなくしたい。"
+        },
+        "en": {
+          "title": "Automate staff shift scheduling and care records",
+          "problem": "We are a day-service center with a capacity of 25. Building the monthly roster for 16 staff takes two full days, and the manager handles sudden absences by phone. Daily records and family notebooks for each user also eat up time.",
+          "current_process": "Requested days off are collected on paper and placed by hand into an Excel roster. Qualification requirements and staffing standards live in the manager's head. Family notebooks are handwritten and then re-entered into care-record software.",
+          "desired_outcome": "AI drafts a roster that satisfies requested days off, qualifications and staffing standards, and suggests substitutes when someone is absent. We also want to eliminate double entry between family notebooks and care records."
+        }
+      },
+      "transcript": "Agent: シフト作成で一番難しいのはどこですか？\nOwner: 看護師と送迎ドライバーの配置ですね。基準を割ると大変なので。\nAgent: 学生チームに渡せるデータはありますか？\nOwner: 今のシフト表と、利用者さんの記録をそのままお渡しできますよ。病名も書いてありますけど。\nAgent: 個人情報を含むデータは、そのままではお預かりできない可能性があります。\nOwner: そうなんですか。全部まとめてお願いしたかったんですが……。\nAgent: 県の介護テクノロジーの補助金はご存じですか？\nOwner: 名前は聞いたことがあります。",
+      "toolsUsed": [
+        "Excel",
+        "紙の希望休届",
+        "介護記録ソフト",
+        "手書きの連絡帳"
+      ],
+      "hoursLostPerWeek": 12,
+      "skillsNeeded": [
+        "ai-automation",
+        "spreadsheets",
+        "data-analysis"
+      ],
+      "dataSensitivity": "private",
+      "aiReview": {
+        "recommendation": "revise",
+        "score": 46,
+        "issues": [
+          "利用者の氏名・病名を含む実データを学生チームへ提供する前提になっており、要配慮個人情報の取り扱いとして不適切",
+          "シフト自動化と介護記録の連携という2つの大きな課題が混在し、2〜6週間のスコープを超えている",
+          "人員配置基準の判定をAIに任せる設計は、誤りが運営基準違反につながるため人による最終確認が必須",
+          "シフト作成のみに絞り、匿名化・合成データで進める形に修正すれば再申請を推奨"
+        ],
+        "pii_found": true,
+        "grounding_comment": "青森県介護事業者向け補助金情報（介護テクノロジー定着支援・業務改善支援など）と青森市の業務効率化関連リンクを確認。ニーズ自体は裏付けがあるが、データ取り扱いの修正が必要。"
+      }
+    }
+  ],
+  "teams": [
+    {
+      "key": "t-snow",
+      "briefSlug": "sapporo-snow-dispatch",
+      "name": "Team Yukimichi",
+      "pitch": "LINEボットで除雪依頼を聞き取り、契約台帳と照合してエリア別配車リストを自動生成します。雪国育ちのメンバーが現場目線で作ります。",
+      "status": "delivered",
+      "leadKey": "s-haruto",
+      "memberKeys": [
+        "s-aoi",
+        "s-daniel"
+      ]
+    },
+    {
+      "key": "t-ramen",
+      "briefSlug": "sapporo-ramen-reservations",
+      "name": "Noodle Ops",
+      "pitch": "日英中のFAQボットと団体予約の仮押さえフローを作ります。アレルギー回答は必ず店主承認を挟む設計です。",
+      "status": "delivered",
+      "leadKey": "s-ren",
+      "memberKeys": [
+        "s-maya",
+        "s-yui"
+      ]
+    },
+    {
+      "key": "t-farm",
+      "briefSlug": "asahikawa-farm-subsidy-records",
+      "name": "Paddy Paperwork",
+      "pitch": "音声メモと手書き日誌の写真から作業記録を作り、補助金様式の下書きと必要書類リストを出力します。",
+      "status": "approved",
+      "leadKey": "s-sota",
+      "memberKeys": [
+        "s-mio",
+        "s-haruto"
+      ]
+    },
+    {
+      "key": "t-ryokan-a",
+      "briefSlug": "otaru-ryokan-subsidy",
+      "name": "Canal Desk",
+      "pitch": "道・市の公募情報を毎日収集・要約し、宿の条件で一次判定、申請書と多言語メールの下書きまで用意します。",
+      "status": "pending",
+      "leadKey": "s-kenta",
+      "memberKeys": [
+        "s-yui"
+      ]
+    },
+    {
+      "key": "t-ryokan-b",
+      "briefSlug": "otaru-ryokan-subsidy",
+      "name": "Okami Assist",
+      "pitch": "補助金要綱を質問形式で読み解けるチャットと、添付書類チェックリスト生成ツールを提案します。",
+      "status": "pending",
+      "leadKey": "s-emma",
+      "memberKeys": [
+        "s-yuto",
+        "s-hana"
+      ]
+    },
+    {
+      "key": "t-bakery",
+      "briefSlug": "setagaya-bakery-ordering",
+      "name": "Crumb Forecast",
+      "pitch": "POSのCSVと天気予報から翌日の仕込み量を提案し、発注点割れで発注書を自動下書きします。",
+      "status": "pending",
+      "leadKey": "s-takumi",
+      "memberKeys": [
+        "s-riko",
+        "s-sofia"
+      ]
+    }
+  ],
+  "deliveries": [
+    {
+      "teamKey": "t-snow",
+      "summary": {
+        "ja": "LINE公式アカウント連携の除雪依頼受付ボットと、契約台帳（スプレッドシート）照合・エリア別配車リスト自動生成ツールを納品。到着予定時間帯の自動返信と、市のパートナーシップ排雪に関する定型案内も実装。",
+        "en": "Delivered a LINE-integrated snow-removal request bot plus a tool that matches requests to the contract ledger (spreadsheet) and auto-generates area-based dispatch lists. Includes automatic arrival-window replies and a canned explanation of the city's partnership snow-hauling program."
+      },
+      "links": [
+        "https://github.com/example/yukimichi-dispatch",
+        "https://example.com/demo/yukimichi"
+      ],
+      "handoverNotes": "契約台帳のシート構成を変更する場合は README の「列定義」を更新してください。大雪時はボットの受付上限（1時間100件）を管理画面で調整できます。本番の顧客データは社内Googleアカウントのみで管理し、開発用には合成データを使用しています。",
+      "deliveredAt": "2026-10-20T09:00:00+09:00"
+    },
+    {
+      "teamKey": "t-ramen",
+      "summary": {
+        "ja": "日本語・英語・中国語に対応したLINE/Instagram FAQ自動返信と、6名以上の団体予約（14〜17時）の仮押さえ機能を納品。アレルギー・食材に関する質問は店主承認後に送信されます。",
+        "en": "Delivered automatic FAQ replies on LINE/Instagram in Japanese, English and Chinese, plus provisional booking for groups of 6+ (14:00–17:00). Questions about allergies or ingredients are only sent after the owner approves."
+      },
+      "links": [
+        "https://github.com/example/noodle-ops-bot",
+        "https://example.com/demo/noodle-ops"
+      ],
+      "handoverNotes": "メニュー変更時は faq.yaml の該当項目を編集してください。冬の繁忙期（2月）は混雑案内の文面を季節用テンプレートに切り替えることを推奨します。",
+      "deliveredAt": "2026-11-18T15:00:00+09:00"
+    }
+  ],
+  "evaluations": [
+    {
+      "teamKey": "t-snow",
+      "hoursSavedPerWeek": 14,
+      "satisfaction": 5,
+      "stillInUse": true,
+      "issues": "住所の表記ゆれ（丁目・番地の省略）で照合に失敗するケースが少しある。",
+      "wouldRecommend": true,
+      "quote": "初雪の朝、電話が半分以下になって本当に驚きました。事務の二人が朝ごはんを食べられたのは何年ぶりだろう、と笑っています。"
+    }
+  ],
+  "entities": [
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "札幌商工会議所",
+        "en": "Sapporo Chamber of Commerce and Industry"
+      },
+      "city": "Sapporo",
+      "ward": null,
+      "industries": [
+        "snow_removal",
+        "ramen"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "札幌市中央図書館（会場候補・デモ）",
+        "en": "Sapporo Central Library (candidate venue, demo)"
+      },
+      "city": "Sapporo",
+      "ward": "中央区",
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "北海道地域金融機関 中小企業DX応援ファンド（デモ）",
+        "en": "Hokkaido regional bank SME DX fund (demo)"
+      },
+      "city": "Sapporo",
+      "ward": null,
+      "industries": [
+        "snow_removal",
+        "ramen"
+      ]
+    },
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "旭川商工会議所",
+        "en": "Asahikawa Chamber of Commerce and Industry"
+      },
+      "city": "Asahikawa",
+      "ward": null,
+      "industries": [
+        "farm"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "旭川市中央図書館（会場候補・デモ）",
+        "en": "Asahikawa Central Library (candidate venue, demo)"
+      },
+      "city": "Asahikawa",
+      "ward": null,
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "道北農業スマート化支援プログラム（デモ）",
+        "en": "Northern Hokkaido smart-farming support program (demo)"
+      },
+      "city": "Asahikawa",
+      "ward": null,
+      "industries": [
+        "farm"
+      ]
+    },
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "小樽商工会議所",
+        "en": "Otaru Chamber of Commerce and Industry"
+      },
+      "city": "Otaru",
+      "ward": null,
+      "industries": [
+        "ryokan"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "小樽市立図書館（会場候補・デモ）",
+        "en": "Otaru City Library (candidate venue, demo)"
+      },
+      "city": "Otaru",
+      "ward": null,
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "後志観光事業者デジタル化基金（デモ）",
+        "en": "Shiribeshi tourism-business digitalization fund (demo)"
+      },
+      "city": "Otaru",
+      "ward": null,
+      "industries": [
+        "ryokan"
+      ]
+    },
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "世田谷区 経済産業部 産業連携・振興担当（デモ表記）",
+        "en": "Setagaya City Economic & Industrial Dept., industry promotion (demo label)"
+      },
+      "city": "Setagaya",
+      "ward": null,
+      "industries": [
+        "bakery"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "世田谷区立中央図書館（会場候補・デモ）",
+        "en": "Setagaya Central Library (candidate venue, demo)"
+      },
+      "city": "Setagaya",
+      "ward": null,
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "東京都内信用金庫 商店街応援ローン（デモ）",
+        "en": "Tokyo shinkin bank shopping-street support loan (demo)"
+      },
+      "city": "Setagaya",
+      "ward": null,
+      "industries": [
+        "bakery"
+      ]
+    },
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "京都商工会議所",
+        "en": "Kyoto Chamber of Commerce and Industry"
+      },
+      "city": "Kyoto",
+      "ward": null,
+      "industries": [
+        "retail"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "京都府立図書館（会場候補・デモ）",
+        "en": "Kyoto Prefectural Library (candidate venue, demo)"
+      },
+      "city": "Kyoto",
+      "ward": "左京区",
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "京都インバウンド対応小規模事業者支援枠（デモ）",
+        "en": "Kyoto inbound-readiness small business grant (demo)"
+      },
+      "city": "Kyoto",
+      "ward": null,
+      "industries": [
+        "retail"
+      ]
+    },
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "金沢商工会議所",
+        "en": "Kanazawa Chamber of Commerce and Industry"
+      },
+      "city": "Kanazawa",
+      "ward": null,
+      "industries": [
+        "brewery"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "金沢市立玉川図書館（会場候補・デモ）",
+        "en": "Kanazawa Tamagawa Library (candidate venue, demo)"
+      },
+      "city": "Kanazawa",
+      "ward": null,
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "北陸地域金融機関 輸出チャレンジ応援ファンド（デモ）",
+        "en": "Hokuriku regional bank export challenge fund (demo)"
+      },
+      "city": "Kanazawa",
+      "ward": null,
+      "industries": [
+        "brewery"
+      ]
+    },
+    {
+      "kind": "stakeholder",
+      "name": {
+        "ja": "青森商工会議所",
+        "en": "Aomori Chamber of Commerce and Industry"
+      },
+      "city": "Aomori",
+      "ward": null,
+      "industries": [
+        "care"
+      ]
+    },
+    {
+      "kind": "venue",
+      "name": {
+        "ja": "青森市民図書館（会場候補・デモ）",
+        "en": "Aomori Citizens' Library (candidate venue, demo)"
+      },
+      "city": "Aomori",
+      "ward": null,
+      "industries": []
+    },
+    {
+      "kind": "funder",
+      "name": {
+        "ja": "青森県内介護事業所ICT化応援プログラム（デモ）",
+        "en": "Aomori care-facility ICT adoption program (demo)"
+      },
+      "city": "Aomori",
+      "ward": null,
+      "industries": [
+        "care"
+      ]
+    }
+  ]
+}
