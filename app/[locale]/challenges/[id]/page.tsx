@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { ensureUser } from "@/lib/auth";
 import { challengeNeighborhood, suggestBuilders } from "@/lib/graph/queries";
+import { getGrantMatches } from "@/lib/grants/store";
+import { GrantList, GrantNotice } from "../../grants/grant-list";
+import { refreshGrantsAction } from "../../admin/grant-actions";
 import { PUBLIC_STATUSES, getBriefDetail } from "@/lib/queries";
 import { isUuid } from "@/lib/uuid";
 import { GraphView } from "@/components/graph-view";
@@ -10,6 +13,8 @@ import { GroundingBadge, SourceBadge, StatusBadge } from "@/components/badges";
 import { Badge, Card, buttonClass } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
+// The host-only "Find grants" action runs jGrants matching via after() inside this function.
+export const maxDuration = 120;
 
 export default async function ChallengePage({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale, id } = await params;
@@ -26,7 +31,8 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
   const tt = await getTranslations("teams");
   const lang = locale === "en" ? "en" : "ja";
   const { brief, business, sources, teams } = detail;
-  const [graph, builders] = await Promise.all([challengeNeighborhood(id), suggestBuilders(id)]);
+  const tg = await getTranslations("grants");
+  const [graph, builders, grants] = await Promise.all([challengeNeighborhood(id), suggestBuilders(id), getGrantMatches(id).catch(() => [])]);
   const c = brief.content[lang];
   const canFormTeam = user?.role === "student" && ["approved", "in_progress"].includes(brief.status);
 
@@ -105,6 +111,29 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
             </Card>
           ))}
           {sources.length === 0 && <p className="text-sm text-slate-500">—</p>}
+        </div>
+      </section>
+
+      <section data-testid="grants-section">
+        <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-xl font-bold">{tg("title")}</h2>
+          <span className="flex flex-wrap items-center gap-3 text-sm">
+            {user?.role === "host" && (
+              <form action={refreshGrantsAction} data-testid="grants-refresh">
+                <input type="hidden" name="locale" value={locale} />
+                <input type="hidden" name="briefId" value={brief.id} />
+                <button type="submit" className={buttonClass("secondary", "py-1 text-xs")} title={tg("background")}>
+                  🔎 {grants.length ? tg("refresh") : tg("find")}
+                </button>
+              </form>
+            )}
+            <Link href="/grants" className="text-slate-600 hover:underline dark:text-slate-400">{tg("seeAll")} →</Link>
+          </span>
+        </div>
+        <p className="mb-3 text-sm text-slate-600 dark:text-slate-400">{tg("sectionLead")}</p>
+        <div className="space-y-3">
+          <GrantList grants={grants} locale={locale} />
+          <GrantNotice locale={locale} />
         </div>
       </section>
 

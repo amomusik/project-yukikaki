@@ -6,19 +6,25 @@ import { requireRole } from "@/lib/auth";
 import { decide } from "@/lib/decide";
 import { sendImpactCheck } from "@/lib/feedback";
 import { rebuildGraph } from "@/lib/graph/sync";
+import { scheduleGrantRefresh } from "@/lib/grants/schedule";
 import { withFallback } from "@/lib/integrations/_guard";
 import { reEnrichBrief, startReEnrichment } from "@/lib/pipeline/brief";
 
 export async function decideAction(formData: FormData) {
   const locale = String(formData.get("locale") ?? "ja");
   const host = await requireRole(locale, "host");
+  const subjectType = formData.get("subjectType") === "team" ? "team" : "brief";
+  const subjectId = String(formData.get("subjectId"));
+  const decision = formData.get("decision") === "approve" ? "approve" : "reject";
   await decide({
-    subjectType: formData.get("subjectType") === "team" ? "team" : "brief",
-    subjectId: String(formData.get("subjectId")),
-    decision: formData.get("decision") === "approve" ? "approve" : "reject",
+    subjectType,
+    subjectId,
+    decision,
     note: String(formData.get("note") ?? "") || null,
     hostUserId: host.id,
   });
+  // Newly published challenge: match open public funding programmes in the background.
+  if (subjectType === "brief" && decision === "approve") scheduleGrantRefresh(subjectId);
   revalidatePath(`/${locale}/admin`);
 }
 

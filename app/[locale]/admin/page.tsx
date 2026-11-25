@@ -4,7 +4,9 @@ import { requireRole } from "@/lib/auth";
 import { adminDeliveries, adminQueue, adminTeams, impactStats, recentDecisions, serviceStatus } from "@/lib/queries";
 import { AiBadge, GroundingBadge, SourceBadge, StatusBadge } from "@/components/badges";
 import { Badge, Button, Card, Empty, Input, PageHeader, cn } from "@/components/ui";
+import { grantMatchSummary } from "@/lib/grants/store";
 import { decideAction, reEnrichAction } from "./actions";
+import { refreshAllGrantsAction, refreshGrantsAction } from "./grant-actions";
 import { ImpactCheckButton } from "./impact-check-button";
 
 // Server actions on this page start the brief/team pipeline with after(); that work counts
@@ -15,7 +17,7 @@ export const dynamic = "force-dynamic";
 
 const TABS = ["briefs", "teams", "deliveries", "impact"] as const;
 type Tab = (typeof TABS)[number];
-const SERVICES = ["neon", "neo4j", "elevenlabs", "linkup", "dify", "adaption", "resend"];
+const SERVICES = ["neon", "neo4j", "elevenlabs", "linkup", "dify", "adaption", "resend", "jgrants"];
 
 export default async function AdminPage({
   params,
@@ -88,7 +90,9 @@ async function BriefsTab({ locale }: { locale: string }) {
   const t = await getTranslations("admin");
   const ts = await getTranslations("status");
   const lang = locale === "en" ? "en" : "ja";
+  const tg = await getTranslations("grants");
   const [queue, decisions] = await Promise.all([adminQueue(), recentDecisions()]);
+  const grantSummary = await grantMatchSummary(queue.map((q) => q.brief.id)).catch(() => new Map<string, { count: number; fetchedAt: Date | null }>());
   return (
     <div className="space-y-4">
       {queue.length === 0 && <Empty>{t("empty")}</Empty>}
@@ -146,8 +150,32 @@ async function BriefsTab({ locale }: { locale: string }) {
           ) : (
             <p className="mt-3 text-xs text-slate-500">{ts(brief.status)}…</p>
           )}
+          <form action={refreshGrantsAction} className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500 dark:border-slate-800" data-testid="grants-refresh">
+            <input type="hidden" name="locale" value={locale} />
+            <input type="hidden" name="briefId" value={brief.id} />
+            {(() => {
+              const g = grantSummary.get(brief.id);
+              return (
+                <>
+                  <span>
+                    {g?.count ? tg("count", { n: g.count, date: g.fetchedAt ? g.fetchedAt.toISOString().slice(0, 16).replace("T", " ") : "—" }) : tg("none")}
+                  </span>
+                  <Button type="submit" variant="secondary" className="py-1 text-xs" title={tg("background")}>
+                    🔎 {g?.count ? tg("refresh") : tg("find")}
+                  </Button>
+                  <span className="text-slate-400">{tg("background")}</span>
+                </>
+              );
+            })()}
+          </form>
         </Card>
       ))}
+      <form action={refreshAllGrantsAction} className="flex flex-wrap items-center gap-2 text-xs text-slate-500" data-testid="grants-refresh-all">
+        <input type="hidden" name="locale" value={locale} />
+        <Button type="submit" variant="secondary" className="py-1 text-xs">🔎 {tg("refreshAll")}</Button>
+        <Link href="/grants" className="hover:underline">{tg("seeAll")} →</Link>
+        <span className="text-slate-400">{tg("background")}</span>
+      </form>
       {decisions.length > 0 && (
         <div className="pt-4">
           <h3 className="mb-2 text-sm font-semibold text-slate-500">{t("recentDecisions")}</h3>

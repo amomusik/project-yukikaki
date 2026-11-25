@@ -18,6 +18,8 @@ export type BriefGraphInput = {
   stakeholders: { id: string; name: string }[];
   venues: { id: string; name: string }[];
   funders: { id: string; name: string }[];
+  /** Matched public grants (lib/grants) — projected as Funder nodes with source = 'grant'. */
+  grants?: { id: string; name: string; provider: string; issuer: string | null; url: string; deadline: string | null; amountMax: number | null }[];
 };
 
 export function briefStatements(b: BriefGraphInput): Statement[] {
@@ -80,6 +82,28 @@ UNWIND $items AS e
 MERGE (n:Funder {id: e.id}) SET n.name = e.name
 MERGE (n)-[:FUNDS]->(c)`,
       params: { ...p, items: b.funders },
+    },
+    ...(b.grants ? grantStatements(b.id, b.grants) : []),
+  ];
+}
+
+/** Replace a challenge's grant FUNDS edges (matches are refreshed wholesale). */
+export function grantStatements(challengeId: string, grants: NonNullable<BriefGraphInput["grants"]>): Statement[] {
+  return [
+    {
+      query: `MATCH (c:Challenge {id: $id})
+OPTIONAL MATCH (f:Funder {source: $source})-[r:FUNDS]->(c)
+DELETE r`,
+      params: { id: challengeId, source: "grant" },
+    },
+    {
+      query: `MATCH (c:Challenge {id: $id})
+UNWIND $items AS g
+MERGE (f:Funder {id: g.id})
+SET f.name = g.name, f.source = $source, f.provider = g.provider, f.issuer = g.issuer, f.url = g.url,
+    f.deadline = g.deadline, f.amountMax = g.amountMax
+MERGE (f)-[:FUNDS]->(c)`,
+      params: { id: challengeId, source: "grant", items: grants },
     },
   ];
 }

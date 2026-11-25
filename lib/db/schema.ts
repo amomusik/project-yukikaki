@@ -1,7 +1,9 @@
 import { sql } from "drizzle-orm";
 import {
+  bigint,
   boolean,
   date,
+  doublePrecision,
   integer,
   jsonb,
   numeric,
@@ -248,6 +250,31 @@ export const serviceEvents = pgTable("service_events", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** Open public funding programmes matched to a brief (lib/grants). Replaced on each refresh. */
+export const grantSourceEnum = pgEnum("grant_source", ["jgrants", "linkup"]);
+
+export const grantMatches = pgTable(
+  "grant_matches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    briefId: uuid("brief_id")
+      .notNull()
+      .references(() => briefs.id, { onDelete: "cascade" }),
+    source: grantSourceEnum("source").notNull(),
+    externalId: text("external_id").notNull(),
+    title: text("title").notNull(),
+    issuer: text("issuer"),
+    url: text("url").notNull(),
+    amountMax: bigint("amount_max", { mode: "number" }),
+    subsidyRate: text("subsidy_rate"),
+    deadline: timestamp("deadline", { withTimezone: true }),
+    area: text("area"),
+    score: doublePrecision("score").notNull().default(0),
+    fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("grant_matches_brief_source_ext").on(t.briefId, t.source, t.externalId)],
+);
+
 export type User = typeof users.$inferSelect;
 export type Business = typeof businesses.$inferSelect;
 export type Brief = typeof briefs.$inferSelect;
@@ -257,6 +284,8 @@ export type Team = typeof teams.$inferSelect;
 export type Delivery = typeof deliveries.$inferSelect;
 export type Evaluation = typeof evaluations.$inferSelect;
 export type Entity = typeof entities.$inferSelect;
+export type GrantMatchRow = typeof grantMatches.$inferSelect;
+export type NewGrantMatchRow = typeof grantMatches.$inferInsert;
 export type BriefStatus = (typeof briefStatusEnum.enumValues)[number];
 export type TeamStatus = (typeof teamStatusEnum.enumValues)[number];
 export type GroundingLevel = (typeof groundingEnum.enumValues)[number];

@@ -39,6 +39,10 @@ async function briefInput(briefId: string): Promise<BriefGraphInput | null> {
   const pick = (kind: string) =>
     relevant.filter((e) => e.kind === kind).map((e) => ({ id: e.id, name: e.name.en || e.name.ja }));
   const city = findCity(business.city);
+  const now = Date.now();
+  const grants = (await db.select().from(schema.grantMatches).where(eq(schema.grantMatches.briefId, briefId))).filter(
+    (g) => !g.deadline || g.deadline.getTime() >= now,
+  );
   return {
     id: brief.id,
     titleEn: brief.content.en.title,
@@ -58,6 +62,15 @@ async function briefInput(briefId: string): Promise<BriefGraphInput | null> {
     stakeholders: pick("stakeholder"),
     venues: pick("venue"),
     funders: pick("funder"),
+    grants: grants.map((g) => ({
+      id: `grant:${g.source}:${g.externalId}`,
+      name: g.title,
+      provider: g.source,
+      issuer: g.issuer,
+      url: g.url,
+      deadline: g.deadline ? g.deadline.toISOString() : null,
+      amountMax: g.amountMax,
+    })),
   };
 }
 

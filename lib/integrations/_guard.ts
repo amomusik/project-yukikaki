@@ -8,7 +8,8 @@ export type ServiceName =
   | "linkup"
   | "dify"
   | "adaption"
-  | "resend";
+  | "resend"
+  | "jgrants";
 
 export class NotConfiguredError extends Error {
   constructor(service: ServiceName) {
