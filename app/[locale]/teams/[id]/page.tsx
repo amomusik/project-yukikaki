@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth";
 import { getTeamDetail } from "@/lib/queries";
+import { isUuid } from "@/lib/uuid";
 import { AiBadge, StatusBadge } from "@/components/badges";
 import { Badge, Button, Card, PageHeader, Select, buttonClass } from "@/components/ui";
 import { transferLeadAction } from "../actions";
@@ -23,6 +24,7 @@ export default async function TeamPage({
   const { locale, id } = await params;
   setRequestLocale(locale);
   const user = await requireUser(locale);
+  if (!isUuid(id)) notFound();
   const detail = await getTeamDetail(id);
   if (!detail) notFound();
   const { unknown } = await searchParams;

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth";
 import { getTeamDetail } from "@/lib/queries";
+import { isUuid } from "@/lib/uuid";
 import { Button, Card, Label, PageHeader, Textarea } from "@/components/ui";
 import { deliverAction } from "../../actions";
 
@@ -13,6 +14,7 @@ export default async function DeliverPage({ params }: { params: Promise<{ locale
   const { locale, id } = await params;
   setRequestLocale(locale);
   const user = await requireRole(locale, "student");
+  if (!isUuid(id)) notFound();
   const detail = await getTeamDetail(id);
   if (!detail) notFound();
   const lead = detail.members.find((m) => m.role === "lead");

@@ -3,6 +3,7 @@ import { getDb, schema } from "@/lib/db";
 import type { BriefStatus } from "@/lib/db/schema";
 import { findCity } from "@/lib/grounding/city-profiles";
 import { findIndustry } from "@/lib/grounding/industry-neighbors";
+import { isUuid } from "@/lib/uuid";
 
 /** Read models for pages. Writes live in lib/briefs, lib/teams, lib/decide, lib/feedback. */
 
@@ -127,6 +128,7 @@ export async function challengeFacets() {
 }
 
 export async function getBriefDetail(id: string) {
+  if (!isUuid(id)) return null;
   const db = getDb();
   const [row] = await db
     .select({ brief: schema.briefs, business: schema.businesses })
@@ -140,6 +142,7 @@ export async function getBriefDetail(id: string) {
 }
 
 export async function getTeamDetail(id: string) {
+  if (!isUuid(id)) return null;
   const db = getDb();
   const [team] = await db.select().from(schema.teams).where(eq(schema.teams.id, id));
   if (!team) return null;

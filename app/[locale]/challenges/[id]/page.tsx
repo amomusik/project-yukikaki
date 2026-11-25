@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { ensureUser } from "@/lib/auth";
 import { challengeNeighborhood, suggestBuilders } from "@/lib/graph/queries";
 import { PUBLIC_STATUSES, getBriefDetail } from "@/lib/queries";
+import { isUuid } from "@/lib/uuid";
 import { GraphView } from "@/components/graph-view";
 import { GroundingBadge, SourceBadge, StatusBadge } from "@/components/badges";
 import { Badge, Card, buttonClass } from "@/components/ui";
@@ -13,6 +14,7 @@ export const dynamic = "force-dynamic";
 export default async function ChallengePage({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale, id } = await params;
   setRequestLocale(locale);
+  if (!isUuid(id)) notFound();
   const detail = await getBriefDetail(id);
   const user = await ensureUser().catch(() => null);
   if (!detail) notFound();
