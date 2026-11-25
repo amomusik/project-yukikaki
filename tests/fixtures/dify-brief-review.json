@@ -1,0 +1,16 @@
+{
+  "workflow_run_id": "run_001",
+  "task_id": "task_001",
+  "data": {
+    "id": "run_001",
+    "workflow_id": "wf_001",
+    "status": "succeeded",
+    "outputs": {
+      "result": "Here is the review:\n```json\n{\"recommendation\":\"approve\",\"score\":82,\"issues\":[\"Confirm LINE official account plan\"],\"pii_found\":false,\"grounding_comment\":\"Grounded on Sapporo city data\",\"skills_needed\":[\"line-bot\",\"booking-automation\"],\"normalized\":{\"ja\":{\"title\":\"予約受付の自動化\",\"problem\":\"予約対応に週6時間\",\"current_process\":\"紙のノート\",\"desired_outcome\":\"LINE自動受付\"},\"en\":{\"title\":\"Automate reservations\",\"problem\":\"6 hours a week on reservations\",\"current_process\":\"Paper notebook\",\"desired_outcome\":\"Automatic LINE booking\"}}}\n```"
+    },
+    "error": null,
+    "elapsed_time": 3.2,
+    "total_tokens": 900,
+    "total_steps": 3
+  }
+}

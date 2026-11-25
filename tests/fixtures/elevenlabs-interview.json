@@ -1,0 +1,29 @@
+{
+  "agent_id": "agent_interview_test",
+  "conversation_id": "conv_interview_001",
+  "status": "done",
+  "transcript": [
+    { "role": "agent", "message": "こんにちは。お店のお名前を教えてください。" },
+    { "role": "user", "message": "札幌の麺屋ゆきです。予約の電話とLINEの返信に毎週6時間くらいかかっています。" },
+    { "role": "agent", "message": null }
+  ],
+  "analysis": {
+    "transcript_summary": "Ramen shop in Sapporo spends ~6h/week on phone and LINE reservations.",
+    "data_collection_results": {
+      "business_name": { "value": "麺屋ゆき", "rationale": "stated" },
+      "industry": { "value": "ラーメン店" },
+      "city": { "value": "札幌市" },
+      "ward": { "value": "中央区" },
+      "problem": { "value": "予約の電話とLINEの返信に追われて仕込みの時間が足りない" },
+      "current_process": { "value": "紙のノートで予約管理、LINEは手動で返信" },
+      "desired_outcome": { "value": "LINEで自動受付し、ノートをやめたい" },
+      "tools_used": { "value": "LINE、紙のノート、電話" },
+      "hours_lost_per_week": { "value": "6時間" },
+      "data_sensitivity": { "value": "synthetic_ok" },
+      "preferred_language": { "value": "ja" }
+    }
+  },
+  "conversation_initiation_client_data": {
+    "dynamic_variables": { "user_id": "", "business_id": "", "locale": "ja" }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "name": "project-yukikaki",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "tsx scripts/db-migrate.ts",
+    "seed": "tsx scripts/seed.ts",
+    "prebake": "tsx scripts/prebake.ts",
+    "graph:rebuild": "tsx scripts/graph-rebuild.ts",
+    "check:services": "tsx scripts/check-services.ts",
+    "dify:build": "tsx scripts/build-dify.ts",
+    "smoke:dify": "tsx scripts/smoke-dify.ts",
+    "setup:elevenlabs": "tsx scripts/setup-elevenlabs.ts",
+    "simulate:interview": "tsx scripts/simulate-interview.ts",
+    "vercel:env": "tsx scripts/vercel-env.ts"
+  },
+  "dependencies": {
+    "@clerk/localizations": "^4.26.3",
+    "@clerk/nextjs": "^7.10.8",
+    "@electric-sql/pglite": "^0.6.0",
+    "@elevenlabs/react": "^1.24.0",
+    "@neondatabase/serverless": "^1.2.1",
+    "clsx": "^2.1.1",
+    "drizzle-orm": "^0.45.4",
+    "lucide-react": "^1.79.0",
+    "neo4j-driver": "^6.3.2",
+    "next": "15.5.29",
+    "next-intl": "^4.16.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-force-graph-2d": "^1.29.2",
+    "resend": "^6.39.0",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.7.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@clerk/backend": "^3.32.0",
+    "@clerk/testing": "^2.3.7",
+    "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/postcss": "^4",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv": "^18.0.10",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.29",
+    "js-yaml": "^5.5.0",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5",
+    "vitest": "^5.1.1"
+  },
+  "license": "MIT",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@swc/core",
+      "@parcel/watcher"
+    ]
+  }
+}

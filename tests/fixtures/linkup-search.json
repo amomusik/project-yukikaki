@@ -1,0 +1,7 @@
+{
+  "results": [
+    { "type": "text", "name": "札幌市 オープンデータ 飲食店", "url": "https://example.jp/sapporo-open-data", "content": "札幌市の飲食店許可件数の推移…" },
+    { "type": "image", "name": "photo", "url": "https://example.jp/img.png" },
+    { "type": "text", "name": "", "url": "https://example.jp/no-title", "content": "本文のみ" }
+  ]
+}

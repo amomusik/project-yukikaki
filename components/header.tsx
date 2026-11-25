@@ -1,0 +1,71 @@
+import { SignInButton, UserButton } from "@clerk/nextjs";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { ensureUser } from "@/lib/auth";
+import { MobileNav, type NavItem } from "./landing/mobile-nav";
+import { YukikakiMark } from "./landing/mark";
+import { LocaleToggle } from "./locale-toggle";
+
+export async function Header({ locale }: { locale: string }) {
+  const t = await getTranslations("nav");
+  const user = await ensureUser().catch(() => null);
+
+  const items: NavItem[] = [{ href: "/challenges", label: t("challenges") }];
+  if (!user || user.role === "business") items.push({ href: "/interview", label: t("interview") });
+  if (user) items.push({ href: "/me", label: t("me") });
+  if (user?.role === "host") items.push({ href: "/admin", label: t("admin") }, { href: "/admin/graph", label: t("graph") });
+
+  const link =
+    "rounded-full px-3 py-1.5 text-sm font-medium text-muted transition hover:bg-ice hover:text-ink focus-visible:bg-ice";
+
+  return (
+    <header className="sticky top-0 z-40 border-b border-line bg-snow/85 backdrop-blur-md supports-[backdrop-filter]:bg-snow/70">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5 sm:px-6">
+        <Link href="/" aria-label={t("home")} className="group mr-2 flex min-w-0 items-center gap-3 rounded-lg">
+          <YukikakiMark className="h-9 w-9 shrink-0" />
+          <span className="min-w-0 leading-tight">
+            <span className="flex items-baseline gap-2">
+              <span className="truncate text-[15px] font-bold tracking-tight text-ink">{t("brand")}</span>
+              <span lang="ja" className="hidden text-xs font-medium tracking-[0.2em] text-frost sm:inline">
+                雪かき
+              </span>
+            </span>
+            <span className="hidden truncate text-xs text-muted md:block">{t("tagline")}</span>
+          </span>
+        </Link>
+
+        <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">
+          {items.map((i) => (
+            <Link key={i.href} href={i.href} className={link}>
+              {i.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="ml-auto flex items-center gap-2 lg:ml-2">
+          <div className="hidden sm:block">
+            <LocaleToggle locale={locale} label={t("language")} ariaLabel={t("switchLanguage")} />
+          </div>
+          {user ? (
+            <UserButton />
+          ) : (
+            <SignInButton mode="redirect">
+              <button className="inline-flex items-center rounded-full bg-night px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-night-2 dark:bg-ice dark:text-ink dark:hover:bg-ice-strong">
+                {t("signIn")}
+              </button>
+            </SignInButton>
+          )}
+          <MobileNav
+            items={items}
+            locale={locale}
+            tagline={t("tagline")}
+            languageLabel={t("language")}
+            languageAria={t("switchLanguage")}
+            openLabel={t("openMenu")}
+            closeLabel={t("closeMenu")}
+          />
+        </div>
+      </div>
+    </header>
+  );
+}

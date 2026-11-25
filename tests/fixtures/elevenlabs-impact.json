@@ -1,0 +1,21 @@
+{
+  "agent_id": "agent_impact_test",
+  "conversation_id": "conv_impact_001",
+  "status": "done",
+  "transcript": [
+    { "role": "agent", "message": "導入したLINE自動受付はいかがですか？" },
+    { "role": "user", "message": "週に5時間は浮きました。満足度は5です。" }
+  ],
+  "analysis": {
+    "transcript_summary": "Owner saves ~5h/week, very satisfied.",
+    "data_collection_results": {
+      "hours_saved_per_week": { "value": 5 },
+      "satisfaction": { "value": "5" },
+      "still_in_use": { "value": "はい" },
+      "issues": { "value": "" },
+      "would_recommend": { "value": true },
+      "quote": { "value": "仕込みに集中できるようになりました" }
+    }
+  },
+  "conversation_initiation_client_data": { "dynamic_variables": { "delivery_id": "" } }
+}

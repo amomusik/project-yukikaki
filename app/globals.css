@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+/*
+ * Yukikaki theme — 雪かき: someone clears the path before anyone else gets through.
+ * Snow white, ice blue, deep night navy, and a warm lantern amber for the one thing to do next.
+ * Every page reads these variables, so the whole app shares the palette.
+ */
+:root {
+  --snow: #f6f9fc; /* page background: fresh snow */
+  --surface: #ffffff; /* cards */
+  --ice: #e4eef7; /* tinted panels, chips */
+  --ice-strong: #a9c8de; /* lines, the swept path */
+  --frost: #3f739c; /* accent text on light */
+  --night: #0c1a2b; /* hero, footer: deep winter night */
+  --night-2: #16304b;
+  --lantern: #e9a23b; /* primary CTA */
+  --lantern-hover: #f2b457;
+  --lantern-ink: #2b1a02; /* text on lantern */
+  --ink: #0f1d2c; /* body text */
+  --muted: #52667b; /* secondary text */
+  --line: #d9e4ee; /* borders */
+
+  --background: var(--snow);
+  --foreground: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --snow: #08131f;
+    --surface: #0f1f31;
+    --ice: #142c44;
+    --ice-strong: #2f5677;
+    --frost: #8fbbe0;
+    --night: #040b14;
+    --night-2: #0d2033;
+    --lantern: #f0b04f;
+    --lantern-hover: #f6c372;
+    --lantern-ink: #241500;
+    --ink: #e6eef6;
+    --muted: #9db1c5;
+    --line: #1d3550;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-snow: var(--snow);
+  --color-surface: var(--surface);
+  --color-ice: var(--ice);
+  --color-ice-strong: var(--ice-strong);
+  --color-frost: var(--frost);
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-lantern: var(--lantern);
+  --color-lantern-hover: var(--lantern-hover);
+  --color-lantern-ink: var(--lantern-ink);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  /* Full-bleed landing sections span 100vw; never let that create a sideways scroll. */
+  overflow-x: clip;
+  font-feature-settings: "palt" 1;
+}
+
+:lang(ja) body {
+  line-break: strict;
+}
+
+/* Break Japanese headings between phrases (文節), not mid-word, where supported. */
+:lang(ja) :is(h1, h2, h3, .yk-phrase) {
+  word-break: auto-phrase;
+}
+
+::selection {
+  background: var(--ice-strong);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--lantern);
+  outline-offset: 2px;
+}
+
+/* ── Snow ────────────────────────────────────────────────────────────── */
+/* Layers of soft dots drifting down. Decorative only (aria-hidden in markup). */
+.yk-snow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgb(255 255 255 / 0.9), transparent 70%),
+    radial-gradient(1.5px 1.5px at 90px 120px, rgb(255 255 255 / 0.75), transparent 70%),
+    radial-gradient(2.5px 2.5px at 160px 60px, rgb(255 255 255 / 0.85), transparent 70%),
+    radial-gradient(1.5px 1.5px at 230px 190px, rgb(255 255 255 / 0.6), transparent 70%),
+    radial-gradient(2px 2px at 300px 250px, rgb(255 255 255 / 0.8), transparent 70%);
+  background-size: 320px 320px;
+  animation: yk-snowfall 28s linear infinite;
+  opacity: 0.6;
+}
+.yk-snow--far {
+  background-size: 180px 180px;
+  animation-duration: 46s;
+  opacity: 0.3;
+}
+@keyframes yk-snowfall {
+  from {
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+  }
+  to {
+    background-position: 40px 320px, -30px 320px, 20px 320px, -20px 320px, 30px 320px;
+  }
+}
+
+/* Faint snow-grain texture for light sections. */
+.yk-snow-texture {
+  background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ice-strong) 55%, transparent) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* ── Marquee ─────────────────────────────────────────────────────────── */
+.yk-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+.yk-marquee__track {
+  display: flex;
+  width: max-content;
+  gap: 1rem;
+  padding-block: 0.5rem;
+  animation: yk-marquee var(--yk-duration, 70s) linear infinite;
+}
+.yk-marquee--reverse .yk-marquee__track {
+  animation-direction: reverse;
+}
+.yk-marquee:hover .yk-marquee__track,
+.yk-marquee:focus-within .yk-marquee__track {
+  animation-play-state: paused;
+}
+@keyframes yk-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 0.5rem));
+  }
+}
+
+/* ── Respect reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .yk-snow {
+    animation: none;
+  }
+  .yk-marquee {
+    overflow-x: auto;
+    mask-image: none;
+    scroll-snap-type: x proximity;
+  }
+  .yk-marquee__track {
+    animation: none;
+  }
+  .yk-marquee__track > * {
+    scroll-snap-align: start;
+  }
+  /* The duplicate half and the second row only exist to loop the animation. */
+  .yk-marquee__dup,
+  .yk-marquee--reverse {
+    display: none;
+  }
+}

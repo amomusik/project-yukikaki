@@ -1,0 +1,137 @@
+import type { GroundingLevel } from "@/lib/db/schema";
+import { withFallback } from "@/lib/integrations/_guard";
+import { linkupSearch, type LinkupResult } from "@/lib/integrations/linkup";
+import { analogCities, findCity } from "./city-profiles";
+import { industryJa, industryNeighbors } from "./industry-neighbors";
+
+export type GroundingSource = {
+  title: string;
+  url: string;
+  snippet: string;
+  level: Exclude<GroundingLevel, "ungrounded">;
+  matchedCity: string | null;
+  query: string;
+};
+
+export type GroundingResult = {
+  level: GroundingLevel;
+  sources: GroundingSource[];
+  /** True when Linkup could not be reached at all (vs. reachable but found nothing). */
+  unavailable: boolean;
+  queries: string[];
+};
+
+export type SearchFn = (query: string, opts?: { includeDomains?: string[] }) => Promise<{ ok: boolean; results: LinkupResult[] }>;
+
+/**
+ * Grounding only counts official, citable sources: national ministries and agencies (go.jp),
+ * prefectures and municipalities (lg.jp, plus each city's own site), public bodies (or.jp)
+ * and universities (ac.jp). Blogs and SEO sites never ground a brief.
+ */
+export const OFFICIAL_DOMAINS = ["go.jp", "lg.jp", "or.jp", "ac.jp"];
+
+export const defaultSearch: SearchFn = async (query, opts) => {
+  const r = await withFallback("linkup", "search", (signal) => linkupSearch(query, signal, opts), [] as LinkupResult[]);
+  return { ok: r.ok, results: r.value };
+};
+
+type Planned = {
+  query: string;
+  level: GroundingSource["level"];
+  city: { ja: string; en: string; key?: string } | null;
+  includeDomains: string[];
+};
+
+function mentions(r: LinkupResult, city: Planned["city"]): boolean {
+  if (!city) return r.snippet.trim().length > 0;
+  const hay = `${r.title} ${r.snippet}`;
+  const url = r.url.toLowerCase();
+  return hay.includes(city.ja) || hay.toLowerCase().includes(city.en.toLowerCase()) || (!!city.key && url.includes(city.key));
+}
+
+/**
+ * Defence in depth: keep only URLs whose host ends with an allowed domain, drop personal
+ * pages (`/~user/`), and — for city-level searches — drop another municipality's site
+ * (e.g. Yokohama's Kanazawa *ward* must not ground Kanazawa *city*).
+ */
+export function isOfficial(url: string, allowed: string[], cityKey?: string): boolean {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (!allowed.some((d) => host === d || host.endsWith(`.${d}`))) return false;
+    if (u.pathname.includes("/~")) return false;
+    const muni = host.match(/(?:^|\.)(?:city|town|vill)\.([a-z-]+)\./);
+    if (cityKey && muni && muni[1] !== cityKey) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Build the query plan for each cascade level. Exported for tests and the prebake script. */
+export function planQueries(input: { city: string; industry: string }): Record<GroundingSource["level"], Planned[]> {
+  const profile = findCity(input.city);
+  const city = profile ? { ja: profile.ja, en: profile.en, key: profile.key } : { ja: input.city, en: input.city };
+  const domains = (site?: string) => (site ? [...OFFICIAL_DOMAINS, site] : OFFICIAL_DOMAINS);
+  const cityDomains = domains(profile?.site);
+  const ind = industryJa(input.industry);
+  const analogs = profile ? analogCities(profile.key, 3) : [];
+  const neighbors = industryNeighbors(input.industry).slice(0, 2);
+  return {
+    exact: [
+      { query: `${city.ja} ${ind} 統計 オープンデータ`, level: "exact", city, includeDomains: cityDomains },
+      { query: `${city.ja} ${ind} 補助金 支援制度`, level: "exact", city, includeDomains: cityDomains },
+      { query: `${city.ja} ${ind} 業務効率化 DX 事例`, level: "exact", city, includeDomains: cityDomains },
+    ],
+    analog: [
+      ...analogs.map((a) => ({
+        query: `${a.ja} ${ind} 統計 データ`,
+        level: "analog" as const,
+        city: { ja: a.ja, en: a.en, key: a.key },
+        includeDomains: domains(a.site),
+      })),
+      ...neighbors.map((n) => ({ query: `${city.ja} ${n.ja} 統計 データ`, level: "analog" as const, city, includeDomains: cityDomains })),
+    ],
+    national: [
+      { query: `${ind} 全国 統計 e-Stat`, level: "national", city: null, includeDomains: ["go.jp"] },
+      { query: `${ind} 中小企業白書 業務効率化`, level: "national", city: null, includeDomains: ["go.jp"] },
+    ],
+  };
+}
+
+/**
+ * Grounding cascade: exact city → analog cities / adjacent industries → national.
+ * Stops at the first level with at least `minResults` relevant, de-duplicated results.
+ */
+export async function groundBrief(
+  input: { city: string; industry: string },
+  opts: { search?: SearchFn; minResults?: number; maxSources?: number } = {},
+): Promise<GroundingResult> {
+  const search = opts.search ?? defaultSearch;
+  const minResults = opts.minResults ?? 2;
+  const maxSources = opts.maxSources ?? 6;
+  const plan = planQueries(input);
+  const seen = new Set<string>();
+  const queries: string[] = [];
+  let anyOk = false;
+
+  for (const level of ["exact", "analog", "national"] as const) {
+    const found: GroundingSource[] = [];
+    const responses = await Promise.all(
+      plan[level].map(async (p) => ({ p, res: await search(p.query, { includeDomains: p.includeDomains }) })),
+    );
+    for (const { p, res } of responses) {
+      queries.push(p.query);
+      anyOk ||= res.ok;
+      for (const r of res.results) {
+        if (seen.has(r.url) || !mentions(r, p.city) || !isOfficial(r.url, p.includeDomains, p.city?.key)) continue;
+        seen.add(r.url);
+        found.push({ ...r, level, matchedCity: p.city?.en ?? null, query: p.query });
+      }
+    }
+    if (found.length >= minResults) {
+      return { level, sources: found.slice(0, maxSources), unavailable: false, queries };
+    }
+  }
+  return { level: "ungrounded", sources: [], unavailable: !anyOk, queries };
+}
