@@ -1,6 +1,6 @@
 {
-  "meta": { "title": "Yukikaki — We clear the path before the builders arrive.", "description": "Builders are not the bottleneck. Project Yukikaki does the work before they arrive: defined problems, the data behind them, buy-in from the people who must say yes, a venue, funding and the right teams." },
-  "nav": { "challenges": "Challenges", "interview": "Get help", "me": "My page", "admin": "Admin", "graph": "Graph", "signIn": "Sign in", "language": "日本語", "switchLanguage": "日本語に切り替える", "brand": "Project Yukikaki", "tagline": "We clear the path before the builders arrive.", "home": "Project Yukikaki home", "openMenu": "Open menu", "closeMenu": "Close menu" },
+  "meta": { "title": "Yukikaki — We clear the path before the builders arrive.", "description": "Builders are not the bottleneck. Project Yukikaki is the sous chef for your hackathon: nemawashi done, mise en place ready — problems defined, data sourced, buy-in secured, venue and funding lined up, teams matched." },
+  "nav": { "challenges": "Challenges", "grants": "Grants", "interview": "Get help", "me": "My page", "admin": "Admin", "graph": "Graph", "signIn": "Sign in", "language": "日本語", "switchLanguage": "日本語に切り替える", "brand": "Project Yukikaki", "tagline": "We clear the path before the builders arrive.", "home": "Project Yukikaki home", "openMenu": "Open menu", "closeMenu": "Close menu" },
   "common": { "synthetic": "Synthetic", "back": "Back", "save": "Save", "submit": "Submit", "cancel": "Cancel", "none": "None", "loading": "Loading…", "hoursPerWeek": "h/week", "demoNotice": "Includes synthetic demo data", "demoData": "Demo data", "skills": {"ai-automation": "AI automation", "spreadsheets": "Spreadsheets", "line-bot": "LINE bots", "booking-automation": "Booking automation", "email-automation": "Email automation", "inventory": "Inventory", "bookkeeping": "Bookkeeping", "social-media": "Social media", "translation": "Translation", "paperwork-automation": "Paperwork automation", "web": "Web", "data-analysis": "Data analysis"} },
   "status": { "draft": "Draft", "enriching": "Researching", "in_review": "In review", "approved": "Open", "rejected": "Returned", "in_progress": "In progress", "delivered": "Delivered", "evaluated": "Evaluated", "pending": "Pending" },
   "grounding": { "exact": "Live", "analog": "Analog: {city}", "analogNoCity": "Analog city", "national": "National data", "ungrounded": "Ungrounded", "live": "Live", "reference": "Reference (pre-fetched)", "syntheticGrounded": "Synthetic — grounded on {n} sources", "pending": "Generating…" },
@@ -14,7 +14,8 @@
     "lead": "In a Hokkaido winter, someone shovels the path before anyone else can get through. We do that for the people who build.",
     "title": "Builders are not the bottleneck.",
     "subtitle": "What's missing is the work before they arrive.",
-    "needs": "Defined problems, the data behind them, buy-in from the people who must say yes, a venue, funding and the right teams.",
+    "needsLead": "Nemawashi done. Mise en place ready.",
+    "needs": "We're the sous chef for your hackathon. Problems defined, data sourced, venue and funding lined up, teams matched, and the nemawashi done: the quiet groundwork that gets the people who must say yes on board before the meeting. Builders start cooking in the first hour.",
     "searchLabel": "Search challenges",
     "searchPlaceholder": "Search challenges by town, industry or skill…",
     "searchButton": "Search",
@@ -37,8 +38,8 @@
     "marqueeLabel": "Scrolling list of challenges. Hover or focus to pause.",
     "hoursLost": "{n} h/week lost",
     "howKicker": "How it works",
-    "howTitle": "Six workstreams, cleared before day one",
-    "howLead": "Builders get a real problem, real data and a real owner from the first hour.",
+    "howTitle": "Your hackathon's sous chef",
+    "howLead": "Six workstreams, prepped before day one. Builders get a real problem, real data and a real owner from the first hour.",
     "ws1Title": "Problem discovery",
     "ws1": "A short voice interview turns a shop owner's headache into a clear, scoped brief.",
     "ws2Title": "Data and context",
@@ -48,7 +49,7 @@
     "ws4Title": "Venue",
     "ws4": "Candidate spaces close to the problem, ready for the host to book.",
     "ws5Title": "Grants and sponsorship",
-    "ws5": "Matching grants and sponsors, with the eligibility rules attached.",
+    "ws5": "Live public-funding matching from official sources (jGrants): open subsidies for each challenge, with deadline and amount, handed off to Grantline for eligibility checks.",
     "ws6Title": "Teams",
     "ws6": "Builders matched by skill. Each team has one lead who supports the owner for 90 days.",
     "howApproval": "AI does the legwork; the host approves each output.",
@@ -86,7 +87,8 @@
     "closingBody": "Bring a problem from your business, or bring Yukikaki to your town.",
     "openSource": "MIT-licensed open source.",
     "anyTown": "Any town can run it.",
-    "github": "View on GitHub"
+    "github": "View on GitHub",
+    "ws5Link": "See open grants →"
   },
   "onboarding": { "title": "First, tell us who you are", "business": "I run a business and need help", "student": "I'm a student who wants a challenge", "skills": "Your skills (students only, pick any)", "continue": "Continue", "hostNote": "Town hosts are added by the administrator." },
   "interview": {

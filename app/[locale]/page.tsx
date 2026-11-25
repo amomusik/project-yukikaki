@@ -96,6 +96,8 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(91_141_180/0.22),transparent_55%)]" />
         <div aria-hidden className="yk-snow yk-snow--far" />
         <div aria-hidden className="yk-snow" />
+        <div aria-hidden className="yk-snow yk-snow--big" />
+        <div aria-hidden className="yk-snow yk-snow--near" />
         {/* Soft scrim so the text keeps AA contrast wherever it meets the scene. */}
         <div aria-hidden className="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(ellipse_60%_70%_at_50%_35%,rgb(4_12_26/0.55),transparent_75%)] sm:h-[62%]" />
 
@@ -173,7 +175,8 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
       </section>
 
       <div className="mx-auto mt-10 max-w-2xl text-pretty text-center">
-        <p className="text-base leading-relaxed text-ink sm:text-lg">{t("needs")}</p>
+        <p className="text-balance text-2xl font-bold tracking-tight text-ink [word-break:auto-phrase] sm:text-3xl">{t("needsLead")}</p>
+        <p className="mt-3 text-base leading-relaxed text-ink [word-break:auto-phrase] sm:text-lg">{t("needs")}</p>
         <p className="mt-3 text-sm text-muted">{t("lead")}</p>
       </div>
 
@@ -222,6 +225,14 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
               <p className="text-xs font-semibold tabular-nums text-frost">0{w.n}</p>
               <h3 className="mt-1 text-lg font-bold text-ink">{w.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{w.body}</p>
+              {w.n === 5 && (
+                <Link
+                  href="/grants"
+                  className="mt-3 inline-block text-sm font-semibold text-frost underline-offset-4 hover:text-ink hover:underline"
+                >
+                  {t("ws5Link")}
+                </Link>
+              )}
             </li>
           ))}
         </ol>

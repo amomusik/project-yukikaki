@@ -10,7 +10,10 @@ export async function Header({ locale }: { locale: string }) {
   const t = await getTranslations("nav");
   const user = await ensureUser().catch(() => null);
 
-  const items: NavItem[] = [{ href: "/challenges", label: t("challenges") }];
+  const items: NavItem[] = [
+    { href: "/challenges", label: t("challenges") },
+    { href: "/grants", label: t("grants") },
+  ];
   if (!user || user.role === "business") items.push({ href: "/interview", label: t("interview") });
   if (user) items.push({ href: "/me", label: t("me") });
   if (user?.role === "host") items.push({ href: "/admin", label: t("admin") }, { href: "/admin/graph", label: t("graph") });

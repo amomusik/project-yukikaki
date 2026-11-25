@@ -5,7 +5,15 @@ import { createPortal } from "react-dom";
 import { YukikakiMark } from "./mark";
 import { prefersReducedMotion } from "./use-in-view";
 
-type Flake = { id: number; left: number; size: number; delay: number; dur: number; drift: number };
+type Flake = { id: number; left: number; size: number; delay: number; dur: number; drift: number; blur: number };
+
+/** Same size tiers as the hero snow: mostly small, some big, a few soft near-camera flakes that fall slower. */
+function flakeTier(): Pick<Flake, "size" | "dur" | "blur"> {
+  const r = Math.random();
+  if (r < 0.55) return { size: 3 + Math.random() * 3, dur: 1.5 + Math.random() * 0.9, blur: 0 };
+  if (r < 0.88) return { size: 7 + Math.random() * 4, dur: 1.9 + Math.random() * 0.7, blur: 0 };
+  return { size: 14 + Math.random() * 8, dur: 2.2 + Math.random() * 0.4, blur: 2.5 };
+}
 let seq = 0;
 
 /** Easter egg: clicking the 雪 mark shakes loose a brief extra flurry (skipped under reduced motion). */
@@ -26,9 +34,8 @@ export function MarkFlurry({ className }: { className?: string }) {
       Array.from({ length: 46 }, () => ({
         id: ++seq,
         left: Math.random() * 100,
-        size: 3 + Math.random() * 6,
+        ...flakeTier(),
         delay: Math.random() * 0.6,
-        dur: 1.6 + Math.random() * 1.2,
         drift: (Math.random() - 0.5) * 120,
       })),
     );
@@ -53,6 +60,7 @@ export function MarkFlurry({ className }: { className?: string }) {
                     height: f.size,
                     animationDelay: `${f.delay}s`,
                     animationDuration: `${f.dur}s`,
+                    filter: f.blur ? `blur(${f.blur}px)` : undefined,
                     "--yk-drift": `${f.drift}px`,
                   } as React.CSSProperties
                 }

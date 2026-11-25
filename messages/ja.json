@@ -1,6 +1,6 @@
 {
-  "meta": { "title": "雪かき Yukikaki — ビルダーが来る前に、道をひらく。", "description": "足りないのはビルダーではなく、ビルダーが来る前の準備です。定義された課題、それを裏づけるデータ、決める立場の人たちの合意、会場、資金、そして最適なチーム。Project Yukikakiがその道をひらきます。" },
-  "nav": { "challenges": "チャレンジ", "interview": "相談する", "me": "マイページ", "admin": "管理", "graph": "グラフ", "signIn": "ログイン", "language": "English", "switchLanguage": "Switch to English", "brand": "Project Yukikaki", "tagline": "ビルダーが来る前に、道をひらく。", "home": "Project Yukikaki ホーム", "openMenu": "メニューを開く", "closeMenu": "メニューを閉じる" },
+  "meta": { "title": "雪かき Yukikaki — ビルダーが来る前に、道をひらく。", "description": "足りないのはビルダーではなく、ビルダーが来る前の準備です。根回しも、下ごしらえも、済ませておきます。課題の整理、データの用意、関係者の合意、会場と資金の手配、チームの組み合わせまで。Project Yukikakiは、ハッカソンの下ごしらえ役です。" },
+  "nav": { "challenges": "チャレンジ", "grants": "助成金・補助金", "interview": "相談する", "me": "マイページ", "admin": "管理", "graph": "グラフ", "signIn": "ログイン", "language": "English", "switchLanguage": "Switch to English", "brand": "Project Yukikaki", "tagline": "ビルダーが来る前に、道をひらく。", "home": "Project Yukikaki ホーム", "openMenu": "メニューを開く", "closeMenu": "メニューを閉じる" },
   "common": { "synthetic": "合成データ", "back": "戻る", "save": "保存", "submit": "送信", "cancel": "キャンセル", "none": "なし", "loading": "読み込み中…", "hoursPerWeek": "時間/週", "demoNotice": "デモ用の合成データを含みます", "demoData": "デモデータ", "skills": {"ai-automation": "AI自動化", "spreadsheets": "スプレッドシート", "line-bot": "LINEボット", "booking-automation": "予約の自動化", "email-automation": "メール対応の自動化", "inventory": "在庫管理", "bookkeeping": "経理・帳簿", "social-media": "SNS運用", "translation": "翻訳", "paperwork-automation": "書類作成の自動化", "web": "ウェブ", "data-analysis": "データ分析"} },
   "status": { "draft": "下書き", "enriching": "調査中", "in_review": "審査待ち", "approved": "公開中", "rejected": "差し戻し", "in_progress": "進行中", "delivered": "納品済み", "evaluated": "評価済み", "pending": "審査待ち" },
   "grounding": { "exact": "実データ", "analog": "類似都市: {city}", "analogNoCity": "類似都市", "national": "全国データ", "ungrounded": "根拠なし", "live": "実データ", "reference": "参考データ（事前取得）", "syntheticGrounded": "合成データ — {n}件の根拠に基づく", "pending": "生成中…" },
@@ -14,7 +14,8 @@
     "lead": "北海道の冬は、誰かが先に雪をかいて、みんなが通れる道をつくります。私たちは、つくる人たちのためにその役目を担います。",
     "title": "ボトルネックは、ビルダーではありません。",
     "subtitle": "足りないのは、ビルダーが来る前の準備です。",
-    "needs": "定義された課題、それを裏づけるデータ、決める立場の人たちの合意、会場、資金、そして最適なチーム。",
+    "needsLead": "根回しも、下ごしらえも、済ませておきます。",
+    "needs": "私たちは、ハッカソンの下ごしらえ役です。課題の整理、データの用意、決める立場の人たちへの根回し、会場と資金の手配、チームの組み合わせまで。ビルダーは最初の1時間から、腕をふるうことに集中できます。",
     "searchLabel": "チャレンジを検索",
     "searchPlaceholder": "まち・業種・スキルで検索…",
     "searchButton": "検索",
@@ -37,8 +38,8 @@
     "marqueeLabel": "チャレンジが流れる一覧です。マウスを重ねるかフォーカスすると止まります。",
     "hoursLost": "週{n}時間の負担",
     "howKicker": "しくみ",
-    "howTitle": "初日までに整える、6つの準備",
-    "howLead": "ビルダーは最初の1時間から、本物の課題・本物のデータ・本物の担当者と向き合えます。",
+    "howTitle": "ハッカソンの下ごしらえ役",
+    "howLead": "初日までに、6つの準備を整えます。ビルダーは最初の1時間から、本物の課題・本物のデータ・本物の担当者と向き合えます。",
     "ws1Title": "課題の発見",
     "ws1": "短い音声インタビューで、お店の困りごとを明確な課題書にまとめます。",
     "ws2Title": "データと背景",
@@ -48,7 +49,7 @@
     "ws4Title": "会場",
     "ws4": "課題の近くで使える場所の候補を挙げ、担当者がすぐ予約できるようにします。",
     "ws5Title": "助成金・協賛",
-    "ws5": "使える助成金や協賛先を、応募条件とあわせてご提案します。",
+    "ws5": "公式データ（jGrants）から、各チャレンジに使える募集中の補助金を締切・金額つきでマッチング。応募資格の確認はGrantlineへおつなぎします。",
     "ws6Title": "チーム",
     "ws6": "スキルをもとにビルダーを組み合わせます。各チームのリーダーが、納品後90日間サポートします。",
     "howApproval": "下調べはAIが担い、ひとつひとつの成果物はまちの担当者が承認します。",
@@ -86,7 +87,8 @@
     "closingBody": "お店の困りごとを相談するのも、あなたのまちで始めるのも、ここからです。",
     "openSource": "MITライセンスのオープンソースです。",
     "anyTown": "どのまちでも運用できます。",
-    "github": "GitHubで見る"
+    "github": "GitHubで見る",
+    "ws5Link": "募集中の助成金を見る →"
   },
   "onboarding": { "title": "はじめに、あなたの立場を選んでください", "business": "事業者として相談したい", "student": "学生としてチャレンジしたい", "skills": "得意なこと（学生のみ・複数選択可）", "continue": "はじめる", "hostNote": "自治体の担当者（ホスト）は管理者が登録します。" },
   "interview": {

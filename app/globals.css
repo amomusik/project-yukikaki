@@ -95,32 +95,75 @@ body {
 }
 
 /* ── Snow ────────────────────────────────────────────────────────────── */
-/* Layers of soft dots drifting down. Decorative only (aria-hidden in markup). */
+/* Layers of soft flakes drifting down. Decorative only (aria-hidden in markup).
+ * Each layer falls exactly one tile height per cycle (--yk-tile) so the loop is seamless;
+ * a slow sideways sway on the whole layer gives drift without a horizontal jump. */
 .yk-snow {
+  --yk-tile: 320px;
   position: absolute;
-  inset: 0;
+  inset: 0 -32px;
   pointer-events: none;
   background-image:
-    radial-gradient(2px 2px at 20px 30px, rgb(255 255 255 / 0.9), transparent 70%),
-    radial-gradient(1.5px 1.5px at 90px 120px, rgb(255 255 255 / 0.75), transparent 70%),
-    radial-gradient(2.5px 2.5px at 160px 60px, rgb(255 255 255 / 0.85), transparent 70%),
-    radial-gradient(1.5px 1.5px at 230px 190px, rgb(255 255 255 / 0.6), transparent 70%),
-    radial-gradient(2px 2px at 300px 250px, rgb(255 255 255 / 0.8), transparent 70%);
-  background-size: 320px 320px;
-  animation: yk-snowfall 28s linear infinite;
+    radial-gradient(circle at 20px 30px, rgb(255 255 255 / 0.95) 2.5px, transparent 3.5px),
+    radial-gradient(circle at 90px 120px, rgb(255 255 255 / 0.8) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 160px 60px, rgb(255 255 255 / 0.9) 3.5px, transparent 4.5px),
+    radial-gradient(circle at 230px 190px, rgb(255 255 255 / 0.7) 2px, transparent 3px),
+    radial-gradient(circle at 300px 250px, rgb(255 255 255 / 0.85) 3px, transparent 4px);
+  background-size: var(--yk-tile) var(--yk-tile);
+  animation:
+    yk-snowfall 26s linear infinite,
+    yk-snowsway 11s ease-in-out infinite alternate;
+  opacity: 0.7;
+}
+/* Distant: tiny and quick-looking, but slow and faint. */
+.yk-snow--far {
+  --yk-tile: 180px;
+  background-image:
+    radial-gradient(circle at 20px 30px, rgb(255 255 255 / 0.9) 1px, transparent 2px),
+    radial-gradient(circle at 70px 120px, rgb(255 255 255 / 0.75) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 120px 60px, rgb(255 255 255 / 0.85) 1px, transparent 2px),
+    radial-gradient(circle at 150px 160px, rgb(255 255 255 / 0.6) 1.5px, transparent 2.5px),
+    radial-gradient(circle at 40px 150px, rgb(255 255 255 / 0.8) 1px, transparent 2px);
+  animation-duration: 44s, 15s;
+  opacity: 0.4;
+}
+/* Big, soft flakes: a few sparse ones near the camera, slower than the rest. */
+.yk-snow--big {
+  --yk-tile: 560px;
+  background-image:
+    radial-gradient(circle at 60px 80px, rgb(255 255 255 / 0.95) 5px, transparent 7px),
+    radial-gradient(circle at 330px 260px, rgb(255 255 255 / 0.85) 6px, transparent 8.5px),
+    radial-gradient(circle at 480px 470px, rgb(255 255 255 / 0.9) 4.5px, transparent 6.5px),
+    radial-gradient(circle at 200px 420px, rgb(255 255 255 / 0.8) 5.5px, transparent 7.5px),
+    radial-gradient(circle at 520px 120px, rgb(255 255 255 / 0.85) 4px, transparent 6px);
+  animation-duration: 48s, 13s;
   opacity: 0.6;
 }
-.yk-snow--far {
-  background-size: 180px 180px;
-  animation-duration: 46s;
-  opacity: 0.3;
+.yk-snow--near {
+  --yk-tile: 900px;
+  background-image:
+    radial-gradient(circle at 140px 200px, rgb(255 255 255 / 0.9) 8px, transparent 12px),
+    radial-gradient(circle at 690px 620px, rgb(255 255 255 / 0.8) 9px, transparent 13px),
+    radial-gradient(circle at 820px 90px, rgb(255 255 255 / 0.75) 7px, transparent 11px),
+    radial-gradient(circle at 380px 780px, rgb(255 255 255 / 0.7) 8px, transparent 12px);
+  filter: blur(2.5px);
+  animation-duration: 70s, 17s;
+  opacity: 0.38;
 }
 @keyframes yk-snowfall {
   from {
-    background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+    background-position: 0 0;
   }
   to {
-    background-position: 40px 320px, -30px 320px, 20px 320px, -20px 320px, 30px 320px;
+    background-position: 0 var(--yk-tile);
+  }
+}
+@keyframes yk-snowsway {
+  from {
+    transform: translateX(-14px);
+  }
+  to {
+    transform: translateX(14px);
   }
 }
 
