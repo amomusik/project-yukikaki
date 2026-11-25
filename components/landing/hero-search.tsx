@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
+import { ShovelKid } from "@/components/mascot";
 import { cityLabel, industryLabel } from "./labels";
 
 type Suggestion = {
@@ -136,8 +137,8 @@ export function HeroSearch({ locale }: { locale: "en" | "ja" }) {
         <label htmlFor="hero-search" className="sr-only">
           {t("searchLabel")}
         </label>
-        <div className="group flex items-center gap-2 rounded-2xl bg-surface p-2 shadow-[0_20px_60px_-20px_rgb(0_0_0/0.55)] ring-1 ring-white/30 transition focus-within:ring-4 focus-within:ring-lantern/50">
-          <svg aria-hidden viewBox="0 0 24 24" className="ml-3 h-6 w-6 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <div className="yk-sweep group flex items-center gap-2 rounded-2xl bg-white p-2 text-[#0f1d2c] shadow-[0_20px_60px_-20px_rgb(0_0_0/0.55)] ring-1 ring-white/30 transition focus-within:ring-4 focus-within:ring-lantern/50">
+          <svg aria-hidden viewBox="0 0 24 24" className="ml-3 h-6 w-6 shrink-0 text-[#52667b]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="7" />
             <path d="M20 20l-3.5-3.5" />
           </svg>
@@ -162,7 +163,7 @@ export function HeroSearch({ locale }: { locale: "en" | "ja" }) {
             aria-autocomplete="list"
             aria-activedescendant={showList && active >= 0 ? `${listId}-${active}` : undefined}
             aria-describedby={statusId}
-            className="min-w-0 flex-1 bg-transparent py-3 text-base text-ink placeholder:text-muted/80 focus:outline-none focus-visible:outline-none sm:text-lg [&::-webkit-search-cancel-button]:hidden"
+            className="min-w-0 flex-1 bg-transparent py-3 text-base text-[#0f1d2c] placeholder:text-[#5b6f84] focus:outline-none focus-visible:outline-none sm:text-lg [&::-webkit-search-cancel-button]:hidden"
           />
           <button
             type="submit"
@@ -216,7 +217,12 @@ export function HeroSearch({ locale }: { locale: "en" | "ja" }) {
             </li>
           ))}
         </ul>
-        {state !== "ready" || optionCount === 0 ? (
+        {state === "ready" && optionCount === 0 ? (
+          <div className="flex items-center gap-3 px-4 py-3">
+            <ShovelKid className="h-14 w-16 shrink-0" />
+            <p className="text-sm text-muted">{statusText}</p>
+          </div>
+        ) : state !== "ready" ? (
           <p className="px-4 py-3 text-sm text-muted">{statusText}</p>
         ) : null}
         {query && (

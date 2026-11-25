@@ -7,6 +7,8 @@ import { listTestimonials, type Testimonial } from "@/lib/testimonials";
 import { ChallengeMarquee, type MarqueeChallenge } from "@/components/landing/challenge-marquee";
 import { HeroSearch } from "@/components/landing/hero-search";
 import { cityLabel, industryLabel } from "@/components/landing/labels";
+import { CountUp } from "@/components/landing/count-up";
+import { HeroArt } from "@/components/landing/hero-art";
 import { PathDivider, SnowbankEdge } from "@/components/landing/path-divider";
 
 export const dynamic = "force-dynamic";
@@ -78,32 +80,63 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
 
   return (
     <div className="-mt-10 -mb-10">
-      {/* ── HERO: night snowfall, one search box ───────────────────────── */}
-      <section className={`${fullBleed} overflow-hidden bg-night text-white`}>
-        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(91_141_180/0.35),transparent_60%),radial-gradient(ellipse_at_bottom_right,rgb(233_162_59/0.12),transparent_55%)]" />
+      {/* ── HERO: wordmark, one search box, paper-cut dusk scene ─────── */}
+      {/* The hero navy matches the illustration's sky (#041329) so the two meet without a seam. */}
+      <section className={`${fullBleed} overflow-hidden bg-[#041329] text-white sm:min-h-[calc(56.14vw+3rem)]`}>
+        {/* Illustration anchored to the bottom; its sky fades into the hero navy. */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0">
+          <HeroArt
+            alt={t("heroAlt")}
+            className="block h-[260px] w-full object-cover object-[62%_100%] sm:h-auto sm:object-bottom"
+          />
+          <div aria-hidden className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-[#041329] to-transparent" />
+          {/* Soften the illustration's bottom snow into the page snow. */}
+          <div aria-hidden className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-b from-transparent to-snow/80 sm:h-16" />
+        </div>
+        <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(91_141_180/0.22),transparent_55%)]" />
         <div aria-hidden className="yk-snow yk-snow--far" />
         <div aria-hidden className="yk-snow" />
-        <div className="relative mx-auto max-w-4xl px-4 pb-16 pt-16 text-center sm:px-6 sm:pb-20 sm:pt-24">
-          <p lang="ja" className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium tracking-[0.2em] text-sky-100/90">
-            <span className="h-1.5 w-1.5 rounded-full bg-lantern" />
-            {t("kicker")}
-          </p>
-          <h1 className="text-balance text-4xl font-bold leading-[1.15] tracking-tight sm:text-6xl">{t("title")}</h1>
-          <p className="yk-phrase mx-auto mt-5 max-w-2xl text-balance text-lg text-sky-100 sm:text-2xl">{t("subtitle")}</p>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty text-sm leading-relaxed text-slate-300 sm:text-base">{t("needs")}</p>
+        {/* Soft scrim so the text keeps AA contrast wherever it meets the scene. */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(ellipse_60%_70%_at_50%_35%,rgb(4_12_26/0.55),transparent_75%)] sm:h-[62%]" />
 
-          <div className="mt-10">
+        <div className="relative mx-auto max-w-4xl px-4 pb-[200px] pt-8 text-center sm:px-6 sm:pb-[23vw] sm:pt-10">
+          <div className="flex flex-col items-center">
+            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-sky-100/80 sm:text-sm">
+              <span>{t("eyebrow")}</span>
+              <span aria-hidden className="h-px w-8 bg-sky-100/40" />
+              <span lang="ja" className="font-[family-name:var(--font-mincho)] text-base normal-case tracking-[0.3em] text-white sm:text-xl">
+                雪かき
+              </span>
+            </p>
+            <h1 aria-label={t("wordmarkLabel")} className="yk-wordmark relative mt-2 text-white sm:mt-3">
+              <span aria-hidden>Yukikaki</span>
+              <svg aria-hidden viewBox="0 0 400 24" preserveAspectRatio="none" className="absolute -bottom-[0.14em] left-[2%] h-[0.16em] w-[96%]" fill="none">
+                <defs>
+                  <linearGradient id="yk-stroke" x1="0" x2="1">
+                    <stop offset="0" stopColor="#a9c8de" stopOpacity="0.15" />
+                    <stop offset="0.45" stopColor="#a9c8de" stopOpacity="0.85" />
+                    <stop offset="1" stopColor="#e9a23b" />
+                  </linearGradient>
+                </defs>
+                <path d="M4 16 C 90 6, 230 4, 396 12" stroke="url(#yk-stroke)" strokeWidth="7" strokeLinecap="round" />
+              </svg>
+            </h1>
+          </div>
+          <h2 className="mt-7 text-balance text-2xl font-bold leading-tight tracking-tight sm:mt-9 sm:text-4xl">{t("title")}</h2>
+          <p className="yk-phrase mx-auto mt-3 max-w-2xl text-balance text-base text-sky-100 sm:text-xl">{t("subtitle")}</p>
+
+          <div className="mt-7 sm:mt-8">
             <HeroSearch locale={lang} />
           </div>
 
           {(facets.skills.length > 0 || facets.cities.length > 0) && (
-            <div className="mx-auto mt-5 flex max-w-2xl flex-wrap items-center justify-center gap-2 text-sm">
-              <span className="mr-1 text-slate-400">{t("quickFilters")}:</span>
+            <div className="mx-auto mt-4 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-sm">
+              <span className="mr-1 text-slate-300">{t("quickFilters")}:</span>
               {facets.skills.map((s) => (
                 <Link
                   key={`s-${s}`}
                   href={{ pathname: "/challenges", query: { skill: s } }}
-                  className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-sky-50 transition hover:border-lantern hover:bg-white/10"
+                  className="rounded-full border border-white/20 bg-night/60 px-3 py-1 text-sky-50 backdrop-blur-sm transition hover:border-lantern hover:bg-white/10"
                 >
                   {tc.has(`skills.${s}`) ? tc(`skills.${s}`) : s}
                 </Link>
@@ -112,7 +145,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
                 <Link
                   key={`c-${c}`}
                   href={{ pathname: "/challenges", query: { city: c } }}
-                  className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-sky-50 transition hover:border-lantern hover:bg-white/10"
+                  className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-night/60 px-3 py-1 text-sky-50 backdrop-blur-sm transition hover:border-lantern hover:bg-white/10"
                 >
                   <span aria-hidden className="text-xs">📍</span>
                   {cityLabel(c, lang)}
@@ -121,24 +154,28 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
             </div>
           )}
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/interview"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-night transition hover:bg-sky-50"
+              className="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-2 text-sm font-semibold text-night transition hover:bg-sky-50"
             >
               {t("ctaProblem")} <span aria-hidden>→</span>
             </Link>
             <Link
               href="/admin"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-night/50 px-5 py-2 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white hover:bg-white/10"
             >
               {t("ctaTowns")}
             </Link>
           </div>
-          <p className="mx-auto mt-10 max-w-xl text-pretty text-sm text-slate-400">{t("lead")}</p>
         </div>
-        <SnowbankEdge className="relative" />
+        <SnowbankEdge className="absolute inset-x-0 bottom-0 h-8 sm:h-20" />
       </section>
+
+      <div className="mx-auto mt-10 max-w-2xl text-pretty text-center">
+        <p className="text-base leading-relaxed text-ink sm:text-lg">{t("needs")}</p>
+        <p className="mt-3 text-sm text-muted">{t("lead")}</p>
+      </div>
 
       {/* ── SCROLLING CHALLENGES ─────────────────────────────────────── */}
       {challenges.length > 0 && (
@@ -162,7 +199,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
         <div className="yk-snow-texture relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-10 text-center sm:px-10">
           <p className="text-sm font-medium text-muted">{t("statLabel")}</p>
           <p className="mt-3 text-6xl font-bold tracking-tight text-ink sm:text-7xl" data-testid="hours-saved">
-            {hours}
+            <CountUp value={hours} />
             <span className="ml-2 text-xl font-medium text-muted sm:text-2xl">{t("statUnit")}</span>
           </p>
           <p className="mt-3 text-xs text-muted">{t("statNote")}</p>

@@ -2,6 +2,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { SEARCH_MAX_LENGTH, challengeFacets, listChallenges } from "@/lib/queries";
 import { GroundingBadge, StatusBadge } from "@/components/badges";
+import { ShovelKid } from "@/components/mascot";
 import { Badge, Card, Empty, Input, PageHeader, Select, buttonClass } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -71,11 +72,12 @@ export default async function ChallengesPage({
       {rows.length === 0 ? (
         filtered ? (
           <Empty>
+            <ShovelKid className="mx-auto mb-3 block h-28 w-32" />
             <span className="block font-medium text-slate-700 dark:text-slate-300">
               {filters.q ? t("noResultsFor", { q: filters.q }) : t("noResults")}
             </span>
             <span className="mt-1 block">{t("noResultsHint")}</span>
-            <span className="mt-4 flex justify-center gap-4">
+            <span className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-2">
               {filters.q && (
                 <Link href={clearSearch} className="font-medium text-sky-700 hover:underline dark:text-sky-400">
                   {t("clearSearch")}
@@ -85,9 +87,25 @@ export default async function ChallengesPage({
                 {t("clearAll")}
               </Link>
             </span>
+            <Link
+              href="/interview"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-lantern px-5 py-2 font-semibold text-lantern-ink transition hover:bg-lantern-hover"
+            >
+              {t("emptyTitle")} <span aria-hidden>→</span>
+            </Link>
           </Empty>
         ) : (
-          <Empty>{t("empty")}</Empty>
+          <div className="rounded-3xl border border-dashed border-ice-strong bg-surface px-6 py-12 text-center">
+            <ShovelKid className="mx-auto h-32 w-36" />
+            <h2 className="mt-4 text-xl font-bold text-ink">{t("emptyTitle")}</h2>
+            <p className="mx-auto mt-2 max-w-md text-sm text-muted">{t("emptyBody")}</p>
+            <Link
+              href="/interview"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-lantern px-5 py-2.5 font-semibold text-lantern-ink transition hover:bg-lantern-hover"
+            >
+              {t("emptyCta")} <span aria-hidden>→</span>
+            </Link>
+          </div>
         )
       ) : (
         <div className="grid gap-4 md:grid-cols-2">

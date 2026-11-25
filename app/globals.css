@@ -59,6 +59,7 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
   --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", system-ui, sans-serif;
+  --font-mincho: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", "Shippori Mincho", serif;
 }
 
 html {
@@ -157,6 +158,108 @@ body {
   }
 }
 
+/* ── Wordmark ────────────────────────────────────────────────────────── */
+.yk-wordmark {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+/* ── Hero search: one quick "shovel sweep" across the box on focus ──── */
+.yk-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.yk-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 0%, rgb(233 162 59 / 0) 30%, rgb(233 162 59 / 0.28) 46%, rgb(255 255 255 / 0.65) 50%, rgb(169 200 222 / 0.3) 56%, transparent 72%);
+  transform: translateX(-110%);
+  opacity: 0;
+}
+/* The box's lantern ring already marks focus; skip the global outline on the bare input. */
+.yk-sweep input:focus-visible {
+  outline: none;
+}
+.yk-sweep:focus-within::after {
+  animation: yk-sweep 0.75s cubic-bezier(0.3, 0.7, 0.4, 1) 1;
+}
+@keyframes yk-sweep {
+  0% {
+    transform: translateX(-110%);
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+}
+
+/* ── Path divider: sweeps itself in once it scrolls into view ───────── */
+.yk-draw[data-armed] .yk-draw__svg {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.6s cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+.yk-draw[data-armed] .yk-draw__lantern {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.4);
+  transition: opacity 0.5s ease 1.35s, transform 0.5s ease 1.35s;
+}
+.yk-draw[data-armed][data-inview] .yk-draw__svg {
+  clip-path: inset(0 0 0 0);
+}
+.yk-draw[data-armed][data-inview] .yk-draw__lantern {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* ── Easter egg flurry (header 雪 mark) ─────────────────────────────── */
+.yk-flurry {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+}
+.yk-flurry > span {
+  position: absolute;
+  top: -12px;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(169 200 222 / 0.7), 0 0 8px rgb(169 200 222 / 0.6);
+  opacity: 0;
+  animation-name: yk-flurry;
+  animation-timing-function: cubic-bezier(0.35, 0.1, 0.6, 1);
+  animation-fill-mode: forwards;
+}
+@keyframes yk-flurry {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.95;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(var(--yk-drift, 0), 70vh);
+    opacity: 0;
+  }
+}
+
+/* ── Paper-cut mascot ───────────────────────────────────────────────── */
+.yk-mascot__cut {
+  filter: drop-shadow(0 2px 0 rgb(15 29 44 / 0.18));
+}
+
 /* ── Respect reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -179,6 +282,22 @@ body {
   /* The duplicate half and the second row only exist to loop the animation. */
   .yk-marquee__dup,
   .yk-marquee--reverse {
+    display: none;
+  }
+  .yk-sweep:focus-within::after {
+    animation: none;
+  }
+  .yk-draw[data-armed] .yk-draw__svg,
+  .yk-draw[data-armed] .yk-draw__lantern {
+    clip-path: none;
+    opacity: 1;
+    transform: translateY(-50%);
+    transition: none;
+  }
+  .yk-draw[data-armed] .yk-draw__svg {
+    transform: none;
+  }
+  .yk-flurry {
     display: none;
   }
 }

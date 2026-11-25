@@ -69,6 +69,12 @@ export default async function LocaleLayout({
                   </a>
                 </div>
               </div>
+              <p
+                aria-hidden
+                className="relative -mb-[0.18em] select-none overflow-hidden whitespace-nowrap px-4 text-center text-[clamp(2.75rem,11.5vw,11rem)] font-extrabold leading-none tracking-[-0.045em] text-white/[0.07]"
+              >
+                Yukikaki <span lang="ja" className="font-[family-name:var(--font-mincho)] tracking-[0.05em]">雪かき</span>
+              </p>
             </footer>
           </NextIntlClientProvider>
         </body>

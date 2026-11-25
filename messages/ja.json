@@ -1,5 +1,5 @@
 {
-  "meta": { "title": "Project Yukikaki（雪かき）— ビルダーが来る前に、道をひらく。", "description": "足りないのはビルダーではなく、ビルダーが来る前の準備です。定義された課題、それを裏づけるデータ、決める立場の人たちの合意、会場、資金、そして最適なチーム。Project Yukikakiがその道をひらきます。" },
+  "meta": { "title": "雪かき Yukikaki — ビルダーが来る前に、道をひらく。", "description": "足りないのはビルダーではなく、ビルダーが来る前の準備です。定義された課題、それを裏づけるデータ、決める立場の人たちの合意、会場、資金、そして最適なチーム。Project Yukikakiがその道をひらきます。" },
   "nav": { "challenges": "チャレンジ", "interview": "相談する", "me": "マイページ", "admin": "管理", "graph": "グラフ", "signIn": "ログイン", "language": "English", "switchLanguage": "Switch to English", "brand": "Project Yukikaki", "tagline": "ビルダーが来る前に、道をひらく。", "home": "Project Yukikaki ホーム", "openMenu": "メニューを開く", "closeMenu": "メニューを閉じる" },
   "common": { "synthetic": "合成データ", "back": "戻る", "save": "保存", "submit": "送信", "cancel": "キャンセル", "none": "なし", "loading": "読み込み中…", "hoursPerWeek": "時間/週", "demoNotice": "デモ用の合成データを含みます", "demoData": "デモデータ", "skills": {"ai-automation": "AI自動化", "spreadsheets": "スプレッドシート", "line-bot": "LINEボット", "booking-automation": "予約の自動化", "email-automation": "メール対応の自動化", "inventory": "在庫管理", "bookkeeping": "経理・帳簿", "social-media": "SNS運用", "translation": "翻訳", "paperwork-automation": "書類作成の自動化", "web": "ウェブ", "data-analysis": "データ分析"} },
   "status": { "draft": "下書き", "enriching": "調査中", "in_review": "審査待ち", "approved": "公開中", "rejected": "差し戻し", "in_progress": "進行中", "delivered": "納品済み", "evaluated": "評価済み", "pending": "審査待ち" },
@@ -7,6 +7,10 @@
   "ai": { "approve": "AI推奨: 承認", "revise": "AI推奨: 修正", "reject": "AI推奨: 却下", "unavailable": "AI審査なし", "score": "スコア", "pii": "個人情報の可能性あり" },
   "landing": {
     "kicker": "雪かき · Yukikaki",
+    "eyebrow": "Project",
+    "wordmarkLabel": "Project Yukikaki",
+    "heroAlt": "雪の小道をかく子どもと、ビルダーたちが集まる明かりの灯った建物。",
+    "mascotEmpty": "まだ何もありません。困りごとを持ってきませんか？",
     "lead": "北海道の冬は、誰かが先に雪をかいて、みんなが通れる道をつくります。私たちは、つくる人たちのためにその役目を担います。",
     "title": "ボトルネックは、ビルダーではありません。",
     "subtitle": "足りないのは、ビルダーが来る前の準備です。",
@@ -114,7 +118,7 @@
     "sensSynthetic": "合成データならOK",
     "submit": "送信する"
   },
-  "challenges": { "title": "チャレンジ一覧", "subtitle": "まちの担当者が承認した、本物のお店の課題です。", "filterCity": "市区町村", "filterIndustry": "業種", "filterSkill": "スキル", "all": "すべて", "empty": "まだチャレンジがありません。", "hours": "{n}時間/週の手間", "formTeam": "チームを組んで挑戦する", "data": "データと根拠", "graph": "つながり", "builders": "おすすめの学生", "noBuilders": "スキルが合う学生はまだいません。", "skills": "必要なスキル", "tools": "今の道具", "problem": "困りごと", "currentProcess": "現状", "desiredOutcome": "目指す姿", "download": "ダウンロード", "groundedOn": "根拠", "teams": "挑戦中のチーム", "searchLabel": "チャレンジを検索", "searchPlaceholder": "キーワード・地域・業種・スキルで検索（例：札幌 除雪）", "searchButton": "検索", "resultsCount": "{count}件のチャレンジ", "resultsFor": "「{q}」の検索結果：{count}件", "noResults": "条件に合うチャレンジは見つかりませんでした。", "noResultsFor": "「{q}」に一致するチャレンジは見つかりませんでした。", "noResultsHint": "言葉を減らすか、別の言葉や英語でも試してみてください。", "clearSearch": "検索をクリア", "clearAll": "すべての条件をクリア" },
+  "challenges": { "title": "チャレンジ一覧", "subtitle": "まちの担当者が承認した、本物のお店の課題です。", "filterCity": "市区町村", "filterIndustry": "業種", "filterSkill": "スキル", "all": "すべて", "empty": "まだチャレンジがありません。", "hours": "{n}時間/週の手間", "formTeam": "チームを組んで挑戦する", "data": "データと根拠", "graph": "つながり", "builders": "おすすめの学生", "noBuilders": "スキルが合う学生はまだいません。", "skills": "必要なスキル", "tools": "今の道具", "problem": "困りごと", "currentProcess": "現状", "desiredOutcome": "目指す姿", "download": "ダウンロード", "groundedOn": "根拠", "teams": "挑戦中のチーム", "searchLabel": "チャレンジを検索", "searchPlaceholder": "キーワード・地域・業種・スキルで検索（例：札幌 除雪）", "searchButton": "検索", "resultsCount": "{count}件のチャレンジ", "resultsFor": "「{q}」の検索結果：{count}件", "noResults": "条件に合うチャレンジは見つかりませんでした。", "noResultsFor": "「{q}」に一致するチャレンジは見つかりませんでした。", "noResultsHint": "言葉を減らすか、別の言葉や英語でも試してみてください。", "clearSearch": "検索をクリア", "clearAll": "すべての条件をクリア", "emptyTitle": "まだ何もありません。困りごとを持ってきませんか？", "emptyBody": "どのチャレンジも、お店の毎日の「困った」から始まります。お話を聞かせてください。道は私たちがひらきます。", "emptyCta": "困りごとを相談する" },
   "teams": { "newTitle": "チームを作る", "name": "チーム名", "pitch": "どう解決するか（提案）", "invite": "メンバーのメール（カンマ区切り・登録済みの学生）", "leadNote": "あなたがリーダーになります。リーダーは事業者の窓口です。", "create": "チームを作成", "unknown": "見つからなかったメール: {emails}", "lead": "リーダー", "member": "メンバー", "transfer": "リーダーを交代", "transferTo": "新しいリーダー", "deliver": "納品する", "deliverTitle": "納品報告", "summaryJa": "納品内容（日本語）", "summaryEn": "納品内容（英語・任意）", "links": "リンク（1行に1つ）", "handover": "引き継ぎメモ（使い方、困ったときの連絡方法）", "submitDelivery": "納品を報告する", "supportUntil": "サポート期限: {date}", "onlyLead": "納品報告はリーダーのみ行えます。", "status": "状態" },
   "me": { "title": "マイページ", "myBriefs": "わたしの相談", "myTeams": "わたしのチーム", "empty": "まだありません。", "newInterview": "新しく相談する", "support": "困ったらこちら", "supportContact": "担当リーダー: {name}（{email}）・{date}までサポート", "browse": "チャレンジを探す" },
   "admin": {
@@ -154,5 +158,6 @@
     "unknown": "未使用"
   },
   "feedback": { "title": "導入したツールの効果を教えてください", "subtitle": "3分ほどで終わります。音声で答えることもできます。", "hours": "毎週どのくらい時間が浮きましたか？", "satisfaction": "満足度（1〜5）", "stillInUse": "今も使っていますか？", "wouldRecommend": "他のお店にもすすめたいですか？", "issues": "困っていること・改善してほしいこと", "yes": "はい", "no": "いいえ", "voice": "音声で答える（任意・3分）", "voiceDone": "音声の回答を受け付けました。フォームも送信してください。", "submit": "回答を送信", "thanks": "ご回答ありがとうございました！", "invalid": "このリンクは無効です。", "expired": "このリンクは有効期限が切れています。", "used": "このアンケートは回答済みです。" },
-  "errors": { "generic": "エラーが発生しました。もう一度お試しください。" }
+  "errors": { "generic": "エラーが発生しました。もう一度お試しください。" },
+  "notFound": { "kicker": "404", "title": "この道は、まだ雪かきされていません。", "body": "お探しのページは見つかりませんでした。雪に埋もれてしまったのかもしれません。", "home": "ホームに戻る", "challenges": "チャレンジを見る" }
 }

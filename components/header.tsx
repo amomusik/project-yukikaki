@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ensureUser } from "@/lib/auth";
 import { MobileNav, type NavItem } from "./landing/mobile-nav";
-import { YukikakiMark } from "./landing/mark";
+import { MarkFlurry } from "./landing/mark-flurry";
 import { LocaleToggle } from "./locale-toggle";
 
 export async function Header({ locale }: { locale: string }) {
@@ -22,11 +22,14 @@ export async function Header({ locale }: { locale: string }) {
     <header className="sticky top-0 z-40 border-b border-line bg-snow/85 backdrop-blur-md supports-[backdrop-filter]:bg-snow/70">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5 sm:px-6">
         <Link href="/" aria-label={t("home")} className="group mr-2 flex min-w-0 items-center gap-3 rounded-lg">
-          <YukikakiMark className="h-9 w-9 shrink-0" />
+          <MarkFlurry className="h-9 w-9 shrink-0" />
           <span className="min-w-0 leading-tight">
             <span className="flex items-baseline gap-2">
-              <span className="truncate text-[15px] font-bold tracking-tight text-ink">{t("brand")}</span>
-              <span lang="ja" className="hidden text-xs font-medium tracking-[0.2em] text-frost sm:inline">
+              <span className="truncate text-ink">
+                <span className="mr-1 text-xs font-medium tracking-wide text-muted">Project</span>
+                <span className="text-xl font-extrabold tracking-[-0.03em]">Yukikaki</span>
+              </span>
+              <span lang="ja" className="hidden font-[family-name:var(--font-mincho)] text-sm font-semibold tracking-[0.18em] text-frost sm:inline">
                 雪かき
               </span>
             </span>
