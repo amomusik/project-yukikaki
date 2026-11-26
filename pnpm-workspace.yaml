@@ -1,0 +1,5 @@
+# pnpm 11+ ignores the "pnpm" field in package.json; build-script approvals live here.
+allowBuilds:
+  esbuild: true
+  "@swc/core": true
+  "@parcel/watcher": true

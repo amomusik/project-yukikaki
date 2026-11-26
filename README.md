@@ -1,12 +1,10 @@
-# Yukikaki 雪かき
+# Yukikaki 雪かき — AI-native hackathons for Sapporo and beyond.
 
-### AI-native hackathons for Sapporo and beyond.
+**We accelerate local ideas into reality.**
 
-**From idea to working prototype — fast.**
+*Your test kitchen for hackathons.* · Peatix or Luma for hackathons, with the prep done and the funding found.
 
-*Your test kitchen for hackathons.* · Like Peatix or Luma — but for hackathons, with the prep done and the funding found.
-
-**English** · [日本語](#日本語)
+**English** · [日本語](#日本語) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Next.js 15](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org)
@@ -330,9 +328,9 @@ Powered by [ElevenLabs](https://elevenlabs.io) · [Linkup](https://www.linkup.so
 
 ### 札幌から全国へ、AIネイティブなハッカソンを。
 
-**アイデアを、すばやく現実に。**
+**まちのアイデアを、すばやく現実に。**
 
-*ハッカソンのための、まちのテストキッチン。* · ハッカソン版の Peatix／Luma。準備も、資金探しも、まとめて。
+*ハッカソンのための、まちのテストキッチン。* · ハッカソン版の Peatix／Luma。準備も資金探しもまとめて。
 
 <img src="docs/screenshots/landing-ja-mobile.jpg" alt="スマートフォンで表示した日本語のトップページ" width="280">
 
