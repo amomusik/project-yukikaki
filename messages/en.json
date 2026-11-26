@@ -88,7 +88,10 @@
     "openSource": "MIT-licensed open source.",
     "anyTown": "Any town can run it.",
     "github": "View on GitHub",
-    "ws5Link": "See open grants →"
+    "ws5Link": "See open grants →",
+    "actionBarLabel": "Quick actions",
+    "actionBarSearch": "Search challenges",
+    "actionBarProblem": "Bring a problem"
   },
   "onboarding": { "title": "First, tell us who you are", "business": "I run a business and need help", "student": "I'm a student who wants a challenge", "skills": "Your skills (students only, pick any)", "continue": "Continue", "hostNote": "Town hosts are added by the administrator." },
   "interview": {

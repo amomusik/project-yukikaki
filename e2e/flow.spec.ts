@@ -41,6 +41,12 @@ test("landing renders in both languages; / defaults to English", async ({ page }
   await expect(page.getByRole("heading", { level: 2, name: "Builders are not the bottleneck." })).toBeVisible();
   await expect(page.getByRole("banner")).toContainText("We clear the path before the builders arrive.");
   await expect(page.getByRole("combobox", { name: "Search challenges" })).toBeVisible();
+  // The 8-bit scene is the default hero; ?hero=paper still opts into the paper-cut art.
+  await expect(page.locator("section[data-hero]")).toHaveAttribute("data-hero", "pixel");
+  await expect(page.locator("section[data-hero] img")).toHaveAttribute("src", /hero-pixel/);
+  await page.goto("/en?hero=paper");
+  await expect(page.locator("section[data-hero]")).toHaveAttribute("data-hero", "papercut");
+  await expect(page.locator("section[data-hero] img")).toHaveAttribute("src", /hero-yukikaki/);
   await page.goto("/ja");
   await expect(page).toHaveTitle("雪かき Yukikaki — ビルダーが来る前に、道をひらく。");
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();

@@ -1,15 +1,19 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { enUS, jaJP } from "@clerk/localizations";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/header";
 import { YukikakiMark } from "@/components/landing/mark";
+import { MobileActionBar } from "@/components/landing/mobile-action-bar";
 import { routing } from "@/i18n/routing";
 
 // Every page depends on the signed-in user and live data, so render on request.
 export const dynamic = "force-dynamic";
+
+// viewport-fit=cover exposes env(safe-area-inset-*) so the mobile action bar clears the home indicator.
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -76,6 +80,7 @@ export default async function LocaleLayout({
                 Yukikaki <span lang="ja" className="font-[family-name:var(--font-mincho)] tracking-[0.05em]">雪かき</span>
               </p>
             </footer>
+            <MobileActionBar />
           </NextIntlClientProvider>
         </body>
       </html>

@@ -9,6 +9,7 @@ import { HeroSearch } from "@/components/landing/hero-search";
 import { cityLabel, industryLabel } from "@/components/landing/labels";
 import { CountUp } from "@/components/landing/count-up";
 import { HeroArt } from "@/components/landing/hero-art";
+import { parseHeroVariant } from "@/components/landing/hero-variant";
 import { PathDivider, SnowbankEdge } from "@/components/landing/path-divider";
 
 export const dynamic = "force-dynamic";
@@ -60,8 +61,17 @@ const Kicker = ({ children, tone = "frost" }: { children: React.ReactNode; tone?
 
 const fullBleed = "relative left-1/2 w-screen -translate-x-1/2";
 
-export default async function Landing({ params }: { params: Promise<{ locale: string }> }) {
+export default async function Landing({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ hero?: string | string[] }>;
+}) {
   const { locale } = await params;
+  // The 8-bit "Pixel 1" hero is the default; /{locale}?hero=paper shows the paper-cut art for comparison.
+  const hero = parseHeroVariant((await searchParams).hero);
+  const pixel = hero === "pixel";
   setRequestLocale(locale);
   const lang = locale === "en" ? "en" : "ja";
   const t = await getTranslations("landing");
@@ -80,24 +90,46 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
 
   return (
     <div className="-mt-10 -mb-10">
-      {/* ── HERO: wordmark, one search box, paper-cut dusk scene ─────── */}
-      {/* The hero navy matches the illustration's sky (#041329) so the two meet without a seam. */}
-      <section className={`${fullBleed} overflow-hidden bg-[#041329] text-white sm:min-h-[calc(56.14vw+3rem)]`}>
+      {/* ── HERO: wordmark, one search box, 8-bit snow scene (paper-cut via ?hero=paper) ── */}
+      {/* The hero navy matches the illustration's sky (paper-cut #041329, pixel #041a40; see HERO_SKY)
+          so the two meet without a seam. */}
+      <section
+        data-hero={hero}
+        className={`${fullBleed} overflow-hidden ${pixel ? "bg-[#041a40]" : "bg-[#041329]"} text-white sm:min-h-[calc(56.14vw+3rem)]`}
+      >
         {/* Illustration anchored to the bottom; its sky fades into the hero navy. */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0">
           <HeroArt
             alt={t("heroAlt")}
-            className="block h-[260px] w-full object-cover object-[62%_100%] sm:h-auto sm:object-bottom"
+            variant={hero}
+            className={`block h-[260px] w-full object-cover ${pixel ? "object-[50%_100%]" : "object-[62%_100%]"} sm:h-auto sm:object-bottom`}
           />
-          <div aria-hidden className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-[#041329] to-transparent" />
+          <div
+            aria-hidden
+            className={`absolute inset-x-0 top-0 bg-gradient-to-b to-transparent ${pixel ? "h-[50%] from-[#041a40]" : "h-[40%] from-[#041329]"}`}
+          />
           {/* Soften the illustration's bottom snow into the page snow. */}
-          <div aria-hidden className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-b from-transparent to-snow/80 sm:h-16" />
+          <div
+            aria-hidden
+            className={`absolute inset-x-0 bottom-0 ${pixel ? "h-6" : "h-10"} bg-gradient-to-b from-transparent to-snow/80 sm:h-16`}
+          />
         </div>
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgb(91_141_180/0.22),transparent_55%)]" />
-        <div aria-hidden className="yk-snow yk-snow--far" />
-        <div aria-hidden className="yk-snow" />
-        <div aria-hidden className="yk-snow yk-snow--big" />
-        <div aria-hidden className="yk-snow yk-snow--near" />
+        {pixel ? (
+          <>
+            {/* Chunky square flakes on a stepped, frame-by-frame fall. */}
+            <div aria-hidden className="yk-snow yk-pxsnow yk-pxsnow--far" />
+            <div aria-hidden className="yk-snow yk-pxsnow" />
+            <div aria-hidden className="yk-snow yk-pxsnow yk-pxsnow--near" />
+          </>
+        ) : (
+          <>
+            <div aria-hidden className="yk-snow yk-snow--far" />
+            <div aria-hidden className="yk-snow" />
+            <div aria-hidden className="yk-snow yk-snow--big" />
+            <div aria-hidden className="yk-snow yk-snow--near" />
+          </>
+        )}
         {/* Soft scrim so the text keeps AA contrast wherever it meets the scene. */}
         <div aria-hidden className="absolute inset-x-0 top-0 h-[70%] bg-[radial-gradient(ellipse_60%_70%_at_50%_35%,rgb(4_12_26/0.55),transparent_75%)] sm:h-[62%]" />
 
@@ -110,7 +142,7 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
                 雪かき
               </span>
             </p>
-            <h1 aria-label={t("wordmarkLabel")} className="yk-wordmark relative mt-2 text-white sm:mt-3">
+            <h1 aria-label={t("wordmarkLabel")} className={`yk-wordmark${pixel ? " yk-wordmark--pixel" : ""} relative mt-2 text-white sm:mt-3`}>
               <span aria-hidden>Yukikaki</span>
               <svg aria-hidden viewBox="0 0 400 24" preserveAspectRatio="none" className="absolute -bottom-[0.14em] left-[2%] h-[0.16em] w-[96%]" fill="none">
                 <defs>
@@ -171,7 +203,8 @@ export default async function Landing({ params }: { params: Promise<{ locale: st
             </Link>
           </div>
         </div>
-        <SnowbankEdge className="absolute inset-x-0 bottom-0 h-8 sm:h-20" />
+        {/* On phones the pixel scene's shoveller stands right at the bottom edge; keep the bank low there. */}
+        <SnowbankEdge className={`absolute inset-x-0 bottom-0 ${pixel ? "h-5" : "h-8"} sm:h-20`} />
       </section>
 
       <div className="mx-auto mt-10 max-w-2xl text-pretty text-center">

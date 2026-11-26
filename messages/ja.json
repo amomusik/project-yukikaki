@@ -88,7 +88,10 @@
     "openSource": "MITライセンスのオープンソースです。",
     "anyTown": "どのまちでも運用できます。",
     "github": "GitHubで見る",
-    "ws5Link": "募集中の助成金を見る →"
+    "ws5Link": "募集中の助成金を見る →",
+    "actionBarLabel": "クイックアクション",
+    "actionBarSearch": "チャレンジを探す",
+    "actionBarProblem": "困りごとを相談"
   },
   "onboarding": { "title": "はじめに、あなたの立場を選んでください", "business": "事業者として相談したい", "student": "学生としてチャレンジしたい", "skills": "得意なこと（学生のみ・複数選択可）", "continue": "はじめる", "hostNote": "自治体の担当者（ホスト）は管理者が登録します。" },
   "interview": {
