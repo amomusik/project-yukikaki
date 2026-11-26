@@ -221,6 +221,15 @@ export default async function Landing({
             </Link>
           </div>
         </div>
+        {testimonials[0] && (
+          <figure className="absolute bottom-[12%] right-4 z-10 hidden max-w-xs rounded-2xl border border-white/20 bg-night/70 p-4 text-left text-white shadow-xl backdrop-blur-md lg:block xl:right-10">
+            <blockquote lang={hasJapanese(testimonials[0].quote) ? "ja" : undefined} className="text-sm leading-relaxed">“{testimonials[0].quote}”</blockquote>
+            <figcaption className="mt-2 text-xs text-sky-100/80">
+              — {testimonials[0].businessName} · {cityLabel(testimonials[0].city, lang)} · <span className="text-lantern">{"★".repeat(testimonials[0].satisfaction)}</span>
+              {testimonials[0].isDemo && <span className="ml-1 opacity-70">({tc("demoData")})</span>}
+            </figcaption>
+          </figure>
+        )}
         {/* On phones the pixel scene's shoveller stands right at the bottom edge; keep the bank low there. */}
         <SnowbankEdge className={`absolute inset-x-0 bottom-0 ${pixel ? "h-5" : "h-8"} sm:h-20`} />
       </section>
