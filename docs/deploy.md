@@ -96,7 +96,7 @@ Copy the webhook secret into `ELEVENLABS_WEBHOOK_SECRET` and redeploy. Full step
 
 **Live deployment (project-yukikaki.vercel.app):** an HMAC workspace webhook named `project-yukikaki prod post-call` was created through the API (`POST /v1/workspace/webhooks`, `auth_type: "hmac"`). It is attached to both agents (interview + impact) through `platform_settings.workspace_overrides.webhooks.post_call_webhook_id`, with `events: ["transcript"]`. The secret returned at creation is stored only in `.env.local` and Vercel Production as `ELEVENLABS_WEBHOOK_SECRET`. The route answers 401 to unsigned or badly signed requests, and 200 to signed ones (`{"ignored":"unknown agent"}` for agents it does not know). If you rotate the secret, update Vercel and redeploy.
 
-**Auto-deploy:** pending. The Vercel account needs a GitHub login connection before `vercel git connect` can link `amomusik/project-yukikaki` with production branch `main`. Until then, deploy with `vercel deploy --prod --yes`.
+**Auto-deploy:** enabled. Every push to `main` on GitHub deploys to Vercel production automatically; pull requests get preview deployments. Manual `vercel deploy --prod --yes` still works.
 
 ## 6. Clerk production instance
 
