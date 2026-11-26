@@ -38,7 +38,7 @@ test("landing renders in both languages; / defaults to English", async ({ page }
   await expect(page).toHaveTitle("Yukikaki — Your test kitchen for hackathons.");
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();
   await expect(page.locator("h1")).toContainText("Yukikaki");
-  await expect(page.getByRole("heading", { level: 2, name: "Builders are not the bottleneck." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Your test kitchen for ideas and prototypes." })).toBeVisible();
   await expect(page.getByRole("banner")).toContainText("Your test kitchen for hackathons.");
   await expect(page.getByRole("combobox", { name: "Search challenges" })).toBeVisible();
   // The 8-bit scene is the default hero; ?hero=paper still opts into the paper-cut art.
@@ -50,7 +50,7 @@ test("landing renders in both languages; / defaults to English", async ({ page }
   await page.goto("/ja");
   await expect(page).toHaveTitle("雪かき Yukikaki — ハッカソンのための、まちのテストキッチン。");
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "ボトルネックは、ビルダーではありません。" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "アイデアと試作のための、テストキッチン。" })).toBeVisible();
   await expect(page.getByRole("banner")).toContainText("ハッカソンのための、まちのテストキッチン。");
 });
 
