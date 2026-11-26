@@ -43,8 +43,7 @@ export default async function EventsPage({ params, searchParams }: { params: Pro
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-frost">{t("eyebrow")}</p>
-          <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{t("pageTitle")}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{t("pageTitle")}</h1>
           <p className="mt-2 max-w-2xl text-muted">{t("pageSubtitle")}</p>
         </div>
         {isHost && (
@@ -93,7 +92,7 @@ export default async function EventsPage({ params, searchParams }: { params: Pro
                           data-testid="event-card"
                         >
                           <div className="hidden flex-col items-center justify-center rounded-xl border border-line bg-snow text-center sm:flex" aria-hidden>
-                            <span className="text-[11px] font-bold tracking-wider text-rose-600">{b.month}</span>
+                            <span className="text-[11px] font-bold tracking-wider text-rose-700 dark:text-rose-300">{b.month}</span>
                             <span className="text-2xl font-extrabold leading-none text-ink">{b.day}</span>
                           </div>
                           <div className="min-w-0">

@@ -28,7 +28,9 @@
     "test:coverage": "vitest run --coverage",
     "knip": "knip",
     "audit:orphans": "tsx scripts/audit-orphans.ts",
-    "evals": "tsx evals/run.ts"
+    "evals": "tsx evals/run.ts",
+    "design:check": "sh .github/skills/impeccable/scripts/impeccable detect app components",
+    "design:check:live": "node scripts/design-check-live.mjs"
   },
   "dependencies": {
     "@clerk/localizations": "^4.26.3",

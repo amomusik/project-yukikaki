@@ -22,7 +22,7 @@ export async function GrantNotice({ locale }: { locale: string }) {
 export async function GrantList({ grants, locale, showChallenge = false }: { grants: Row[]; locale: string; showChallenge?: boolean }) {
   const t = await getTranslations("grants");
   const lang = locale === "en" ? "en" : "ja";
-  if (grants.length === 0) return <p className="text-sm text-slate-500">{t("empty")}</p>;
+  if (grants.length === 0) return <p className="text-sm text-muted">{t("empty")}</p>;
   return (
     <ul className="space-y-3" data-testid="grant-list">
       {grants.map((g) => {

@@ -19,6 +19,9 @@ const eslintConfig = [
       "build/**",
       "coverage/**",
       "next-env.d.ts",
+      // Vendored Impeccable skill scripts (minified browser bundles), not project code.
+      ".github/skills/**",
+      ".impeccable/**",
     ],
   },
 ];

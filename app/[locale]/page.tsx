@@ -7,6 +7,7 @@ import { listTestimonials, type Testimonial } from "@/lib/testimonials";
 import { ChallengeMarquee, type MarqueeChallenge } from "@/components/landing/challenge-marquee";
 import { HeroSearch } from "@/components/landing/hero-search";
 import { HeroQuoteBar } from "@/components/landing/hero-quote-bar";
+import { MarqueePause } from "@/components/landing/marquee-pause";
 import { cityLabel, industryLabel } from "@/components/landing/labels";
 import { CountUp } from "@/components/landing/count-up";
 import { HeroArt } from "@/components/landing/hero-art";
@@ -59,10 +60,6 @@ function topFacets(items: MarqueeChallenge[]) {
   };
 }
 
-const Kicker = ({ children, tone = "frost" }: { children: React.ReactNode; tone?: "frost" | "lantern" }) => (
-  <p className={`mb-3 text-xs font-semibold uppercase tracking-[0.22em] ${tone === "lantern" ? "text-lantern" : "text-frost"}`}>{children}</p>
-);
-
 const fullBleed = "relative left-1/2 w-screen -translate-x-1/2";
 
 export default async function Landing({
@@ -83,14 +80,6 @@ export default async function Landing({
   const [hours, challenges, testimonials] = await Promise.all([totalHoursSaved(), loadChallenges(lang), listTestimonials(6)]);
   const facets = topFacets(challenges);
 
-  const workstreams = [1, 2, 3, 4, 5, 6].map((n) => ({ n, title: t(`ws${n}Title`), body: t(`ws${n}`) }));
-  const principles = [1, 2, 3, 4, 5, 6].map((n) => ({ n, title: t(`p${n}Title`), body: t(`p${n}`) }));
-  const wins = [
-    { title: t("w1Title"), body: t("w1"), icon: "🏘️" },
-    { title: t("w2Title"), body: t("w2"), icon: "🏮" },
-    { title: t("w3Title"), body: t("w3"), icon: "🛠️" },
-    { title: t("w4Title"), body: t("w4"), icon: "🤝" },
-  ];
 
   return (
     <div className="-mt-10 -mb-10">
@@ -163,7 +152,6 @@ export default async function Landing({
           </div>
           <h2 className="mt-7 text-balance text-2xl font-bold leading-tight tracking-tight sm:mt-9 sm:text-4xl">{t("title")}</h2>
           <p className="yk-phrase mx-auto mt-3 max-w-2xl text-balance text-base text-sky-100 sm:text-xl">{t("subtitle")}</p>
-          <p className="mx-auto mt-3 max-w-2xl text-balance text-sm font-semibold text-white [word-break:auto-phrase] sm:text-base">{t("positioning")}</p>
 
           <div className="mt-7 sm:mt-8">
             <HeroSearch locale={lang} />
@@ -174,7 +162,7 @@ export default async function Landing({
             {(["find", "prep", "grants"] as const).map((k) => (
               <li
                 key={k}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium text-white backdrop-blur-sm"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-left font-medium text-white backdrop-blur-sm"
               >
                 <span aria-hidden className="h-2 w-2 shrink-0 bg-lantern" />
                 {t(`valueStrip.${k}`)}
@@ -224,9 +212,9 @@ export default async function Landing({
         </div>
         <a
           href="#party-demo"
-          className="absolute bottom-[12%] left-4 z-10 hidden max-w-[15rem] rounded-2xl border border-lantern/60 bg-night/75 p-4 text-left text-white shadow-xl backdrop-blur-md transition hover:border-lantern lg:block xl:left-10"
+          className="absolute bottom-[calc(9.5vw+1.5rem)] left-4 z-10 hidden max-w-[15rem] rounded-2xl border border-lantern/60 bg-night/75 p-4 text-left text-white shadow-xl backdrop-blur-md transition hover:border-lantern lg:block xl:left-10"
         >
-          <span className="inline-block rounded-sm bg-lantern px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-night">{lang === "ja" ? "近日公開" : "Coming soon"}</span>
+          <span className="inline-block rounded-sm bg-lantern px-1.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-night">{lang === "ja" ? "近日公開" : "Coming soon"}</span>
           <span className="mt-2 block text-sm font-bold leading-snug">{lang === "ja" ? "どんなチームでも大丈夫。足りない役はAIの仲間が埋めます。" : "Bring any team. AI teammates fill the missing roles."}</span>
           <span aria-hidden className="mt-2 block text-lg tracking-widest">🤖🤖🤖</span>
           <span className="mt-1 block text-xs text-sky-100/80">{lang === "ja" ? "プレビューを見る ↓" : "Try the preview ↓"}</span>
@@ -242,78 +230,19 @@ export default async function Landing({
         <SnowbankEdge className={`absolute inset-x-0 bottom-0 ${pixel ? "h-5" : "h-8"} sm:h-20`} />
       </section>
 
-      <div className="mx-auto mt-10 max-w-2xl text-pretty text-center">
-        <p className="text-balance text-2xl font-bold tracking-tight text-ink [word-break:auto-phrase] sm:text-3xl">{t("needsLead")}</p>
-        <p className="mt-3 text-base leading-relaxed text-ink [word-break:auto-phrase] sm:text-lg">{t("needs")}</p>
-        <p className="mt-3 text-sm text-muted">{t("lead")}</p>
-      </div>
-
-      {/* ── SCROLLING CHALLENGES ─────────────────────────────────────── */}
-      {challenges.length > 0 && (
-        <section className={`${fullBleed} pt-14`}>
-          <div className="mx-auto mb-6 flex max-w-6xl flex-wrap items-end justify-between gap-4 px-4 sm:px-6">
-            <div>
-              <Kicker>{t("marqueeKicker")}</Kicker>
-              <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("marqueeTitle")}</h2>
-              <p className="mt-2 max-w-xl text-muted">{t("marqueeSubtitle")}</p>
-            </div>
-            <Link href="/challenges" className="text-sm font-semibold text-frost hover:underline">
-              {t("marqueeAll")} →
-            </Link>
-          </div>
-          <ChallengeMarquee items={challenges} lang={lang} label={t("marqueeLabel")} />
-        </section>
-      )}
-
-      {/* ── STAT ─────────────────────────────────────────────────────── */}
-      <section className="mx-auto mt-16 max-w-3xl">
-        <div className="yk-snow-texture relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-10 text-center sm:px-10">
-          <p className="text-sm font-medium text-muted">{t("statLabel")}</p>
-          <p className="mt-3 text-6xl font-bold tracking-tight text-ink sm:text-7xl" data-testid="hours-saved">
-            <CountUp value={hours} />
-            <span className="ml-2 text-xl font-medium text-muted sm:text-2xl">{t("statUnit")}</span>
-          </p>
-          <p className="mt-3 text-xs text-muted">{t("statNote")}</p>
-        </div>
+      {/* ── WHY: one headline, two sentences ─────────────────────────── */}
+      <section aria-labelledby="why" className="mx-auto mt-14 max-w-2xl text-pretty text-center">
+        <h2 id="why" className="text-balance text-2xl font-bold tracking-tight text-ink [word-break:auto-phrase] sm:text-3xl">
+          {t("needsLead")}
+        </h2>
+        <p className="mt-3 text-base leading-relaxed text-muted [word-break:auto-phrase] sm:text-lg">{t("needs")}</p>
       </section>
 
       <PathDivider />
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────── */}
-      <section aria-labelledby="how">
-        <div className="max-w-2xl">
-          <Kicker>{t("howKicker")}</Kicker>
-          <h2 id="how" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("howTitle")}</h2>
-          <p className="mt-3 text-lg text-muted">{t("howLead")}</p>
-        </div>
-        <ol className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {workstreams.map((w) => (
-            <li key={w.n} className="relative border-t-2 border-ice-strong/60 pt-5">
-              <span className="absolute -top-[9px] left-0 h-4 w-4 rounded-full border-2 border-ice-strong bg-snow" aria-hidden />
-              <p className="text-xs font-semibold tabular-nums text-frost">0{w.n}</p>
-              <h3 className="mt-1 text-lg font-bold text-ink">{w.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{w.body}</p>
-              {w.n === 5 && (
-                <Link
-                  href="/grants"
-                  className="mt-3 inline-block text-sm font-semibold text-frost underline-offset-4 hover:text-ink hover:underline"
-                >
-                  {t("ws5Link")}
-                </Link>
-              )}
-            </li>
-          ))}
-        </ol>
-        <p className="mt-12 flex items-start gap-3 rounded-2xl bg-ice px-5 py-4 text-base font-semibold text-ink">
-          <span aria-hidden className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-lantern" />
-          {t("howApproval")}
-        </p>
-      </section>
-
-      {/* ── TEST KITCHEN (interactive 8-bit walkthrough) ─────────────── */}
+      {/* ── HOW IT WORKS, shown not listed: the interactive kitchen, then the formats harness ── */}
       <KitchenQuest
         copy={{
-          kicker: t("kitchenQuest.kicker"),
           title: t("kitchenQuest.title"),
           lead: t("kitchenQuest.lead"),
           steps: t.raw("kitchenQuest.steps") as KitchenQuestStep[],
@@ -329,61 +258,53 @@ export default async function Landing({
         }}
       />
 
-      {/* ── ONE HARNESS, ANY FORMAT (interactive 8-bit windows) ──────── */}
       <FormatsHarness />
 
-      <div className="h-20 sm:h-24" />
-
-      {/* ── PRINCIPLES ───────────────────────────────────────────────── */}
-      <section aria-labelledby="principles" className={`${fullBleed} overflow-hidden bg-night py-20 text-white`}>
-        <div aria-hidden className="yk-snow yk-snow--far" />
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <Kicker tone="lantern">{t("principlesKicker")}</Kicker>
-          <h2 id="principles" className="text-2xl font-bold tracking-tight sm:text-3xl">{t("principlesTitle")}</h2>
-          <ul className="mt-10 grid gap-px overflow-hidden rounded-3xl bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
-            {principles.map((p) => (
-              <li key={p.n} className="bg-night-2/90 p-6 sm:p-7">
-                <h3 className="text-lg font-bold text-white">{p.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-300">{p.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ── WHO WINS ─────────────────────────────────────────────────── */}
-      <section aria-labelledby="wins" className="pt-20">
-        <div className="max-w-2xl">
-          <Kicker>{t("winsKicker")}</Kicker>
-          <h2 id="wins" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("winsTitle")}</h2>
-        </div>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {wins.map((w) => (
-            <li key={w.title} className="rounded-2xl border border-line bg-surface p-6">
-              <span aria-hidden className="flex h-11 w-11 items-center justify-center rounded-xl bg-ice text-xl">
-                {w.icon}
-              </span>
-              <h3 className="mt-4 text-lg font-bold text-ink">{w.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{w.body}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* ── ROADMAP: coming-soon features + shared waitlist ──────────── */}
-      <PartyBuilder />
-
-      {/* ── TESTIMONIALS (real impact reviews only) ──────────────────── */}
-      {testimonials.length > 0 && (
-        <>
-          <PathDivider />
-          <Testimonials items={testimonials} lang={lang} />
-        </>
+      {/* ── PROOF: live challenges, hours given back, owners' words ─── */}
+      {challenges.length > 0 && (
+        <section aria-labelledby="on-the-path" className={`${fullBleed} pt-20`}>
+          <div className="mx-auto mb-6 flex max-w-6xl flex-wrap items-end justify-between gap-4 px-4 sm:px-6">
+            <div>
+              <h2 id="on-the-path" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("marqueeTitle")}</h2>
+              <p className="mt-2 max-w-xl text-muted">{t("marqueeSubtitle")}</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <MarqueePause target="challenge-marquee" pauseLabel={t("marqueePause")} playLabel={t("marqueePlay")} />
+              <Link href="/challenges" className="text-sm font-semibold text-frost hover:underline">
+                {t("marqueeAll")} →
+              </Link>
+            </div>
+          </div>
+          <ChallengeMarquee items={challenges} lang={lang} label={t("marqueeLabel")} />
+        </section>
       )}
+
+      {/* Proof only when there is some: a "0 h/week" stat reads as anti-proof. */}
+      {hours > 0 && (
+        <section className="mx-auto mt-16 max-w-3xl">
+          <div className="yk-snow-texture relative overflow-hidden rounded-3xl border border-line bg-surface px-6 py-10 text-center sm:px-10">
+            <p className="text-sm font-medium text-muted">{t("statLabel")}</p>
+            <p className="mt-3 text-6xl font-bold tracking-tight text-ink sm:text-7xl" data-testid="hours-saved">
+              <CountUp value={hours} />
+              <span className="ml-2 text-xl font-medium text-muted sm:text-2xl">{t("statUnit")}</span>
+            </p>
+            <p className="mt-3 text-xs text-muted">{t("statNote")}</p>
+          </div>
+        </section>
+      )}
+
+      {testimonials.length > 0 && (
+        <div className="mt-20">
+          <Testimonials items={testimonials.slice(0, 2)} lang={lang} />
+        </div>
+      )}
+
+      {/* ── WHAT'S COMING: roadmap + party-builder preview + one waitlist ── */}
+      <div className="h-20" />
+      <PartyBuilder />
 
       {/* ── CLOSING ──────────────────────────────────────────────────── */}
       <section className="mb-20 mt-20 rounded-3xl bg-ice px-6 py-12 text-center sm:px-12">
-        <p className="mb-3 text-sm font-semibold text-frost">{t("kitchen.closing")}</p>
         <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("closingTitle")}</h2>
         <p className="mx-auto mt-3 max-w-xl text-muted">{t("closingBody")}</p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
@@ -407,7 +328,6 @@ async function Testimonials({ items, lang }: { items: Testimonial[]; lang: "en" 
   return (
     <section aria-labelledby="voices">
       <div className="max-w-2xl">
-        <Kicker>{t("testimonialsKicker")}</Kicker>
         <h2 id="voices" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("testimonialsTitle")}</h2>
         <p className="mt-2 text-sm text-muted">{t("testimonialsNote")}</p>
       </div>

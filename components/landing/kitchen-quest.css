@@ -142,7 +142,8 @@
 }
 .kq-hotspot[aria-current] .kq-diamond {
   background: #ffd27a;
-  animation: kq-bounce 0.9s steps(2) infinite;
+  /* A small lift that decelerates (exponential ease-out) and settles back; no bounce. */
+  animation: kq-lift 0.9s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate;
   box-shadow:
     0 0 0 3px #2b1a02,
     0 0 0 6px rgb(255 210 122 / 0.35),
@@ -160,11 +161,11 @@
     scale: 0.82;
   }
 }
-@keyframes kq-bounce {
-  0% {
+@keyframes kq-lift {
+  from {
     translate: 0 0;
   }
-  50% {
+  to {
     translate: -3px -3px;
   }
 }

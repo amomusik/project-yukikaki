@@ -50,3 +50,8 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 .neon
+
+# Impeccable rendered-check reports (pnpm design:check:live)
+docs/design/live/
+.impeccable/review/
+docs/design/ci/

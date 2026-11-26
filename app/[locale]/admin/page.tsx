@@ -32,14 +32,20 @@ export default async function AdminPage({
   const sp = await searchParams;
   const tab: Tab = (TABS as readonly string[]).includes(sp.tab ?? "") ? (sp.tab as Tab) : "briefs";
   const t = await getTranslations("admin");
+  const tn = await getTranslations("nav");
   const status = await serviceStatus().catch(() => []);
   const tabLabel: Record<Tab, string> = { briefs: t("tabBriefs"), teams: t("tabTeams"), deliveries: t("tabDeliveries"), impact: t("tabImpact") };
 
   return (
     <div>
-      <PageHeader title={t("title")} />
+      <PageHeader title={t("title")}>
+        {/* The graph left the header nav (≤5 items); hosts reach it from here. */}
+        <Link href="/admin/graph" className="text-sm font-semibold text-frost underline-offset-4 hover:underline">
+          {tn("graph")} →
+        </Link>
+      </PageHeader>
       <div className="mb-6 flex flex-wrap items-center gap-2 text-xs" data-testid="service-status">
-        <span className="font-semibold text-slate-500">{t("serviceStatus")}:</span>
+        <span className="font-semibold text-muted">{t("serviceStatus")}:</span>
         {SERVICES.map((s) => {
           const ev = status.find((x) => x.service === s);
           const tone = !ev ? "slate" : ev.ok ? "green" : "amber";
@@ -57,7 +63,7 @@ export default async function AdminPage({
             href={`/admin?tab=${k}`}
             className={cn(
               "-mb-px border-b-2 px-4 py-2 text-sm",
-              tab === k ? "border-slate-900 font-semibold dark:border-sky-200" : "border-transparent text-slate-500 hover:text-slate-800",
+              tab === k ? "border-slate-900 font-semibold dark:border-sky-200" : "border-transparent text-muted hover:text-slate-800",
             )}
           >
             {tabLabel[k]}
@@ -106,7 +112,7 @@ async function BriefsTab({ locale }: { locale: string }) {
           <Link href={`/challenges/${brief.id}`} className="mt-2 block text-lg font-semibold hover:underline">
             {brief.content[lang].title}
           </Link>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted">
             {business.name} · {business.city} · {business.industry}
             {brief.hoursLostPerWeek != null && ` · ${brief.hoursLostPerWeek}h/week`}
           </p>
@@ -148,9 +154,9 @@ async function BriefsTab({ locale }: { locale: string }) {
               </form>
             </>
           ) : (
-            <p className="mt-3 text-xs text-slate-500">{ts(brief.status)}…</p>
+            <p className="mt-3 text-xs text-muted">{ts(brief.status)}…</p>
           )}
-          <form action={refreshGrantsAction} className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500 dark:border-slate-800" data-testid="grants-refresh">
+          <form action={refreshGrantsAction} className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3 text-xs text-muted dark:border-slate-800" data-testid="grants-refresh">
             <input type="hidden" name="locale" value={locale} />
             <input type="hidden" name="briefId" value={brief.id} />
             {(() => {
@@ -170,7 +176,7 @@ async function BriefsTab({ locale }: { locale: string }) {
           </form>
         </Card>
       ))}
-      <form action={refreshAllGrantsAction} className="flex flex-wrap items-center gap-2 text-xs text-slate-500" data-testid="grants-refresh-all">
+      <form action={refreshAllGrantsAction} className="flex flex-wrap items-center gap-2 text-xs text-muted" data-testid="grants-refresh-all">
         <input type="hidden" name="locale" value={locale} />
         <Button type="submit" variant="secondary" className="py-1 text-xs">🔎 {tg("refreshAll")}</Button>
         <Link href="/grants" className="hover:underline">{tg("seeAll")} →</Link>
@@ -178,8 +184,8 @@ async function BriefsTab({ locale }: { locale: string }) {
       </form>
       {decisions.length > 0 && (
         <div className="pt-4">
-          <h3 className="mb-2 text-sm font-semibold text-slate-500">{t("recentDecisions")}</h3>
-          <ul className="space-y-1 text-xs text-slate-500">
+          <h3 className="mb-2 text-sm font-semibold text-muted">{t("recentDecisions")}</h3>
+          <ul className="space-y-1 text-xs text-muted">
             {decisions.map(({ decision, host }) => (
               <li key={decision.id}>
                 {decision.createdAt.toISOString().slice(0, 16).replace("T", " ")} · {host.displayName} · {decision.subjectType} · {decision.decision}
@@ -208,7 +214,7 @@ async function TeamsTab({ locale }: { locale: string }) {
             <AiBadge review={team.aiReview} />
           </div>
           <h3 className="mt-2 text-lg font-semibold">{team.name}</h3>
-          <p className="text-sm text-slate-500">{brief.content[lang].title}</p>
+          <p className="text-sm text-muted">{brief.content[lang].title}</p>
           <p className="mt-2 whitespace-pre-wrap text-sm">{team.pitch}</p>
           <p className="mt-3 text-sm">
             <span className="font-semibold">{t("members")}: </span>
@@ -241,7 +247,7 @@ async function DeliveriesTab({ locale }: { locale: string }) {
             <StatusBadge status={brief.status} />
           </div>
           <h3 className="mt-2 font-semibold">{brief.content[lang].title}</h3>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted">
             {business.name} · {team.name} · 👑 {lead.displayName} · {tt("supportUntil", { date: delivery.supportUntil })}
           </p>
           <p className="mt-2 text-sm">{delivery.summary[lang]}</p>
@@ -271,10 +277,10 @@ async function ImpactTab({ locale }: { locale: string }) {
   return (
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-4">
-        <Card><p className="text-xs text-slate-500">{t("totalHours")}</p><p className="text-3xl font-bold" data-testid="impact-total">{total}<span className="text-base font-normal text-slate-500"> h/week</span></p></Card>
-        <Card><p className="text-xs text-slate-500">{t("avgSatisfaction")}</p><p className="text-3xl font-bold">{avg ? avg.toFixed(1) : "—"}</p></Card>
-        <Card><p className="text-xs text-slate-500">{t("evaluations")}</p><p className="text-3xl font-bold">{rows.length}</p></Card>
-        <Card><p className="text-xs text-slate-500">{t("stillInUse")}</p><p className="text-3xl font-bold">{inUse}/{rows.length}</p></Card>
+        <Card><p className="text-xs text-muted">{t("totalHours")}</p><p className="text-3xl font-bold" data-testid="impact-total">{total}<span className="text-base font-normal text-muted"> h/week</span></p></Card>
+        <Card><p className="text-xs text-muted">{t("avgSatisfaction")}</p><p className="text-3xl font-bold">{avg ? avg.toFixed(1) : "—"}</p></Card>
+        <Card><p className="text-xs text-muted">{t("evaluations")}</p><p className="text-3xl font-bold">{rows.length}</p></Card>
+        <Card><p className="text-xs text-muted">{t("stillInUse")}</p><p className="text-3xl font-bold">{inUse}/{rows.length}</p></Card>
       </div>
       {rows.length === 0 && <Empty>{t("noEvaluations")}</Empty>}
       {rows.map(({ evaluation, brief, business, team }) => {
@@ -282,7 +288,7 @@ async function ImpactTab({ locale }: { locale: string }) {
         return (
           <Card key={evaluation.id}>
             <p className="font-semibold">{brief.content[lang].title}</p>
-            <p className="text-sm text-slate-500">{business.name} · {team.name}</p>
+            <p className="text-sm text-muted">{business.name} · {team.name}</p>
             <p className="mt-2 text-sm">
               {evaluation.hoursSavedPerWeek}h/week · ★{evaluation.satisfaction} · {evaluation.stillInUse ? "✓" : "✗"}
             </p>

@@ -179,7 +179,6 @@ export function FormatsHarness() {
       <div aria-hidden className="yk-snow yk-pxsnow yk-pxsnow--far" />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-lantern">{t("kicker")}</p>
           <h2 id="formats-harness" className="yk-wordmark--pixel text-balance text-2xl font-bold tracking-tight sm:text-4xl">
             {t("title")}
           </h2>

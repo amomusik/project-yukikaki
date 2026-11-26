@@ -50,7 +50,7 @@ export function Badge({ tone = "slate", className, ...props }: HTMLAttributes<HT
 }
 
 const field =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100";
+  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus:border-sky-500 dark:placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100";
 
 export function Input(props: InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={cn(field, props.className)} />;
@@ -78,5 +78,5 @@ export function PageHeader({ title, subtitle, children }: { title: string; subti
 }
 
 export function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700">{children}</p>;
+  return <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-muted dark:border-slate-700">{children}</p>;
 }

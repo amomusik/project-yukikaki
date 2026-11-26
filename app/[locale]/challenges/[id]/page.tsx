@@ -11,6 +11,7 @@ import { isUuid } from "@/lib/uuid";
 import { GraphView } from "@/components/graph-view";
 import { GroundingBadge, SourceBadge, StatusBadge } from "@/components/badges";
 import { Badge, Card, buttonClass } from "@/components/ui";
+import { cityLabel, industryLabel } from "@/components/landing/labels";
 
 export const dynamic = "force-dynamic";
 // The host-only "Find grants" action runs jGrants matching via after() inside this function.
@@ -32,6 +33,8 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
   const lang = locale === "en" ? "en" : "ja";
   const { brief, business, sources, teams } = detail;
   const tg = await getTranslations("grants");
+  const tc = await getTranslations("common");
+  const skillLabel = (s: string) => (tc.has(`skills.${s}`) ? tc(`skills.${s}`) : s);
   const [graph, builders, grants] = await Promise.all([challengeNeighborhood(id), suggestBuilders(id), getGrantMatches(id).catch(() => [])]);
   const c = brief.content[lang];
   const canFormTeam = user?.role === "student" && ["approved", "in_progress"].includes(brief.status);
@@ -42,14 +45,23 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
         <div className="mb-3 flex flex-wrap gap-2">
           <StatusBadge status={brief.status} />
           <GroundingBadge level={brief.groundingLevel} />
-          {brief.isSynthetic && <Badge tone="violet">合成データ / Synthetic demo</Badge>}
+          {brief.isSynthetic && <Badge tone="violet">{tc("synthetic")}</Badge>}
         </div>
         <h1 className="text-3xl font-bold tracking-tight">{c.title}</h1>
-        <p className="mt-2 text-slate-500">
-          {business.name} · {business.city}
-          {business.ward ? ` ${business.ward}` : ""} · {business.industry}
+        <p className="mt-2 text-muted [word-break:auto-phrase]">
+          {business.name} · {cityLabel(business.city, lang)}
+          {business.ward ? ` ${business.ward}` : ""} · {industryLabel(business.industry, lang)}
           {brief.hoursLostPerWeek != null && ` · ${t("hours", { n: brief.hoursLostPerWeek })}`}
         </p>
+        {!user && ["approved", "in_progress"].includes(brief.status) && (
+          // Signed-out builders otherwise hit a dead end here: say how to join, and come back after sign-in.
+          <a
+            href={`/${locale}/sign-in?redirect_url=${encodeURIComponent(`/${locale}/challenges/${brief.id}`)}`}
+            className={buttonClass("secondary", "mt-5 rounded-full")}
+          >
+            {t("signInToJoin")}
+          </a>
+        )}
         {canFormTeam && (
           <Link href={{ pathname: "/teams/new", query: { brief: brief.id } }} className={buttonClass("primary", "mt-5")}>
             {t("formTeam")}
@@ -64,7 +76,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
           [t("desiredOutcome"), c.desired_outcome],
         ].map(([h, body]) => (
           <Card key={h}>
-            <h2 className="mb-2 text-sm font-semibold text-slate-500">{h}</h2>
+            <h2 className="mb-2 text-sm font-semibold text-muted">{h}</h2>
             <p className="whitespace-pre-wrap text-sm">{body || "—"}</p>
           </Card>
         ))}
@@ -73,7 +85,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
       <div className="flex flex-wrap gap-6 text-sm">
         <div>
           <span className="mr-2 font-semibold">{t("skills")}:</span>
-          {brief.skillsNeeded.map((s) => <Badge key={s} className="mr-1">{s}</Badge>)}
+          {brief.skillsNeeded.map((s) => <Badge key={s} className="mr-1">{skillLabel(s)}</Badge>)}
         </div>
         {brief.toolsUsed.length > 0 && (
           <div>
@@ -94,9 +106,9 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
                   <p className="mt-2 font-medium">
                     {s.url ? <a href={s.url} target="_blank" rel="noreferrer" className="hover:underline">{s.title}</a> : s.title}
                   </p>
-                  {s.snippet && <p className="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">{s.snippet}</p>}
+                  {s.snippet && <p className="mt-1 line-clamp-2 max-w-prose text-sm text-muted">{s.snippet}</p>}
                   {s.kind === "synthetic" && s.groundedOn.length > 0 && (
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-muted">
                       {t("groundedOn")}: {sources.filter((x) => s.groundedOn.includes(x.id)).map((x) => x.matchedCity ?? x.title).join(", ")}
                     </p>
                   )}
@@ -110,7 +122,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
               </div>
             </Card>
           ))}
-          {sources.length === 0 && <p className="text-sm text-slate-500">—</p>}
+          {sources.length === 0 && <p className="text-sm text-muted">—</p>}
         </div>
       </section>
 
@@ -146,7 +158,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
           <div>
             <h2 className="mb-3 text-xl font-bold">{t("builders")}</h2>
             {builders.length === 0 ? (
-              <p className="text-sm text-slate-500">{t("noBuilders")}</p>
+              <p className="text-sm text-muted">{t("noBuilders")}</p>
             ) : (
               <ul className="space-y-2">
                 {builders.map((b) => (
@@ -165,7 +177,7 @@ export default async function ChallengePage({ params }: { params: Promise<{ loca
                 {teams.map((tm) => (
                   <li key={tm.id} className="flex items-center justify-between rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-800">
                     <Link href={`/teams/${tm.id}`} className="font-medium hover:underline">{tm.name}</Link>
-                    <span className="text-xs text-slate-500">{tt("status")}: <StatusBadge status={tm.status} /></span>
+                    <span className="text-xs text-muted">{tt("status")}: <StatusBadge status={tm.status} /></span>
                   </li>
                 ))}
               </ul>

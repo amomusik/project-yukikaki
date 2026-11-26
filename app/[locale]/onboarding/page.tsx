@@ -44,7 +44,7 @@ export default async function Onboarding({ params }: { params: Promise<{ locale:
           </div>
         </fieldset>
         <Button type="submit">{t("continue")}</Button>
-        <p className="text-xs text-slate-500">{t("hostNote")}</p>
+        <p className="text-xs text-muted">{t("hostNote")}</p>
       </form>
     </div>
   );

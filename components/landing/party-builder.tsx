@@ -188,7 +188,6 @@ export function PartyBuilder() {
       <style>{STYLES}</style>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-3xl">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-lantern">{t("kicker")}</p>
           <h2 id="roadmap" className="text-balance text-2xl font-bold tracking-tight [word-break:auto-phrase] sm:text-3xl">
             {t("sectionTitle")}
           </h2>
@@ -220,7 +219,6 @@ export function PartyBuilder() {
         {/* ── Feature 1 preview: art + party builder ─────────────────── */}
         <div id="party-demo" className="mt-16 scroll-mt-24">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-frost">{t("demoKicker")}</p>
             <Badge>{t("badge")}</Badge>
           </div>
           <h3 id="party" className="mt-3 max-w-3xl text-balance text-xl font-bold tracking-tight [word-break:auto-phrase] sm:text-2xl">
@@ -306,7 +304,7 @@ export function PartyBuilder() {
                     <p className="flex flex-wrap items-center gap-2">
                       <span className="font-bold text-white">{t(`roles.${s.role}.name`)}</span>
                       <span
-                        className={`px-1.5 py-0.5 text-[10px] font-bold ${pixelFont} ${
+                        className={`px-1.5 py-0.5 text-[11px] font-bold ${pixelFont} ${
                           s.by ? "bg-lantern text-lantern-ink" : "bg-sky-300 text-night"
                         }`}
                       >

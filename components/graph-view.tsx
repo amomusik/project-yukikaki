@@ -32,7 +32,7 @@ export function GraphView({ data, height = 420, unavailableLabel }: { data: Grap
   }, []);
 
   if (!data.available) {
-    return <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500 dark:border-slate-700">{unavailableLabel}</p>;
+    return <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-muted dark:border-slate-700">{unavailableLabel}</p>;
   }
   const labels = [...new Set(data.nodes.map((n) => n.label))];
   return (

@@ -11,7 +11,8 @@ export async function Header({ locale }: { locale: string }) {
   const t = await getTranslations("nav");
   const user = await ensureUser().catch(() => null);
 
-  // Shared by the desktop nav and <MobileNav>; Events comes first.
+  // Shared by the desktop nav and <MobileNav>. At most five items: Events, Challenges, Grants, then the
+  // one action for this visitor (Bring a problem, My page) and Admin for hosts. The graph lives on /admin.
   const items: NavItem[] = [
     { href: "/events", label: t("events") },
     { href: "/challenges", label: t("challenges") },
@@ -19,7 +20,7 @@ export async function Header({ locale }: { locale: string }) {
   ];
   if (!user || user.role === "business") items.push({ href: "/interview", label: t("interview") });
   if (user) items.push({ href: "/me", label: t("me") });
-  if (user?.role === "host") items.push({ href: "/admin", label: t("admin") }, { href: "/admin/graph", label: t("graph") });
+  if (user?.role === "host") items.push({ href: "/admin", label: t("admin") });
 
   const link =
     "rounded-full px-3 py-1.5 text-sm font-medium text-muted transition hover:bg-ice hover:text-ink focus-visible:bg-ice";

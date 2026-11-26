@@ -78,7 +78,7 @@ export default async function TeamPage({
           <ul className="mt-2 text-sm">
             {delivery.links.map((l) => <li key={l}><a className="text-sky-700 hover:underline" href={l}>{l}</a></li>)}
           </ul>
-          <p className="mt-3 text-xs text-slate-500">{t("supportUntil", { date: delivery.supportUntil })}</p>
+          <p className="mt-3 text-xs text-muted">{t("supportUntil", { date: delivery.supportUntil })}</p>
         </Card>
       ) : team.status === "approved" ? (
         isLead ? (
@@ -86,7 +86,7 @@ export default async function TeamPage({
             {t("deliver")}
           </Link>
         ) : (
-          <p className="text-sm text-slate-500">{t("onlyLead")}</p>
+          <p className="text-sm text-muted">{t("onlyLead")}</p>
         )
       ) : null}
     </div>

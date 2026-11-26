@@ -38,7 +38,7 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
                 <Link href={`/challenges/${brief.id}`} className="mt-2 block text-lg font-semibold hover:underline">
                   {brief.content[lang].title}
                 </Link>
-                <p className="text-sm text-slate-500">{business.name} · {business.city}</p>
+                <p className="text-sm text-muted">{business.name} · {business.city}</p>
                 {deliveries.map(({ delivery, lead, team }) => (
                   <div key={delivery.id} className="mt-4 rounded-lg bg-emerald-50 p-3 text-sm dark:bg-emerald-950">
                     <p className="font-semibold">🛟 {t("support")} — {team.name}</p>
@@ -72,7 +72,7 @@ export default async function MePage({ params }: { params: Promise<{ locale: str
             <Card key={team.id} className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <Link href={`/teams/${team.id}`} className="font-semibold hover:underline">{team.name}</Link>
-                <p className="text-sm text-slate-500">{brief.content[lang].title}</p>
+                <p className="text-sm text-muted">{brief.content[lang].title}</p>
               </div>
               <div className="flex items-center gap-2">
                 {role === "lead" && <Badge tone="amber">👑 {tt("lead")}</Badge>}

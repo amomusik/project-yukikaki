@@ -16,7 +16,8 @@ import "./kitchen-quest.css";
 
 export type KitchenQuestStep = { title: string; body: string; does: string; cta: string };
 export type KitchenQuestCopy = {
-  kicker: string;
+  /** Unused since the landing streamline (no eyebrows above headings); kept optional for callers. */
+  kicker?: string;
   title: string;
   lead: string;
   steps: KitchenQuestStep[];
@@ -305,7 +306,6 @@ export function KitchenQuest({ copy }: { copy: KitchenQuestCopy }) {
   return (
     <section ref={rootRef} aria-labelledby="kitchen-quest" className="kq pt-20 sm:pt-24" onKeyDown={onKeyDown} data-reduced={reduced ? "" : undefined}>
       <div className="max-w-2xl">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-frost">{copy.kicker}</p>
         <h2 id="kitchen-quest" className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           {copy.title}
         </h2>

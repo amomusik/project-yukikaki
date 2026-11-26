@@ -49,6 +49,8 @@ export default async function LocaleLayout({
       signInFallbackRedirectUrl={`/${locale}/onboarding`}
       signUpFallbackRedirectUrl={`/${locale}/onboarding`}
       afterSignOutUrl={`/${locale}`}
+      // Brand the Clerk widgets: night-navy primary, inherited type, the site's 0.75rem corners.
+      appearance={{ variables: { colorPrimary: "#0c1a2b", fontFamily: "inherit", borderRadius: "0.75rem" } }}
     >
       <html lang={locale}>
         <body className="flex min-h-screen flex-col antialiased">

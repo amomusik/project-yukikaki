@@ -11,6 +11,7 @@ import { GrantList, GrantNotice } from "../../grants/grant-list";
 import { cancelRsvpAction, rsvpAction, setEventStatusAction } from "../actions";
 import { AvatarStack, DemoBadge, EventCover, FormatPill } from "../event-bits";
 import { ShareButton } from "../share-button";
+import { cityLabel, industryLabel } from "@/components/landing/labels";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,7 @@ export default async function EventPage({
 
   const t = await getTranslations("events");
   const tg = await getTranslations("grants");
+  const tc = await getTranslations("common");
   const lang = toLang(locale);
   const title = ev.title[lang] || ev.title.en;
   const left = spotsLeft(ev.capacity, going);
@@ -254,14 +256,14 @@ export default async function EventPage({
               <li key={c.id}>
                 <Link href={`/challenges/${c.id}`} className="block h-full rounded-2xl border border-line bg-surface p-5 shadow-sm transition hover:border-frost hover:shadow-md">
                   <p className="text-xs text-muted">
-                    {c.businessName} · {c.city} · {c.industry}
+                    {c.businessName} · {cityLabel(c.city, lang)} · {industryLabel(c.industry, lang)}
                   </p>
                   <h3 className="mt-1 font-bold text-ink">{(lang === "en" ? c.titleEn : c.titleJa) || c.titleJa}</h3>
                   <p className="mt-2 line-clamp-3 text-sm text-muted">{(lang === "en" ? c.problemEn : c.problemJa) || c.problemJa}</p>
                   {c.skills.length > 0 && (
                     <div className="mt-3 flex flex-wrap gap-1">
                       {c.skills.slice(0, 4).map((s) => (
-                        <Badge key={s}>{s}</Badge>
+                        <Badge key={s}>{tc.has(`skills.${s}`) ? tc(`skills.${s}`) : s}</Badge>
                       ))}
                     </div>
                   )}

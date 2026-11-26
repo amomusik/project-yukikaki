@@ -54,7 +54,7 @@ export function InterviewClient({ locale, voiceAvailable, dynamicVariables, defa
 
       <Card>
         <h2 className="text-lg font-semibold">{l.textTitle}</h2>
-        <p className="mb-5 text-sm text-slate-500">{l.textSubtitle}</p>
+        <p className="mb-5 text-sm text-muted">{l.textSubtitle}</p>
         <form action={submitTextInterview} className="grid gap-4 sm:grid-cols-2">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="business_id" value={dynamicVariables.business_id} />

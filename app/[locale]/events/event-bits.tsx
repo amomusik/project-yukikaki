@@ -11,9 +11,10 @@ const formatTone: Record<EventFormat, string> = {
   test_kitchen: "bg-amber-100 text-amber-900 dark:bg-amber-900/50 dark:text-amber-100",
 };
 const formatGradient: Record<EventFormat, string> = {
-  hackathon: "from-sky-500 via-indigo-500 to-slate-900",
-  charrette: "from-violet-400 via-fuchsia-500 to-slate-900",
-  test_kitchen: "from-amber-300 via-orange-500 to-rose-700",
+  // Winter palette only (frost, ice, lantern over night navy); raw hex so covers read the same in dark mode.
+  hackathon: "from-[#5b8db4] via-[#16304b] to-[#0c1a2b]",
+  charrette: "from-[#a9c8de] via-[#3f739c] to-[#0c1a2b]",
+  test_kitchen: "from-[#f2b457] via-[#c9862c] to-[#16304b]",
 };
 const FormatIcon = { hackathon: Laptop, charrette: PencilRuler, test_kitchen: ChefHat };
 
@@ -54,7 +55,7 @@ export function AvatarStack({ attendees, total, max = 5, showMore = true }: { at
           <span
             key={a.userId}
             title={a.displayName}
-            className={cn("inline-flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold ring-2 ring-surface", avatarColors[i % avatarColors.length])}
+            className={cn("inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-surface", avatarColors[i % avatarColors.length])}
           >
             {initials(a.displayName)}
           </span>

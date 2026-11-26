@@ -22,7 +22,7 @@ export default async function GrantsPage({ params }: { params: Promise<{ locale:
       <PageHeader title={t("pageTitle")} subtitle={t("pageSubtitle")} />
       <GrantNotice locale={locale} />
       <GrantList grants={grants} locale={locale} showChallenge />
-      <p className="text-xs text-slate-500">{t("sourcesNote")}</p>
+      <p className="text-xs text-muted">{t("sourcesNote")}</p>
     </div>
   );
 }

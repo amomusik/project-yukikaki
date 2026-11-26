@@ -80,7 +80,7 @@ export function EventForm({ locale, values, challenges }: { locale: string; valu
             <Input id="endsAt" name="endsAt" type="datetime-local" required defaultValue={values.endsAt} />
           </div>
         </div>
-        <p className="text-xs text-slate-500">{t("form.jstNote")}</p>
+        <p className="text-xs text-muted">{t("form.jstNote")}</p>
       </Card>
 
       <Card className="space-y-4">
@@ -117,9 +117,9 @@ export function EventForm({ locale, values, challenges }: { locale: string; valu
       <Card>
         <fieldset>
           <legend className="text-sm font-semibold text-slate-700 dark:text-slate-300">{t("form.challenges")}</legend>
-          <p className="mt-1 text-xs text-slate-500">{t("form.challengesHint")}</p>
+          <p className="mt-1 text-xs text-muted">{t("form.challengesHint")}</p>
           {challenges.length === 0 ? (
-            <p className="mt-3 text-sm text-slate-500">{t("noChallenges")}</p>
+            <p className="mt-3 text-sm text-muted">{t("noChallenges")}</p>
           ) : (
             <ul className="mt-3 grid gap-2 sm:grid-cols-2">
               {challenges.map((c) => (
@@ -128,7 +128,7 @@ export function EventForm({ locale, values, challenges }: { locale: string; valu
                     <input type="checkbox" name="briefIds" value={c.id} defaultChecked={values.briefIds.includes(c.id)} className="mt-0.5" />
                     <span>
                       <span className="font-medium">{c.title}</span>
-                      <span className="block text-xs text-slate-500">
+                      <span className="block text-xs text-muted">
                         {c.city} · {c.industry}
                       </span>
                     </span>

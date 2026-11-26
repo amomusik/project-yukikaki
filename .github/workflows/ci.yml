@@ -48,6 +48,42 @@ jobs:
           path: docs/audit/orphans-*.*
           if-no-files-found: ignore
 
+  design:
+    name: Impeccable design check (non-blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Advisory only: design findings are reported and uploaded, never fail the build.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: impeccable detect app/ components/ (static, reads DESIGN.md)
+        shell: bash
+        run: |
+          mkdir -p docs/design/ci
+          # Prefer the vendored launcher (checksum-verified engine download); fall back to npm; skip if neither installs.
+          if sh .github/skills/impeccable/scripts/impeccable engine-probe >/dev/null 2>&1; then
+            DETECT="sh .github/skills/impeccable/scripts/impeccable detect"
+          elif npx -y impeccable@latest detect --help >/dev/null 2>&1; then
+            DETECT="npx -y impeccable@latest detect"
+          else
+            echo "::notice::Impeccable engine could not be installed; design check skipped."
+            echo "skipped: engine unavailable" > docs/design/ci/report.txt
+            exit 0
+          fi
+          $DETECT --json app components > docs/design/ci/report.json || true
+          $DETECT app components 2> docs/design/ci/report.txt || true
+          $DETECT --github app components || true
+          tail -n 5 docs/design/ci/report.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: impeccable-design-report
+          path: docs/design/ci/
+          if-no-files-found: ignore
+
   test:
     name: Vitest (${{ matrix.suite }})
     runs-on: ubuntu-latest

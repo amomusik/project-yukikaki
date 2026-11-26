@@ -3,6 +3,8 @@ import { Link } from "@/i18n/navigation";
 import { SEARCH_MAX_LENGTH, challengeFacets, listChallenges } from "@/lib/queries";
 import { GroundingBadge, StatusBadge } from "@/components/badges";
 import { ShovelKid } from "@/components/mascot";
+import { cityLabel, industryLabel } from "@/components/landing/labels";
+import { Search } from "lucide-react";
 import { Badge, Card, Empty, Input, PageHeader, Select, buttonClass } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
@@ -23,6 +25,8 @@ export default async function ChallengesPage({
   // "Clear search" drops q but keeps the other filters.
   const clearSearch = { pathname: "/challenges", query: Object.fromEntries(Object.entries({ ...filters, q: undefined }).filter(([, v]) => v)) as Record<string, string> };
   const t = await getTranslations("challenges");
+  const tc = await getTranslations("common");
+  const skillLabel = (s: string) => (tc.has(`skills.${s}`) ? tc(`skills.${s}`) : s);
   const lang = (await getLocale()) === "en" ? "en" : "ja";
   const [rows, facets] = await Promise.all([listChallenges(filters), challengeFacets()]);
 
@@ -32,7 +36,9 @@ export default async function ChallengesPage({
       <form className="mb-4 grid gap-3 sm:grid-cols-4" method="get" role="search">
         <div className="relative sm:col-span-4">
           <label htmlFor="challenge-search" className="sr-only">{t("searchLabel")}</label>
-          <span aria-hidden className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-lg text-slate-400">🔎</span>
+          <span aria-hidden className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted">
+            <Search className="h-5 w-5" strokeWidth={2} />
+          </span>
           <Input
             id="challenge-search"
             type="search"
@@ -47,15 +53,15 @@ export default async function ChallengesPage({
         </div>
         <Select name="city" defaultValue={filters.city ?? ""} aria-label={t("filterCity")}>
           <option value="">{t("filterCity")}: {t("all")}</option>
-          {facets.cities.map((c) => <option key={c}>{c}</option>)}
+          {facets.cities.map((c) => <option key={c} value={c}>{cityLabel(c, lang)}</option>)}
         </Select>
         <Select name="industry" defaultValue={filters.industry ?? ""} aria-label={t("filterIndustry")}>
           <option value="">{t("filterIndustry")}: {t("all")}</option>
-          {facets.industries.map((c) => <option key={c}>{c}</option>)}
+          {facets.industries.map((c) => <option key={c} value={c}>{industryLabel(c, lang)}</option>)}
         </Select>
         <Select name="skill" defaultValue={filters.skill ?? ""} aria-label={t("filterSkill")}>
           <option value="">{t("filterSkill")}: {t("all")}</option>
-          {facets.skills.map((c) => <option key={c}>{c}</option>)}
+          {facets.skills.map((c) => <option key={c} value={c}>{skillLabel(c)}</option>)}
         </Select>
         <button className={buttonClass("primary")}>{t("searchButton")}</button>
       </form>
@@ -115,17 +121,17 @@ export default async function ChallengesPage({
                 <div className="mb-2 flex flex-wrap items-center gap-2">
                   <StatusBadge status={brief.status} />
                   <GroundingBadge level={brief.groundingLevel} />
-                  {brief.isSynthetic && <Badge tone="violet">合成 / Synthetic</Badge>}
+                  {brief.isSynthetic && <Badge tone="violet">{tc("synthetic")}</Badge>}
                 </div>
                 <h2 className="text-lg font-semibold">{brief.content[lang].title}</h2>
-                <p className="mt-1 text-sm text-slate-500">
-                  {business.name} · {business.city}
-                  {business.ward ? ` ${business.ward}` : ""} · {business.industry}
+                <p className="mt-1 text-sm text-muted">
+                  {business.name} · {cityLabel(business.city, lang)}
+                  {business.ward ? ` ${business.ward}` : ""} · {industryLabel(business.industry, lang)}
                 </p>
                 <p className="mt-3 line-clamp-3 text-sm text-slate-700 dark:text-slate-300">{brief.content[lang].problem}</p>
                 <div className="mt-4 flex flex-wrap gap-1">
                   {brief.hoursLostPerWeek != null && <Badge tone="amber">{t("hours", { n: brief.hoursLostPerWeek })}</Badge>}
-                  {brief.skillsNeeded.map((s) => <Badge key={s}>{s}</Badge>)}
+                  {brief.skillsNeeded.map((s) => <Badge key={s}>{skillLabel(s)}</Badge>)}
                 </div>
               </Card>
             </Link>

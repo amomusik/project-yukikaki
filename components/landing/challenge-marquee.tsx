@@ -82,7 +82,7 @@ async function Row({ items, lang, reverse, duration }: { items: MarqueeChallenge
 }
 
 /**
- * Two rows drifting in opposite directions; hover or keyboard focus pauses them.
+ * Two rows drifting in opposite directions; hover, keyboard focus or the MarqueePause button stops them.
  * With prefers-reduced-motion the second row and the loop copies disappear,
  * leaving one static, horizontally scrollable row of every challenge (see globals.css).
  */
@@ -90,7 +90,7 @@ export async function ChallengeMarquee({ items, lang, label }: { items: MarqueeC
   if (!items.length) return null;
   const second = [...items].reverse();
   return (
-    <div role="region" aria-label={label} className="space-y-3">
+    <div id="challenge-marquee" role="region" aria-label={label} className="space-y-3">
       <Row items={items} lang={lang} duration={Math.max(50, items.length * 11)} />
       {items.length > 1 && <Row items={second} lang={lang} reverse duration={Math.max(60, items.length * 13)} />}
     </div>

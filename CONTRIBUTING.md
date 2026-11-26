@@ -38,6 +38,15 @@ pnpm drizzle-kit check
 
 No hard-coded user-facing text. Add each key to **both** `messages/en.json` and `messages/ja.json` in the same PR. Japanese is the default locale. If you can't write natural Japanese, add your best attempt and say so in the PR so a native speaker can review it.
 
+## Design & UX review
+
+[DESIGN.md](DESIGN.md) is the design source of truth: palette tokens, type scale, motion and pixel-art rules, voice and fixed terms (challenge, owner, builder, host), accessibility targets (WCAG 2.2 AA) and do's and don'ts. Impeccable reads it, so its checks follow our system.
+
+- **Before every PR that touches UI:** run `pnpm design:check` (static scan of `app/` and `components/`) and fix new findings or explain them in the PR. CI runs the same scan as a non-blocking job and uploads the report as the `impeccable-design-report` artifact.
+- **Rendered check:** `pnpm design:check:live` scans the production site; `DESIGN_URL=http://127.0.0.1:3100 pnpm design:check:live` scans your dev server. Add `DESIGN_VIEWPORT=390x844` or `DESIGN_SCHEME=dark` for the other passes.
+- **When the brand changes** (palette, type, hero, voice, terms), update DESIGN.md in the same PR.
+- **Monthly review:** once a month, walk the key journeys (owner brings a problem, builder finds and joins an event, host reviews, visitor checks grants) at 1440×900 and 390×844, light and dark, EN and JA. Review with the Impeccable agents in `.github/agents/`: `impeccable-finish-reviewer` for the finished surfaces and `impeccable-motion-reviewer` for motion and reduced motion. Record findings, fixed vs open, in `docs/design/review-<date>.md` (see the latest one for the format).
+
 ## No secrets, no personal data
 
 - Never commit `.env.local`, API keys, tokens or real interview recordings or transcripts. `.env*` is git-ignored except `.env.example`.

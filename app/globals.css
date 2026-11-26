@@ -323,7 +323,8 @@ body {
   animation-direction: reverse;
 }
 .yk-marquee:hover .yk-marquee__track,
-.yk-marquee:focus-within .yk-marquee__track {
+.yk-marquee:focus-within .yk-marquee__track,
+[data-marquee-paused] .yk-marquee__track {
   animation-play-state: paused;
 }
 @keyframes yk-marquee {
