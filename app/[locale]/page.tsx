@@ -231,8 +231,8 @@ export default async function Landing({
           <span className="mt-1 block text-xs text-sky-100/80">{lang === "ja" ? "プレビューを見る ↓" : "Try the preview ↓"}</span>
         </a>
         {testimonials[0] && (
-          <figure className="absolute bottom-[12%] right-4 z-10 hidden max-w-xs rounded-2xl border border-white/20 bg-night/70 p-4 text-left text-white shadow-xl backdrop-blur-md lg:block xl:right-10">
-            <blockquote lang={hasJapanese(testimonials[0].quote) ? "ja" : undefined} className="text-sm leading-relaxed">“{testimonials[0].quote}”</blockquote>
+          <figure className="absolute right-6 top-[14%] z-10 hidden max-w-[15rem] border-l-2 border-lantern/70 pl-3 text-left text-white/90 lg:block xl:right-12">
+            <blockquote lang={hasJapanese(testimonials[0].quote) ? "ja" : undefined} className="text-xs italic leading-relaxed">“{testimonials[0].quote}”</blockquote>
             <figcaption className="mt-2 text-xs text-sky-100/80">
               — {testimonials[0].businessName} · {cityLabel(testimonials[0].city, lang)} · <span className="text-lantern">{"★".repeat(testimonials[0].satisfaction)}</span>
               {testimonials[0].isDemo && <span className="ml-1 opacity-70">({tc("demoData")})</span>}
