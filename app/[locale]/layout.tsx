@@ -5,9 +5,15 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/header";
+import { authEnabled } from "@/lib/env";
 import { YukikakiMark } from "@/components/landing/mark";
 import { MobileActionBar } from "@/components/landing/mobile-action-bar";
 import { routing } from "@/i18n/routing";
+
+// Without Clerk keys (fresh clone) there is no ClerkProvider: the app renders signed-out with sign-in disabled.
+function NoAuth({ children }: React.ComponentProps<typeof ClerkProvider>) {
+  return <>{children}</>;
+}
 
 // Every page depends on the signed-in user and live data, so render on request.
 export const dynamic = "force-dynamic";
@@ -33,9 +39,10 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const t = await getTranslations("landing");
   const tn = await getTranslations("nav");
+  const Auth = authEnabled() ? ClerkProvider : NoAuth;
 
   return (
-    <ClerkProvider
+    <Auth
       localization={locale === "ja" ? jaJP : enUS}
       signInUrl={`/${locale}/sign-in`}
       signUpUrl={`/${locale}/sign-up`}
@@ -88,6 +95,6 @@ export default async function LocaleLayout({
           </NextIntlClientProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </Auth>
   );
 }

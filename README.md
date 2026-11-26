@@ -4,6 +4,10 @@
 
 *Your test kitchen for hackathons.* · Peatix or Luma for hackathons, with the prep done and the funding found.
 
+[![Live demo](https://img.shields.io/badge/live%20demo-project--yukikaki.vercel.app-0b1a2e)](https://project-yukikaki.vercel.app)
+
+**Live demo:** https://project-yukikaki.vercel.app
+
 **English** · [日本語](#日本語) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -141,7 +145,13 @@ Neon is the source of truth; Neo4j is a projection that `pnpm graph:rebuild` can
 - Node.js 22 (the version CI uses) and [pnpm](https://pnpm.io)
 - For a full live setup, accounts with Clerk, Neon, Neo4j Aura, ElevenLabs, Linkup, Dify, Adaption Labs and Resend (all have free tiers or trials)
 
-For local development, only a database is a hard dependency. Without `DATABASE_URL` the app uses an embedded PGlite database in `./.data/pglite`. Without Clerk keys it runs in Clerk's keyless dev mode. Each other service falls back as described in [docs/architecture.md](docs/architecture.md) until you add its key.
+**Insert your own production keys into your .env.local variables — Yukikaki does not use Clerk keyless dev mode.**
+
+**What works with zero keys.** With every value in `.env.local` empty, `pnpm db:push && pnpm seed` (optionally `pnpm seed:events`) fills an embedded PGlite database in `./.data/pglite`, and `pnpm dev` lets you browse the public pages on that seeded demo data: the landing page, challenges and challenge detail, events and event detail, grants, impact-check links and the 404 page. That is all. Sign-in and every live feature need real keys:
+
+- Without the two Clerk keys, sign-in is turned off. The header shows "Sign-in not configured", and sign-in, sign-up and every signed-in page (`/interview`, `/me`, `/onboarding`, `/teams/*`, `/admin`, `/events/new`) redirect to a page that says which keys to set. API routes that need a user return 401.
+- **Clerk** unlocks sign-in, roles, the owner interview, RSVPs, teams, delivery and the host admin. **Neon** (`DATABASE_URL`) replaces local PGlite and is required on Vercel. **ElevenLabs** adds the voice interview and impact call (otherwise owners use the text form). **Linkup** and **Adaption Labs** ground new briefs in live data. **Dify** runs the AI brief and team reviews. **Neo4j** powers the challenge graph and builder suggestions (otherwise "Graph unavailable" and SQL suggestions). **Resend** sends email (otherwise hosts copy links from `/admin`).
+- With `REQUIRE_LIVE_SERVICES` unset or `false` (local development only), a missing partner service doesn't crash anything: the pipeline uses the labelled fallbacks in [docs/architecture.md](docs/architecture.md) or records the issue on the brief. **Live-only mode** (`REQUIRE_LIVE_SERVICES=true`) is for production: no pre-baked substitutes, and `pnpm check:services` fails unless all 8 services, Clerk and Neon included, are live. Pages still render; missing pieces show an explanatory state.
 
 ### 1. Clone and install
 
@@ -162,7 +172,7 @@ Every variable in [`.env.example`](.env.example):
 | `HOST_EMAILS` | Comma-separated emails that become town hosts (admins) on first sign-in | Your hosts' addresses |
 | `FEEDBACK_TOKEN_SECRET` | Signs one-time impact-check links (32+ chars; required in production) | `openssl rand -hex 32` |
 | `REQUIRE_LIVE_SERVICES` | `true` = live-only mode (no pre-baked fallbacks) | Set `true` for demos and production |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key (leave empty locally for keyless mode) | [dashboard.clerk.com](https://dashboard.clerk.com) |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk publishable key. Both Clerk keys are needed for sign-in; with either empty, sign-in is off and only public pages work | [dashboard.clerk.com](https://dashboard.clerk.com) |
 | `CLERK_SECRET_KEY` | Clerk secret key | [dashboard.clerk.com](https://dashboard.clerk.com) |
 | `DATABASE_URL` | Neon Postgres connection string (empty = local PGlite) | [console.neon.tech](https://console.neon.tech) |
 | `NEO4J_URI` | Neo4j Aura URI, `neo4j+s://<instance-id>.databases.neo4j.io` | [console.neo4j.io](https://console.neo4j.io) |
@@ -181,9 +191,11 @@ Every variable in [`.env.example`](.env.example):
 | `RESEND_API_KEY` | Resend API key | [resend.com](https://resend.com) |
 | `EMAIL_FROM` | Sender, e.g. `"Yukikaki <noreply@mail.yourtown.example.jp>"` (must be on a verified domain) | Resend → Domains |
 
+**Insert your own production keys into your .env.local variables — Yukikaki does not use Clerk keyless dev mode.** Empty values are allowed only for browsing public pages locally (see above).
+
 ### 3. Set up each service
 
-- **Clerk.** Create an application and copy both keys (or leave them empty for local keyless mode). With the Clerk CLI: `clerk apps create`, then `clerk env pull`.
+- **Clerk.** Create an application and copy both keys into `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY`. Insert your own production keys into your .env.local variables — Yukikaki does not use Clerk keyless dev mode. Without them, sign-in is off and protected pages explain what to set.
 - **Neon.** Create a project in region **aws-ap-southeast-1** (Singapore, the closest to Japan) and copy the connection string.
 - **Neo4j Aura Free.** In the Aura console, **Create instance → Free**. Copy the password before closing the credentials screen, because it is shown only once. An idle Free instance pauses after a few days (resume it from the console) and is deleted after 30 days paused. Since Neon is the source of truth, `pnpm graph:rebuild` restores the graph onto a new instance.
 - **ElevenLabs.** Add `ELEVENLABS_API_KEY`, then run `pnpm setup:elevenlabs`. This creates or updates both voice agents from [docs/elevenlabs-agents.md](docs/elevenlabs-agents.md) and writes their ids into `.env.local`.
@@ -332,6 +344,10 @@ Powered by [ElevenLabs](https://elevenlabs.io) · [Linkup](https://www.linkup.so
 
 *ハッカソンのための、まちのテストキッチン。* · ハッカソン版の Peatix／Luma。準備も資金探しもまとめて。
 
+[![Live demo](https://img.shields.io/badge/live%20demo-project--yukikaki.vercel.app-0b1a2e)](https://project-yukikaki.vercel.app)
+
+**デモサイト:** https://project-yukikaki.vercel.app
+
 <img src="docs/screenshots/landing-ja-mobile.jpg" alt="スマートフォンで表示した日本語のトップページ" width="280">
 
 Yukikaki は、地域の困りごとが動く試作品になるまでの道のりを短くします。課題を見つけ、下ごしらえを済ませ、資金の当てをつけて、ビルダーが最初の1時間から取りかかれる課題を手渡します。
@@ -456,7 +472,13 @@ Drizzle のスキーマは `lib/db/schema.ts`、マイグレーションは `dri
 - Node.js 22（CI と同じバージョン）と [pnpm](https://pnpm.io)
 - すべてを実際に動かす場合は、Clerk・Neon・Neo4j Aura・ElevenLabs・Linkup・Dify・Adaption Labs・Resend のアカウント（いずれも無料枠またはトライアルあり）
 
-ローカル開発で必須なのはデータベースだけです。`DATABASE_URL` が空なら `./.data/pglite` の組み込み PGlite を使い、Clerk のキーが空なら Clerk のキーレス開発モードで動きます。その他のサービスは、キーを設定するまで [docs/architecture.md](docs/architecture.md) に書かれた代替手段で動きます。
+**ご自身の本番用キーを .env.local の各変数に設定してください。Yukikaki は Clerk のキーレス開発モードを使用していません。**
+
+**キーなしで動くもの：** `.env.local` をすべて空のまま `pnpm db:push && pnpm seed`（必要なら `pnpm seed:events`）を実行すると、`./.data/pglite` の組み込み PGlite にデモデータが入り、`pnpm dev` で公開ページを閲覧できます（トップページ、課題一覧と詳細、イベント一覧と詳細、助成金、効果確認リンク、404 ページ）。できるのはそこまでです。ログインとすべてのライブ機能には本物のキーが必要です。
+
+- Clerk の2つのキーがなければログインは無効です。ヘッダーには「ログイン未設定」と表示され、ログイン・新規登録・ログインが必要なページ（`/interview`、`/me`、`/onboarding`、`/teams/*`、`/admin`、`/events/new`）は、設定すべきキーを説明するページに移動します。ユーザーが必要な API は 401 を返します。
+- **Clerk** でログイン・役割・事業者インタビュー・参加申込・チーム・納品・ホスト管理画面が使えます。**Neon**（`DATABASE_URL`）はローカルの PGlite の代わりで、Vercel では必須です。**ElevenLabs** で音声インタビューと効果確認の通話（なければテキストフォーム）、**Linkup** と **Adaption Labs** で新しいブリーフの裏付けデータ、**Dify** で AI によるブリーフ・チームのレビュー、**Neo4j** で課題グラフとビルダー提案（なければ「グラフを利用できません」と SQL による提案）、**Resend** でメール送信（なければ `/admin` でリンクをコピー）が有効になります。
+- `REQUIRE_LIVE_SERVICES` が未設定または `false` のとき（ローカル開発のみ）、パートナーサービスが未設定でも落ちません。パイプラインは [docs/architecture.md](docs/architecture.md) のラベル付き代替手段を使うか、問題をブリーフに記録します。**ライブ専用モード**（`REQUIRE_LIVE_SERVICES=true`）は本番用です。事前取得データでの代用はせず、Clerk と Neon を含む8つのサービスすべてが稼働していないと `pnpm check:services` は失敗します。ページは表示され、足りない部分には説明が出ます。
 
 #### 1. クローンとインストール
 
@@ -477,7 +499,7 @@ cp .env.example .env.local
 | `HOST_EMAILS` | 初回ログイン時にホスト（管理者）になるメールアドレス（カンマ区切り） | ホストのアドレス |
 | `FEEDBACK_TOKEN_SECRET` | 1回限りの効果確認リンクの署名（32文字以上、本番では必須） | `openssl rand -hex 32` |
 | `REQUIRE_LIVE_SERVICES` | `true` でライブ専用モード（事前取得データでの代用なし） | デモと本番では `true` |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk の公開キー（ローカルでは空でキーレスモード） | [dashboard.clerk.com](https://dashboard.clerk.com) |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk の公開キー。ログインには Clerk の2つのキーが両方必要です。どちらかが空ならログインは無効で、公開ページのみ動きます | [dashboard.clerk.com](https://dashboard.clerk.com) |
 | `CLERK_SECRET_KEY` | Clerk のシークレットキー | [dashboard.clerk.com](https://dashboard.clerk.com) |
 | `DATABASE_URL` | Neon Postgres の接続文字列（空ならローカルの PGlite） | [console.neon.tech](https://console.neon.tech) |
 | `NEO4J_URI` | Neo4j Aura の URI（`neo4j+s://<instance-id>.databases.neo4j.io`） | [console.neo4j.io](https://console.neo4j.io) |
@@ -496,9 +518,11 @@ cp .env.example .env.local
 | `RESEND_API_KEY` | Resend の API キー | [resend.com](https://resend.com) |
 | `EMAIL_FROM` | 送信元（例：`"Yukikaki <noreply@mail.yourtown.example.jp>"`。認証済みドメインが必要） | Resend → Domains |
 
+**ご自身の本番用キーを .env.local の各変数に設定してください。Yukikaki は Clerk のキーレス開発モードを使用していません。** キーを空のままにできるのは、ローカルで公開ページを閲覧する場合だけです（上記参照）。
+
 #### 3. 各サービスの設定
 
-- **Clerk**：アプリを作成して2つのキーをコピーします（ローカルでは空のままキーレスモードでも動きます）。Clerk CLI なら `clerk apps create` → `clerk env pull` です。
+- **Clerk**：アプリを作成して2つのキーを `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` と `CLERK_SECRET_KEY` にコピーします。ご自身の本番用キーを .env.local の各変数に設定してください。Yukikaki は Clerk のキーレス開発モードを使用していません。キーがなければログインは無効で、ログインが必要なページには設定方法が表示されます。
 - **Neon**：リージョン **aws-ap-southeast-1**（シンガポール、日本に最も近い）でプロジェクトを作成し、接続文字列をコピーします。
 - **Neo4j Aura Free**：Aura のコンソールで **Create instance → Free** を選びます。パスワードは一度しか表示されないので、画面を閉じる前にコピーしてください。使われていない Free インスタンスは数日で一時停止し（コンソールから再開できます）、停止したまま30日経つと削除されます。正となるデータは Neon にあるので、新しいインスタンスでも `pnpm graph:rebuild` でグラフを復元できます。
 - **ElevenLabs**：`ELEVENLABS_API_KEY` を設定して `pnpm setup:elevenlabs` を実行します。[docs/elevenlabs-agents.md](docs/elevenlabs-agents.md) の内容から2つの音声エージェントを作成（既存なら更新）し、ID を `.env.local` に書き込みます。

@@ -10,11 +10,13 @@ Requires Node.js 22 and pnpm (the version pinned in `.github/workflows/ci.yml`).
 git clone https://github.com/amomusik/project-yukikaki.git
 cd project-yukikaki
 pnpm install
-cp .env.example .env.local   # leave values empty to use local fallbacks
+cp .env.example .env.local   # empty values = browse public pages only; add your own keys for the rest
 pnpm dev
 ```
 
-Without `DATABASE_URL` the app uses embedded PGlite (`./.data/pglite`). Without Clerk keys it runs in Clerk's keyless dev mode. Partner services fall back as described in [docs/architecture.md](docs/architecture.md). See the README [Quick start](README.md#quick-start) for the full setup.
+Insert your own production keys into your .env.local variables — Yukikaki does not use Clerk keyless dev mode.
+
+With every value empty, run `pnpm db:push && pnpm seed` first: the app then uses embedded PGlite (`./.data/pglite`) and you can browse the public pages (challenges, events, grants) on seeded demo data. Sign-in is off without both Clerk keys (protected pages explain what to set), and every live feature needs its real key. With `REQUIRE_LIVE_SERVICES` off, missing partner services use the labelled fallbacks in [docs/architecture.md](docs/architecture.md); live-only mode (`REQUIRE_LIVE_SERVICES=true`) is for production. See the README [Quick start](README.md#quick-start) for the full setup.
 
 ## Before you open a PR
 

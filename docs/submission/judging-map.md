@@ -51,7 +51,7 @@ Also:
 | MIT licence, public repo | `LICENSE`, `package.json` (`"license": "MIT"`) |
 | Fork for any town in five steps | `README.md` → "Run it in your town": `lib/grounding/city-profiles.ts`, `lib/grounding/industry-neighbors.ts`, `seed/seed.json` (schema in `lib/seed-schema.ts`), `/events/new` |
 | Reproducible AI setup | Dify DSL files in `dify/`. `pnpm setup:elevenlabs`, `pnpm dify:build`, `pnpm smoke:dify`, `pnpm prebake` |
-| Runs locally with no cloud accounts for development | PGlite fallback in `lib/db/pglite.ts`; Clerk keyless dev mode |
+| Runs locally with no cloud accounts for browsing | PGlite fallback in `lib/db/pglite.ts` + seeded demo data; without Clerk keys public pages render and protected pages explain setup (`authEnabled()` in `lib/env.ts`). Sign-in and live features need your own keys; Yukikaki does not use Clerk keyless dev mode |
 | Docs for operators and contributors | `docs/operator-guide.md`, `docs/deploy.md`, `docs/architecture.md`, `CONTRIBUTING.md`, `SECURITY.md` |
 | Public JSON APIs | `/api/events`, `/api/challenges/search?q=`, `/api/grants`, `/api/events/[slug]/ics` |
 

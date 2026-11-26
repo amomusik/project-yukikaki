@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { env } from "@/lib/env";
+import { authEnabled, env } from "@/lib/env";
 import { checkFeedbackToken } from "@/lib/feedback";
 import { getSignedUrl } from "@/lib/integrations/elevenlabs";
 import { withFallback } from "@/lib/integrations/_guard";
@@ -14,6 +14,7 @@ export async function GET(req: Request) {
   const agent = url.searchParams.get("agent");
   let agentId: string | undefined;
   if (agent === "interview") {
+    if (!authEnabled()) return new NextResponse("unauthorized: sign-in is not configured (set the Clerk keys)", { status: 401 });
     const { userId } = await auth();
     if (!userId) return new NextResponse("unauthorized", { status: 401 });
     agentId = env.ELEVENLABS_INTERVIEW_AGENT_ID;

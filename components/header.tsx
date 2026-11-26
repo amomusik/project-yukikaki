@@ -2,6 +2,7 @@ import { SignInButton, UserButton } from "@clerk/nextjs";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ensureUser } from "@/lib/auth";
+import { authEnabled } from "@/lib/env";
 import { MobileNav, type NavItem } from "./landing/mobile-nav";
 import { MarkFlurry } from "./landing/mark-flurry";
 import { LocaleToggle } from "./locale-toggle";
@@ -54,7 +55,12 @@ export async function Header({ locale }: { locale: string }) {
           <div className="hidden sm:block">
             <LocaleToggle locale={locale} label={t("language")} ariaLabel={t("switchLanguage")} />
           </div>
-          {user ? (
+          {!authEnabled() ? (
+            // No Clerk keys (fresh clone): Clerk's buttons would crash without <ClerkProvider>.
+            <span className="hidden rounded-full border border-line px-3 py-1 text-xs text-muted sm:inline" title="NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY / CLERK_SECRET_KEY">
+              {locale === "ja" ? "ログイン未設定" : "Sign-in not configured"}
+            </span>
+          ) : user ? (
             <UserButton />
           ) : (
             <SignInButton mode="redirect">

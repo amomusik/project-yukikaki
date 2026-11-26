@@ -67,6 +67,8 @@ export function feedbackSecret(): string {
   return env.FEEDBACK_TOKEN_SECRET ?? "dev-only-insecure-feedback-secret-change-me";
 }
 
+export { authEnabled } from "./auth-config";
+
 /** Live-only mode: every partner service must be configured; no pre-baked substitutes. */
 export function requireLiveServices(): boolean {
   return ["1", "true", "yes"].includes((env.REQUIRE_LIVE_SERVICES ?? "").toLowerCase());

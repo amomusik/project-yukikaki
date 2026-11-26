@@ -8,6 +8,11 @@ const clerk = vi.hoisted(() => ({
   updateUserMetadata: vi.fn(async () => ({})),
 }));
 vi.mock("server-only", () => ({}));
+// lib/auth only consults Clerk when both keys are set (see authEnabled()).
+vi.hoisted(() => {
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_dummy";
+  process.env.CLERK_SECRET_KEY = "sk_test_dummy";
+});
 vi.mock("@clerk/nextjs/server", () => ({
   auth: async () => ({ userId: clerk.userId }),
   currentUser: async () => clerk.user,

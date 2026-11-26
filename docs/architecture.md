@@ -153,13 +153,14 @@ graph LR
 | `decisions` | Audit log of host decisions | `subject_type` (brief/team), `subject_id`, `decided_by`, `decision`, `note` |
 | `service_events` | One row per external call | `service`, `operation`, `ok`, `latency_ms`, `error` |
 
-Database connection (`lib/db/index.ts`): Neon serverless driver via `DATABASE_URL` (create the Neon project in `aws-ap-southeast-1`, the closest region to Japan). Unit tests use in-memory PGlite (`PGLITE_DIR=memory://`) with the same schema and queries.
+Database connection (`lib/db/index.ts`): Neon serverless driver via `DATABASE_URL` (create the Neon project in `aws-ap-southeast-1`, the closest region to Japan). With `DATABASE_URL` empty (local development only; refused on Vercel) it uses embedded PGlite in `./.data/pglite`, registered at server start by `instrumentation.ts` → `lib/db/register-pglite.ts`. Tests use in-memory PGlite (`PGLITE_DIR=memory://`) with the same schema and queries.
 
 ## Roles and auth
 
-- Clerk (v7, keys required) handles sign-in. `ensureUser()` (`lib/auth.ts`) mirrors the Clerk user into `users` on first request — no Clerk webhook needed.
+- Clerk (v7) handles sign-in. Insert your own production keys into your .env.local variables — Yukikaki does not use Clerk keyless dev mode. `ensureUser()` (`lib/auth.ts`) mirrors the Clerk user into `users` on first request — no Clerk webhook needed.
+- Without both Clerk keys (`authEnabled()` in `lib/env.ts` is false), sign-in is off: `middleware.ts` runs only next-intl and sends `/sign-in` and `/sign-up` to `/[locale]/auth-setup`, the layout skips `<ClerkProvider>`, the header shows "Sign-in not configured", `ensureUser()` returns `null` without calling Clerk, `requireUser()`/`requireRole()` redirect to `/[locale]/auth-setup`, and auth-only API routes return 401. Public pages keep working.
 - Emails listed in `HOST_EMAILS` become `host` automatically. Other users pick `business` or `student` during onboarding; host can never be self-selected.
-- Middleware requires sign-in for `/admin`, `/interview`, `/teams`, `/me` and `/onboarding`. Role checks (host-only admin, lead-only delivery and lead transfer) happen on the server.
+- Sign-in is enforced where data is accessed, not by middleware path matching: `requireUser()`/`requireRole()` in the pages and server actions for `/admin`, `/interview`, `/teams`, `/me`, `/onboarding` and `/events/new`, and `auth()` in API routes. Role checks (host-only admin, lead-only delivery and lead transfer) happen on the server.
 
 ## Service failures (live-only mode)
 
@@ -173,7 +174,7 @@ All 8 services are required. When a call fails at runtime, nothing is silently r
 | Neo4j | Graph panels show "Graph unavailable"; builder suggestions computed in SQL; if the Aura Free instance is paused, resume it from the Aura console; fix with `pnpm graph:rebuild` (also restores the graph onto a new instance) |
 | ElevenLabs | Voice unavailable; the owner can use the text form on `/interview` |
 | Resend | Email not sent; link shown in `/admin` with a Copy button |
-| Neon, Clerk | Required; the app cannot run |
+| Neon, Clerk | Required in production. Locally, an empty `DATABASE_URL` uses embedded PGlite; without Clerk keys sign-in is off and only public pages work |
 
 `pnpm check:services` checks all 8; `pnpm tsx scripts/inspect-latest.ts` shows the newest brief's sources, stand-in data, AI review and the `service_events` since it was created.
 

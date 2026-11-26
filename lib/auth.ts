@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getDb, schema } from "@/lib/db";
 import type { User } from "@/lib/db/schema";
-import { hostEmails } from "@/lib/env";
+import { authEnabled, hostEmails } from "@/lib/env";
 import { syncBuilder } from "@/lib/graph/sync";
 
 export type Role = "business" | "student" | "host";
@@ -14,6 +14,8 @@ export type Role = "business" | "student" | "host";
  * Emails listed in HOST_EMAILS are promoted to host on first sight.
  */
 export async function ensureUser(): Promise<User | null> {
+  // No Clerk keys → no sessions. Calling auth() here would throw (clerkMiddleware isn't running).
+  if (!authEnabled()) return null;
   const { userId } = await auth();
   if (!userId) return null;
   const db = getDb();
@@ -81,7 +83,11 @@ export async function chooseRole(role: "business" | "student", skills: string[] 
   return u;
 }
 
+/** Where protected pages send visitors when sign-in isn't configured (no Clerk keys). */
+export const authSetupPath = (locale: string) => `/${locale}/auth-setup`;
+
 export async function requireUser(locale: string): Promise<User> {
+  if (!authEnabled()) redirect(authSetupPath(locale));
   const user = await ensureUser();
   if (!user) redirect(`/${locale}/sign-in`);
   if (!user.role) redirect(`/${locale}/onboarding`);

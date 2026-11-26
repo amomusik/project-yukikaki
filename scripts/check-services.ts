@@ -1,7 +1,7 @@
 import "./load-env";
 import { sql } from "drizzle-orm";
 import { getDb, dbKind } from "@/lib/db";
-import { configured, env, requireLiveServices } from "@/lib/env";
+import { authEnabled, configured, env, requireLiveServices } from "@/lib/env";
 import { closeDriver, getDriver } from "@/lib/graph/client";
 import { linkupSearch } from "@/lib/integrations/linkup";
 
@@ -28,8 +28,8 @@ async function http(url: string, headers: Record<string, string>) {
 
 async function main() {
   const lines: Line[] = await Promise.all([
-    check("clerk", true, "keyless dev mode", async () => {
-      if (!process.env.CLERK_SECRET_KEY) return "keyless dev mode (temporary keys; fine for local)";
+    // No keyless mode: without both keys sign-in is off and only public pages work.
+    check("clerk", authEnabled(), "sign-in disabled; public pages only, protected pages explain setup", async () => {
       await http("https://api.clerk.com/v1/users?limit=1", { Authorization: `Bearer ${process.env.CLERK_SECRET_KEY}` });
       return "API key valid";
     }),
