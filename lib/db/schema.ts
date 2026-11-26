@@ -275,6 +275,84 @@ export const grantMatches = pgTable(
   (t) => [uniqueIndex("grant_matches_brief_source_ext").on(t.briefId, t.source, t.externalId)],
 );
 
+/** "Bring any team" (coming soon) waitlist from the landing page. One row per email. */
+export const waitlist = pgTable("waitlist", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull().unique(),
+  org: text("org"),
+  role: text("role").notNull(),
+  locale: text("locale").notNull(),
+  /** Roadmap features the signer cares about: "team" | "pm" | "points" (lib/party.ts). */
+  features: text("features").array().notNull().default(sql`'{}'::text[]`),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/* ── Events (hackathons, charrettes, test kitchens) — lib/events ──── */
+export const eventFormatEnum = pgEnum("event_format", ["hackathon", "charrette", "test_kitchen"]);
+export const eventStatusEnum = pgEnum("event_status", ["draft", "published", "cancelled"]);
+export const rsvpRoleEnum = pgEnum("rsvp_role", ["participant", "mentor", "owner", "observer"]);
+export const rsvpStatusEnum = pgEnum("rsvp_status", ["going", "waitlist", "cancelled"]);
+
+export const events = pgTable("events", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  title: jsonb("title").$type<Bilingual>().notNull(),
+  summary: jsonb("summary").$type<Bilingual>().notNull(),
+  format: eventFormatEnum("format").notNull(),
+  startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
+  endsAt: timestamp("ends_at", { withTimezone: true }).notNull(),
+  timezone: text("timezone").notNull().default("Asia/Tokyo"),
+  city: text("city").notNull(),
+  venueName: text("venue_name").notNull(),
+  venueAddress: text("venue_address").notNull(),
+  onlineUrl: text("online_url"),
+  capacity: integer("capacity").notNull(),
+  status: eventStatusEnum("status").notNull().default("draft"),
+  hostUserId: uuid("host_user_id").references(() => users.id, { onDelete: "set null" }),
+  coverImage: text("cover_image"),
+  /** Demo/sample event created by scripts/seed-events.ts (shown with a "demo" badge). */
+  isDemo: boolean("is_demo").notNull().default(false),
+  ...timestamps,
+});
+
+export const eventChallenges = pgTable(
+  "event_challenges",
+  {
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    briefId: uuid("brief_id")
+      .notNull()
+      .references(() => briefs.id, { onDelete: "cascade" }),
+  },
+  (t) => [primaryKey({ columns: [t.eventId, t.briefId] })],
+);
+
+export const eventRsvps = pgTable(
+  "event_rsvps",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    eventId: uuid("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    role: rsvpRoleEnum("role").notNull().default("participant"),
+    status: rsvpStatusEnum("status").notNull().default("going"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("event_rsvps_event_user").on(t.eventId, t.userId)],
+);
+
+export type EventRow = typeof events.$inferSelect;
+export type NewEventRow = typeof events.$inferInsert;
+export type EventRsvp = typeof eventRsvps.$inferSelect;
+export type EventFormat = (typeof eventFormatEnum.enumValues)[number];
+export type EventStatus = (typeof eventStatusEnum.enumValues)[number];
+export type RsvpRole = (typeof rsvpRoleEnum.enumValues)[number];
+export type RsvpStatus = (typeof rsvpStatusEnum.enumValues)[number];
+
 export type User = typeof users.$inferSelect;
 export type Business = typeof businesses.$inferSelect;
 export type Brief = typeof briefs.$inferSelect;

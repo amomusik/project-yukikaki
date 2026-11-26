@@ -1,0 +1,395 @@
+{
+  "suite": "brief-review",
+  "startedAt": "2026-11-26T03:25:03.967Z",
+  "durationS": 69.195,
+  "metrics": [
+    {
+      "name": "json_validity",
+      "value": 1,
+      "threshold": 0.95
+    },
+    {
+      "name": "pii_recall (detected & nothing leaked)",
+      "value": 1,
+      "threshold": 0.9
+    },
+    {
+      "name": "pii_false_positive_rate",
+      "value": 0,
+      "threshold": 0.15,
+      "higherIsBetter": false
+    },
+    {
+      "name": "recommendation_accuracy",
+      "value": 1,
+      "threshold": 0.75
+    },
+    {
+      "name": "business_name_preservation",
+      "value": 0.778,
+      "threshold": 0.85,
+      "raw_value_as_run": 0.583,
+      "note": "rescored offline: 14/18 runs where the business name appears in the brief text (3 meta-only cases excluded)"
+    },
+    {
+      "name": "stability (same recommendation across runs)",
+      "value": 1,
+      "threshold": 0.75
+    }
+  ],
+  "cases": [
+    {
+      "id": "good-ramen (good brief)",
+      "pass": false,
+      "details": {
+        "expect": [
+          "approve"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "approve",
+            "score": 91,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": false,
+            "en_title": "Automating Reservation Management"
+          },
+          {
+            "run": 2,
+            "rec": "approve",
+            "score": 91,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": false,
+            "en_title": "Automating Reservation Management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pii-name-phone (PII (name + phone))",
+      "pass": true,
+      "details": {
+        "expect": [
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 91,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Regular Customer Reservation Management"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 91,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Managing Reservations for Regular Customers"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pii-email (PII (guest email))",
+      "pass": true,
+      "details": {
+        "expect": [
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 88,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Multilingual Email Responses"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 91,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Multilingual Email Responses"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mention-only (mention-only (no PII values))",
+      "pass": true,
+      "details": {
+        "expect": [
+          "approve"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "approve",
+            "score": 91,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Digitalization of Reservation Ledger"
+          },
+          {
+            "run": 2,
+            "rec": "approve",
+            "score": 88,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Digitalization of Reservation Ledger"
+          }
+        ]
+      }
+    },
+    {
+      "id": "romanized-name (romanized name)",
+      "pass": true,
+      "details": {
+        "expect": [
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 91,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Supplier orders"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 88,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Supplier orders"
+          }
+        ]
+      }
+    },
+    {
+      "id": "phone-variants (phone format variants)",
+      "pass": true,
+      "details": {
+        "expect": [
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 91,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Organizing Delivery Orders"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 91,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Organizing Delivery Orders"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ungrounded (ungrounded)",
+      "pass": false,
+      "details": {
+        "expect": [
+          "revise",
+          "reject"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 59,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": "n/a",
+            "en_title": "Inventory Management"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 59,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": "n/a",
+            "en_title": "Inventory Management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "national (national grounding only)",
+      "pass": false,
+      "details": {
+        "expect": [
+          "approve",
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 73,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": "n/a",
+            "en_title": "Streamlining Estimate Creation"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 73,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": "n/a",
+            "en_title": "Streamlining Estimate Creation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "out-of-scope (out of scope (licensed professional + ERP))",
+      "pass": false,
+      "details": {
+        "expect": [
+          "revise",
+          "reject"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 46,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": "n/a",
+            "en_title": "Tax Filing and Core System"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 46,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": "n/a",
+            "en_title": "Tax Filing and Core System"
+          }
+        ]
+      }
+    },
+    {
+      "id": "name-preservation (business name preservation)",
+      "pass": false,
+      "details": {
+        "expect": [
+          "approve",
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "approve",
+            "score": 88,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": false,
+            "en_title": "Accommodation Tax Calculation"
+          },
+          {
+            "run": 2,
+            "rec": "approve",
+            "score": 88,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": false,
+            "en_title": "Accommodation Tax Calculation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "pii-address (PII (home address))",
+      "pass": true,
+      "details": {
+        "expect": [
+          "revise"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "revise",
+            "score": 76,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Home Care Record Keeping"
+          },
+          {
+            "run": 2,
+            "rec": "revise",
+            "score": 76,
+            "pii_found": true,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Home Care Record Keeping"
+          }
+        ]
+      }
+    },
+    {
+      "id": "good-bakery-en (good brief (English source))",
+      "pass": true,
+      "details": {
+        "expect": [
+          "approve"
+        ],
+        "runs": [
+          {
+            "run": 1,
+            "rec": "approve",
+            "score": 91,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Daily bake planning"
+          },
+          {
+            "run": 2,
+            "rec": "approve",
+            "score": 91,
+            "pii_found": false,
+            "leaks": [],
+            "name_kept": true,
+            "en_title": "Daily bake planning"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

@@ -98,4 +98,3 @@ export const seedSchema = z.object({
     }),
   ),
 });
-export type Seed = z.infer<typeof seedSchema>;

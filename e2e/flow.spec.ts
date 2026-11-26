@@ -35,11 +35,11 @@ async function ensureRole(page: Page, role: "business" | "student") {
 test("landing renders in both languages; / defaults to English", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/en\/?$/);
-  await expect(page).toHaveTitle("Yukikaki — We clear the path before the builders arrive.");
+  await expect(page).toHaveTitle("Yukikaki — Your test kitchen for hackathons.");
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();
   await expect(page.locator("h1")).toContainText("Yukikaki");
   await expect(page.getByRole("heading", { level: 2, name: "Builders are not the bottleneck." })).toBeVisible();
-  await expect(page.getByRole("banner")).toContainText("We clear the path before the builders arrive.");
+  await expect(page.getByRole("banner")).toContainText("Your test kitchen for hackathons.");
   await expect(page.getByRole("combobox", { name: "Search challenges" })).toBeVisible();
   // The 8-bit scene is the default hero; ?hero=paper still opts into the paper-cut art.
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-hero", "pixel");
@@ -48,10 +48,10 @@ test("landing renders in both languages; / defaults to English", async ({ page }
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-hero", "papercut");
   await expect(page.locator("section[data-hero] img")).toHaveAttribute("src", /hero-yukikaki/);
   await page.goto("/ja");
-  await expect(page).toHaveTitle("雪かき Yukikaki — ビルダーが来る前に、道をひらく。");
+  await expect(page).toHaveTitle("雪かき Yukikaki — ハッカソンのための、まちのテストキッチン。");
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "ボトルネックは、ビルダーではありません。" })).toBeVisible();
-  await expect(page.getByRole("banner")).toContainText("ビルダーが来る前に、道をひらく。");
+  await expect(page.getByRole("banner")).toContainText("ハッカソンのための、まちのテストキッチン。");
 });
 
 test("owner files a brief with the text fallback; it lands in the host queue with grounding + fallbacks", async ({ page }) => {

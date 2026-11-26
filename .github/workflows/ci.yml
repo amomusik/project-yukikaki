@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Hermetic by default: no live partner services, PGlite instead of Neon.
+  REQUIRE_LIVE_SERVICES: ""
+  NEXT_TELEMETRY_DISABLED: "1"
+  PNPM_VERSION: "12.15.0"
+
+jobs:
+  static:
+    name: Typecheck · lint · knip · orphan audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: tsc
+        run: pnpm typecheck
+      - name: lint
+        run: pnpm lint
+      - name: knip (warning only for now)
+        run: pnpm knip --no-progress
+        continue-on-error: true
+      - name: Orphan audit (warning only for now)
+        run: pnpm audit:orphans --no-drizzle
+        continue-on-error: true
+      - name: Migrations match schema
+        run: pnpm drizzle-kit check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: orphan-audit
+          path: docs/audit/orphans-*.*
+          if-no-files-found: ignore
+
+  test:
+    name: Vitest (${{ matrix.suite }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [unit, integration, contract]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v5 # the PII scrubber test runs the Dify Python node
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - name: vitest --project ${{ matrix.suite }}
+        run: pnpm vitest run --project ${{ matrix.suite }} --coverage --coverage.reportsDirectory=coverage/${{ matrix.suite }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-${{ matrix.suite }}
+          path: coverage/${{ matrix.suite }}
+          if-no-files-found: ignore
+
+  e2e:
+    name: Playwright (next build && next start, PGlite)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    needs: [static]
+    # Clerk test keys are required for sign-in flows; skip the job cleanly when the repo has none.
+    env:
+      HAS_CLERK: ${{ secrets.CLERK_SECRET_KEY != '' }}
+      HAS_PARTNERS: ${{ secrets.DIFY_BRIEF_REVIEW_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.HAS_CLERK == 'true'
+      - uses: pnpm/action-setup@v4
+        if: env.HAS_CLERK == 'true'
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v4
+        if: env.HAS_CLERK == 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        if: env.HAS_CLERK == 'true'
+      - run: pnpm exec playwright install --with-deps chromium
+        if: env.HAS_CLERK == 'true'
+      - name: Write .env.local (Clerk test keys only — no DATABASE_URL, so the app uses PGlite)
+        if: env.HAS_CLERK == 'true'
+        run: |
+          {
+            echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}"
+            echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}"
+            echo "FEEDBACK_TOKEN_SECRET=ci-feedback-secret-0123456789abcdef0123"
+            echo "HOST_EMAILS=${{ secrets.E2E_HOST_EMAILS }}"
+            # Partner keys are optional; empty values make the app use its documented fallbacks.
+            echo "ELEVENLABS_API_KEY=${{ secrets.ELEVENLABS_API_KEY }}"
+            echo "LINKUP_API_KEY=${{ secrets.LINKUP_API_KEY }}"
+            echo "DIFY_BRIEF_REVIEW_KEY=${{ secrets.DIFY_BRIEF_REVIEW_KEY }}"
+            echo "DIFY_TEAM_REVIEW_KEY=${{ secrets.DIFY_TEAM_REVIEW_KEY }}"
+            echo "ADAPTION_API_KEY=${{ secrets.ADAPTION_API_KEY }}"
+          } > .env.local
+      - name: Accessibility smoke (public pages)
+        if: env.HAS_CLERK == 'true'
+        run: pnpm exec playwright test e2e/a11y.spec.ts
+      - name: Full flow (needs live partner keys — only when configured)
+        if: env.HAS_CLERK == 'true' && env.HAS_PARTNERS == 'true'
+        run: pnpm exec playwright test e2e/flow.spec.ts
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: failure() && env.HAS_CLERK == 'true'
+        with:
+          name: playwright-traces
+          path: test-results
+          if-no-files-found: ignore
+      - name: Skipped (no Clerk secrets configured)
+        if: env.HAS_CLERK != 'true'
+        run: echo "::notice::E2E skipped — add CLERK_SECRET_KEY and NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY repo secrets to enable."

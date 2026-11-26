@@ -1,0 +1,299 @@
+/* ── Kitchen quest: 8-bit test-kitchen walkthrough (components/landing/kitchen-quest.tsx) ── */
+
+/* Chunky two-tone pixel frame around scene + dialogue, like an old RPG window. */
+.kq-frame {
+  --kq-ink: #0b1a33;
+  --kq-rim: #e9eef7;
+  position: relative;
+  padding: 6px;
+  background: var(--kq-ink);
+  box-shadow:
+    0 0 0 4px var(--kq-rim),
+    0 0 0 8px var(--kq-ink),
+    8px 12px 0 8px rgb(11 26 51 / 0.18);
+  margin: 8px;
+}
+
+.kq-scroller {
+  scroll-behavior: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* Dialogue: the inner white rule of a classic RPG text window. */
+.kq-dialog {
+  margin-top: 6px;
+  box-shadow:
+    inset 0 0 0 3px var(--kq-rim),
+    inset 0 0 0 6px var(--kq-ink);
+}
+@media (min-width: 640px) {
+  .kq-dialog {
+    padding-inline: 1.75rem;
+  }
+}
+.kq-portrait {
+  width: 64px;
+  height: 64px;
+  padding: 6px;
+  background: #16304b;
+  box-shadow:
+    inset 0 0 0 3px var(--kq-rim),
+    inset 0 0 0 6px var(--kq-ink);
+}
+
+/* Lantern glow that slides with the walker. */
+.kq-glow {
+  background: radial-gradient(ellipse 50% 42% at 50% 70%, rgb(255 196 104 / 0.24), transparent 70%);
+  transition-property: left;
+  transition-timing-function: linear;
+  mix-blend-mode: screen;
+}
+
+/* ── Walker ── */
+.kq-walker {
+  transition-property: left;
+  transition-timing-function: linear;
+  z-index: 2;
+}
+.kq-shadow {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -4%;
+  height: 10%;
+  background: rgb(20 40 90 / 0.28);
+}
+.kq-kid {
+  position: relative;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 0 transparent);
+}
+.kq-frame-b {
+  visibility: hidden;
+}
+.kq-kid[data-walking] .kq-frame-a {
+  animation: kq-step-a 0.32s steps(1) infinite;
+}
+.kq-kid[data-walking] .kq-frame-b {
+  animation: kq-step-b 0.32s steps(1) infinite;
+}
+@keyframes kq-step-a {
+  0% {
+    visibility: visible;
+  }
+  50% {
+    visibility: hidden;
+  }
+}
+@keyframes kq-step-b {
+  0% {
+    visibility: hidden;
+  }
+  50% {
+    visibility: visible;
+  }
+}
+/* Idle: a slow two-frame breath so the kid never looks frozen. */
+.kq-walker:not([data-walking]) .kq-kid {
+  animation: kq-idle 1.6s steps(1) infinite;
+}
+@keyframes kq-idle {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 3.125%;
+  }
+}
+
+/* ── Hotspots: pulsing amber diamonds ── */
+.kq-hotspot {
+  z-index: 3;
+  cursor: pointer;
+}
+.kq-diamond {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  rotate: 45deg;
+  background: #e9a23b;
+  box-shadow:
+    0 0 0 3px #2b1a02,
+    3px 3px 0 3px rgb(4 12 26 / 0.55);
+  animation: kq-pulse 1.4s steps(2) infinite;
+  transition: scale 0.15s steps(2);
+}
+.kq-diamond__n {
+  rotate: -45deg;
+  font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #2b1a02;
+}
+.kq-hotspot:not([aria-current]) .kq-diamond {
+  background: #c9862c;
+  opacity: 0.82;
+}
+.kq-hotspot:hover .kq-diamond,
+.kq-hotspot:focus-visible .kq-diamond {
+  scale: 1.25;
+  opacity: 1;
+  background: #f6c372;
+}
+.kq-hotspot[aria-current] .kq-diamond {
+  background: #ffd27a;
+  animation: kq-bounce 0.9s steps(2) infinite;
+  box-shadow:
+    0 0 0 3px #2b1a02,
+    0 0 0 6px rgb(255 210 122 / 0.35),
+    3px 3px 0 3px rgb(4 12 26 / 0.55);
+}
+.kq-hotspot:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+@keyframes kq-pulse {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 0.82;
+  }
+}
+@keyframes kq-bounce {
+  0% {
+    translate: 0 0;
+  }
+  50% {
+    translate: -3px -3px;
+  }
+}
+@media (max-width: 639px) {
+  .kq-diamond {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ── Dialogue details ── */
+.kq-caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: #e9a23b;
+  animation: kq-blink 0.6s steps(1) infinite;
+}
+.kq-more {
+  animation: kq-nudge 0.8s steps(2) infinite;
+}
+.kq-cursor {
+  display: inline-block;
+  font-size: 0.75em;
+  animation: kq-nudge-x 0.8s steps(2) infinite;
+}
+.kq-reveal {
+  transition: opacity 0.2s steps(3);
+}
+@keyframes kq-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes kq-nudge {
+  50% {
+    translate: 0 3px;
+  }
+}
+@keyframes kq-nudge-x {
+  50% {
+    translate: 3px 0;
+  }
+}
+
+/* ── Step pips and buttons ── */
+.kq-pip {
+  width: 14px;
+  height: 14px;
+  background: var(--ice-strong, #c9dbea);
+  box-shadow: 0 0 0 2px var(--ink);
+  margin: 2px;
+  cursor: pointer;
+  transition: background 0.15s steps(2);
+}
+.kq-pip--done {
+  background: #c9862c;
+}
+.kq-pip--on {
+  background: #e9a23b;
+  width: 30px;
+}
+.kq-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: var(--ink);
+  background: var(--surface, #fff);
+  box-shadow:
+    0 0 0 2px var(--ink),
+    3px 3px 0 2px var(--ink);
+  transition:
+    translate 0.08s steps(1),
+    box-shadow 0.08s steps(1);
+}
+.kq-btn:hover:not(:disabled) {
+  background: var(--ice, #eef4fa);
+}
+.kq-btn:active:not(:disabled) {
+  translate: 3px 3px;
+  box-shadow: 0 0 0 2px var(--ink);
+}
+.kq-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.kq-btn--primary {
+  background: var(--lantern);
+  color: var(--lantern-ink);
+}
+.kq-btn--primary:hover:not(:disabled) {
+  background: var(--lantern-hover);
+}
+.kq-btn--quiet {
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ink) 35%, transparent);
+  font-weight: 600;
+  color: var(--muted, var(--ink));
+}
+.kq-btn:focus-visible,
+.kq-pip:focus-visible {
+  outline: 3px solid var(--lantern);
+  outline-offset: 4px;
+}
+
+/* ── Reduced motion: no walking, no typing, no pulsing; the kid jumps between stations. ── */
+@media (prefers-reduced-motion: reduce) {
+  .kq-walker,
+  .kq-glow {
+    transition: none !important;
+  }
+  .kq-kid,
+  .kq-kid .kq-frame-a,
+  .kq-kid .kq-frame-b,
+  .kq-diamond,
+  .kq-caret,
+  .kq-more,
+  .kq-cursor {
+    animation: none !important;
+  }
+  .kq-kid .kq-frame-b {
+    visibility: hidden;
+  }
+  .kq-reveal {
+    transition: none;
+  }
+}

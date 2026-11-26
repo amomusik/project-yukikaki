@@ -13,6 +13,7 @@
     "db:generate": "drizzle-kit generate",
     "db:push": "tsx scripts/db-migrate.ts",
     "seed": "tsx scripts/seed.ts",
+    "seed:events": "tsx scripts/seed-events.ts",
     "prebake": "tsx scripts/prebake.ts",
     "graph:rebuild": "tsx scripts/graph-rebuild.ts",
     "check:services": "tsx scripts/check-services.ts",
@@ -20,7 +21,14 @@
     "smoke:dify": "tsx scripts/smoke-dify.ts",
     "setup:elevenlabs": "tsx scripts/setup-elevenlabs.ts",
     "simulate:interview": "tsx scripts/simulate-interview.ts",
-    "vercel:env": "tsx scripts/vercel-env.ts"
+    "vercel:env": "tsx scripts/vercel-env.ts",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:contract": "vitest run --project contract",
+    "test:coverage": "vitest run --coverage",
+    "knip": "knip",
+    "audit:orphans": "tsx scripts/audit-orphans.ts",
+    "evals": "tsx evals/run.ts"
   },
   "dependencies": {
     "@clerk/localizations": "^4.26.3",
@@ -43,6 +51,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.1",
     "@clerk/backend": "^3.32.0",
     "@clerk/testing": "^2.3.7",
     "@eslint/eslintrc": "^3",
@@ -52,11 +61,13 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "5.1.1",
     "dotenv": "^18.0.10",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-config-next": "15.5.29",
     "js-yaml": "^5.5.0",
+    "knip": "^6.48.0",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",

@@ -1,0 +1,34 @@
+[
+ {
+  "city": "Sapporo",
+  "industry": "ramen"
+ },
+ {
+  "city": "Otaru",
+  "industry": "guesthouse"
+ },
+ {
+  "city": "Asahikawa",
+  "industry": "construction"
+ },
+ {
+  "city": "Hakodate",
+  "industry": "bakery"
+ },
+ {
+  "city": "Obihiro",
+  "industry": "farm"
+ },
+ {
+  "city": "Aomori",
+  "industry": "care"
+ },
+ {
+  "city": "Akita",
+  "industry": "brewery"
+ },
+ {
+  "city": "Sapporo",
+  "industry": "snow_removal"
+ }
+]

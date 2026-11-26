@@ -10,7 +10,6 @@ import { matchGrants, type BriefForMatching, type GrantMatch, type LinkupSearchF
 
 /** Grantline (Foundry Labs) — bilingual grant search + eligibility checks. No public API; we link out. */
 export const GRANTLINE_URL = "https://grantline.foundrylabs.co.jp/en/grants";
-export const GRANTLINE_URL_JA = "https://grantline.foundrylabs.co.jp/ja/grants";
 
 /** Live Linkup search restricted to official domains; throws on failure so it surfaces as a warning. */
 export const liveLinkup: LinkupSearchFn = async (query, includeDomains) => {

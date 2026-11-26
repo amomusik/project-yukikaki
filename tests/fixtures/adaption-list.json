@@ -1,0 +1,74 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "dcf97792-cb24-4bdb-b9de-f091f5b7ea0a",
+      "name": "yukikaki:簡易宿所:otaru",
+      "status": "succeeded",
+      "created_at": "2026-11-25T17:52:07.121Z",
+      "created_by_user_id": "redacted",
+      "updated_at": "2026-11-25T18:28:00.224Z",
+      "row_count": 29,
+      "configured_column_mapping": null,
+      "evaluation_summary": {
+        "grade_before": "B",
+        "grade_after": "B",
+        "score_before": 9,
+        "score_after": 8.4,
+        "improvement_percent": -6.7
+      },
+      "run_id": "redacted",
+      "progress": null,
+      "error_data": null,
+      "image_column_formats": null,
+      "kind": "invented",
+      "source_dataset_id": null
+    },
+    {
+      "dataset_id": "ef92fbbc-8b38-4d7c-9f0c-2c2fc999658d",
+      "name": "yukikaki:care:aomori",
+      "status": "succeeded",
+      "created_at": "2026-11-25T17:18:35.701Z",
+      "created_by_user_id": "redacted",
+      "updated_at": "2026-11-25T17:47:00.224Z",
+      "row_count": 30,
+      "configured_column_mapping": null,
+      "evaluation_summary": {
+        "grade_before": "B",
+        "grade_after": "B",
+        "score_before": 9,
+        "score_after": 8.8,
+        "improvement_percent": -2.2
+      },
+      "run_id": "redacted",
+      "progress": null,
+      "error_data": null,
+      "image_column_formats": null,
+      "kind": "invented",
+      "source_dataset_id": null
+    },
+    {
+      "dataset_id": "54e9027d-fff3-4ce0-9348-fced6c329e1d",
+      "name": "yukikaki:brewery:kanazawa",
+      "status": "succeeded",
+      "created_at": "2026-11-25T17:18:16.929Z",
+      "created_by_user_id": "redacted",
+      "updated_at": "2026-11-25T17:32:00.231Z",
+      "row_count": 30,
+      "configured_column_mapping": null,
+      "evaluation_summary": {
+        "grade_before": "B",
+        "grade_after": "B",
+        "score_before": 9,
+        "score_after": 8.9,
+        "improvement_percent": -1.1
+      },
+      "run_id": "redacted",
+      "progress": null,
+      "error_data": null,
+      "image_column_formats": null,
+      "kind": "invented",
+      "source_dataset_id": null
+    }
+  ],
+  "next_cursor": null
+}

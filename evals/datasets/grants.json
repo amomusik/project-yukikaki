@@ -1,0 +1,175 @@
+[
+ {
+  "id": "ramen-sapporo",
+  "city": "Sapporo",
+  "industry": "ramen",
+  "text": "電話とLINEの予約対応に週6時間。LINE公式アカウントで予約を自動受付したい。業務効率化。",
+  "skills": [
+   "line-bot",
+   "booking-automation"
+  ],
+  "tools": [
+   "LINE"
+  ],
+  "topic": [
+   "IT",
+   "DX",
+   "デジタル",
+   "省力化",
+   "効率",
+   "生産性",
+   "飲食",
+   "小規模",
+   "持続化",
+   "設備",
+   "ＩＴ"
+  ],
+  "bad": [
+   "農業",
+   "漁業",
+   "林業",
+   "水産",
+   "畜産",
+   "介護",
+   "医療",
+   "保育"
+  ]
+ },
+ {
+  "id": "guesthouse-otaru",
+  "city": "Otaru",
+  "industry": "guesthouse",
+  "text": "海外客の多言語メール対応と宿泊税の集計に週5時間。返信の下書き自動化。",
+  "skills": [
+   "ai-automation"
+  ],
+  "tools": [
+   "Gmail",
+   "Excel"
+  ],
+  "topic": [
+   "観光",
+   "宿泊",
+   "インバウンド",
+   "IT",
+   "DX",
+   "デジタル",
+   "多言語",
+   "省力化",
+   "効率",
+   "生産性",
+   "持続化",
+   "ＩＴ"
+  ],
+  "bad": [
+   "農業",
+   "漁業",
+   "林業",
+   "水産",
+   "畜産",
+   "介護",
+   "保育"
+  ]
+ },
+ {
+  "id": "farm-obihiro",
+  "city": "Obihiro",
+  "industry": "farm",
+  "text": "FAXの注文をExcelに打ち直すのに週5時間。受発注のデジタル化。",
+  "skills": [
+   "spreadsheets"
+  ],
+  "tools": [
+   "FAX",
+   "Excel"
+  ],
+  "topic": [
+   "農",
+   "IT",
+   "DX",
+   "デジタル",
+   "省力化",
+   "効率",
+   "生産性",
+   "スマート",
+   "持続化",
+   "ＩＴ"
+  ],
+  "bad": [
+   "宿泊",
+   "旅館",
+   "観光施設",
+   "飲食店",
+   "介護",
+   "保育",
+   "漁業"
+  ]
+ },
+ {
+  "id": "care-aomori",
+  "city": "Aomori",
+  "industry": "care",
+  "text": "送迎記録を紙で書いてExcelに転記、週5時間。スマホで記録したい。",
+  "skills": [
+   "simple-web-app"
+  ],
+  "tools": [
+   "紙",
+   "Excel"
+  ],
+  "topic": [
+   "介護",
+   "福祉",
+   "ICT",
+   "IT",
+   "DX",
+   "デジタル",
+   "生産性",
+   "省力化",
+   "効率",
+   "ＩＴ",
+   "ロボット"
+  ],
+  "bad": [
+   "農業",
+   "漁業",
+   "林業",
+   "宿泊",
+   "旅館",
+   "飲食"
+  ]
+ },
+ {
+  "id": "construction-asahikawa",
+  "city": "Asahikawa",
+  "industry": "construction",
+  "text": "見積書をExcelで毎回作り直していて週6時間。見積の自動作成。",
+  "skills": [
+   "spreadsheets"
+  ],
+  "tools": [
+   "Excel"
+  ],
+  "topic": [
+   "建設",
+   "IT",
+   "DX",
+   "デジタル",
+   "省力化",
+   "効率",
+   "生産性",
+   "持続化",
+   "ＩＴ",
+   "住宅"
+  ],
+  "bad": [
+   "農業",
+   "漁業",
+   "宿泊",
+   "旅館",
+   "介護",
+   "保育",
+   "飲食"
+  ]
+ }
+]

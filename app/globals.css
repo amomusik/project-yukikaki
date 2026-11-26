@@ -202,6 +202,105 @@ body {
   }
 }
 
+/* ── Pixel hero crop: keep the whole story above the fold ──────────────── */
+/* In the 8-bit scene (2400×1347, so H = 56.14vw at full bleed) the hall's roof starts at ~57%
+ * (x 61–97%), the snowfield at ~72%, and the shoveller's boots sit at ~96% (x 12–18%). On sm+
+ * the hero is sized from the art instead of a fixed 23vw pad: the section ends at the image's
+ * bottom edge (boots 2.25vw above it) and the text stack ends just above the roof line, or, on
+ * wide screens where the centred CTA row clears the hall, just above the 70% line. The snowbank
+ * and fade are kept low so they don't cover his boots. */
+@media (min-width: 640px) {
+  section[data-hero="pixel"] {
+    min-height: 0;
+  }
+  section[data-hero="pixel"] > div:has(h1) {
+    /* 43% of H (roof line → image bottom) + a small gap. */
+    padding-bottom: calc(24.14vw + 0.75rem);
+  }
+  section[data-hero="pixel"] div:has(> .yk-hero-art) > div:last-child {
+    height: 1.25rem;
+  }
+  section[data-hero="pixel"] > svg:last-child {
+    height: 2rem;
+  }
+}
+@media (min-width: 1420px) {
+  section[data-hero="pixel"] > div:has(h1) {
+    /* 30% of H (70% line → image bottom): the CTAs sit in open sky between the kid and the hall. */
+    padding-bottom: calc(16.84vw + 0.75rem);
+  }
+}
+/* Viewports up to 1100px tall (1280×720 … 1920×1080, phones, tablets): the hero copy alone would
+ * push the art below the fold, so tighten the stack, drop the quick-filter chips (the search box
+ * and the /challenges filters remain), and let the hero fill the first screen so the art sits on
+ * the fold. */
+@media (max-height: 1100px) {
+  section[data-hero="pixel"] > div:has(h1) {
+    padding-top: 1.25rem;
+  }
+  section[data-hero="pixel"] h2 {
+    margin-top: 1.25rem;
+  }
+  section[data-hero="pixel"] > div:has(h1) > div:has([role="combobox"]) {
+    margin-top: 1.25rem;
+  }
+  section[data-hero="pixel"] > div:has(h1) > div:has(> a[href*="skill="]),
+  section[data-hero="pixel"] > div:has(h1) > div:has(> a[href*="city="]) {
+    display: none;
+  }
+  section[data-hero="pixel"] > div:has(h1) > div:last-child {
+    margin-top: 1rem;
+  }
+}
+@media (max-width: 639px) and (max-height: 1100px) {
+  section[data-hero="pixel"] > div:has(h1) {
+    /* The 260px art strip overlaps the copy's last 60px of open sky. */
+    padding-bottom: 190px;
+  }
+}
+@media (min-width: 640px) and (max-height: 1100px) and (min-aspect-ratio: 1/1) {
+  section[data-hero="pixel"] {
+    min-height: calc(100svh - 4.5rem);
+  }
+}
+@media (min-width: 640px) and (max-height: 1100px) {
+  section[data-hero="pixel"] .yk-wordmark {
+    font-size: clamp(3.5rem, min(10vw, 12vh), 8rem);
+  }
+}
+/* Short laptop screens (1280×720, 1366×768). The "PROJECT — 雪かき" eyebrow repeats the site
+ * header's brand line, so it goes first. */
+@media (min-width: 640px) and (max-height: 800px) {
+  section[data-hero="pixel"] > div:has(h1) > div:first-child > p:first-child {
+    display: none;
+  }
+  section[data-hero="pixel"] > div:has(h1) {
+    padding-top: 0.75rem;
+    /* 28% of H: the CTA row may sit on the dark tree line just above the snowfield. */
+    padding-bottom: calc(15.72vw + 0.25rem);
+  }
+  section[data-hero="pixel"] .yk-wordmark {
+    font-size: clamp(3.5rem, 10vh, 8rem);
+  }
+  section[data-hero="pixel"] h2 {
+    margin-top: 0.875rem;
+    font-size: 1.5rem;
+  }
+  section[data-hero="pixel"] > div:has(h1) > ul {
+    margin-top: 0.625rem;
+  }
+  section[data-hero="pixel"] > div:has(h1) > ul > li {
+    padding-block: 0.125rem;
+  }
+  section[data-hero="pixel"] > div:has(h1) > div:last-child {
+    margin-top: 0.75rem;
+  }
+  section[data-hero="pixel"] p.yk-phrase {
+    margin-top: 0.375rem;
+    font-size: 1.125rem;
+  }
+}
+
 /* Faint snow-grain texture for light sections. */
 .yk-snow-texture {
   background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ice-strong) 55%, transparent) 1px, transparent 0);
@@ -384,5 +483,35 @@ body {
   }
   .yk-flurry {
     display: none;
+  }
+}
+
+/* ── Formats harness: lantern flicker on the lit window, stepped list reveal ── */
+.yk-fh-flicker {
+  background: radial-gradient(ellipse 40% 30% at 50% 6%, rgb(255 210 130 / 0.35), transparent 70%);
+  animation: yk-fh-flicker 2.4s steps(4) infinite;
+}
+@keyframes yk-fh-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.yk-fh-item {
+  animation: yk-fh-in 0.24s steps(3) both;
+}
+@keyframes yk-fh-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .yk-fh-flicker,
+  .yk-fh-item {
+    animation: none;
   }
 }

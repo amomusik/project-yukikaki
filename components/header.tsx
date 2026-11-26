@@ -10,7 +10,9 @@ export async function Header({ locale }: { locale: string }) {
   const t = await getTranslations("nav");
   const user = await ensureUser().catch(() => null);
 
+  // Shared by the desktop nav and <MobileNav>; Events comes first.
   const items: NavItem[] = [
+    { href: "/events", label: t("events") },
     { href: "/challenges", label: t("challenges") },
     { href: "/grants", label: t("grants") },
   ];

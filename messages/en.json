@@ -1,19 +1,125 @@
 {
-  "meta": { "title": "Yukikaki — We clear the path before the builders arrive.", "description": "Builders are not the bottleneck. Project Yukikaki is the sous chef for your hackathon: nemawashi done, mise en place ready — problems defined, data sourced, buy-in secured, venue and funding lined up, teams matched." },
-  "nav": { "challenges": "Challenges", "grants": "Grants", "interview": "Get help", "me": "My page", "admin": "Admin", "graph": "Graph", "signIn": "Sign in", "language": "日本語", "switchLanguage": "日本語に切り替える", "brand": "Project Yukikaki", "tagline": "We clear the path before the builders arrive.", "home": "Project Yukikaki home", "openMenu": "Open menu", "closeMenu": "Close menu" },
+  "meta": { "title": "Yukikaki — AI-native hackathons for Sapporo and beyond", "description": "AI-native hackathons that accelerate ideas into reality, for Sapporo and beyond. Like Peatix or Luma — but for hackathons, with the prep done and the funding found. Find and join local hackathons, design charrettes and test-kitchen sessions. Project Yukikaki handles the nemawashi and mise en place (problems, data, buy-in, venue, teams) and automatically matches grants and subsidies to every project." },
+  "nav": { "challenges": "Challenges", "grants": "Grants", "interview": "Get help", "me": "My page", "admin": "Admin", "graph": "Graph", "signIn": "Sign in", "language": "日本語", "switchLanguage": "日本語に切り替える", "brand": "Project Yukikaki", "tagline": "AI-native hackathons for Sapporo and beyond.", "home": "Project Yukikaki home", "openMenu": "Open menu", "closeMenu": "Close menu", "events": "Events" },
   "common": { "synthetic": "Synthetic", "back": "Back", "save": "Save", "submit": "Submit", "cancel": "Cancel", "none": "None", "loading": "Loading…", "hoursPerWeek": "h/week", "demoNotice": "Includes synthetic demo data", "demoData": "Demo data", "skills": {"ai-automation": "AI automation", "spreadsheets": "Spreadsheets", "line-bot": "LINE bots", "booking-automation": "Booking automation", "email-automation": "Email automation", "inventory": "Inventory", "bookkeeping": "Bookkeeping", "social-media": "Social media", "translation": "Translation", "paperwork-automation": "Paperwork automation", "web": "Web", "data-analysis": "Data analysis"} },
   "status": { "draft": "Draft", "enriching": "Researching", "in_review": "In review", "approved": "Open", "rejected": "Returned", "in_progress": "In progress", "delivered": "Delivered", "evaluated": "Evaluated", "pending": "Pending" },
   "grounding": { "exact": "Live", "analog": "Analog: {city}", "analogNoCity": "Analog city", "national": "National data", "ungrounded": "Ungrounded", "live": "Live", "reference": "Reference (pre-fetched)", "syntheticGrounded": "Synthetic — grounded on {n} sources", "pending": "Generating…" },
   "ai": { "approve": "AI: approve", "revise": "AI: revise", "reject": "AI: reject", "unavailable": "No AI review", "score": "Score", "pii": "Possible personal data" },
   "landing": {
+    "party": {
+      "kicker": "Roadmap",
+      "badge": "Coming soon",
+      "title": "Bring any team. Our helpers fill in the rest.",
+      "lead": "Any team can show up: a few students, a town office, a shop owner and a friend, or a weekend hackathon squad. We're building AI helpers, friendly helper robots, that will cover the prep roles nobody on your team has yet. It isn't live yet; join the waitlist and we'll tell you when it is.",
+      "artAlt": "8-bit snowy town square at night: two people at a round table outside a lit wooden hall, joined by four small silver helper robots with glowing blue visors and red antennae, holding a map, a scroll, a coin bag and a calendar with a magnifier.",
+      "demoTitle": "Who's on your team?",
+      "demoHint": "Pick everyone you've got. This preview uses a fixed mapping in your browser; it's not the live product.",
+      "membersLabel": "Team members",
+      "partyTitle": "Your party",
+      "partyCount": "{humans} by your team · {helpers} by helpers",
+      "emptyTeam": "No one picked yet, so helpers would take all six roles.",
+      "coveredBy": "Covered by: {who}",
+      "helperTag": "Helper",
+      "humanTag": "Your team",
+      "guardrails": "Same rules as the rest of Yukikaki: helpers propose and people decide, they cite sources or say they can't, and private data stays private.",
+      "members": {
+        "students": "Students",
+        "shop": "Shop owner",
+        "town": "Town staff",
+        "designer": "Designer",
+        "developer": "Developer",
+        "translator": "Translator"
+      },
+      "roles": {
+        "researcher": {
+          "name": "Researcher",
+          "job": "Gathers data and sources, with citations (Linkup)."
+        },
+        "scout": {
+          "name": "Scout",
+          "job": "Shortlists venues and spaces that fit."
+        },
+        "fundraiser": {
+          "name": "Fundraiser",
+          "job": "Finds open grants and subsidies (jGrants)."
+        },
+        "diplomat": {
+          "name": "Diplomat",
+          "job": "Drafts the nemawashi asks for stakeholders."
+        },
+        "translator": {
+          "name": "Translator",
+          "job": "Turns briefs from Japanese to English and back."
+        },
+        "datachef": {
+          "name": "Data chef",
+          "job": "Prepares synthetic stand-in data (Adaption)."
+        }
+      },
+      "formTitle": "Join the waitlist",
+      "formLead": "We'll email you when they launch. Nothing else.",
+      "email": "Email",
+      "org": "Town or organisation (optional)",
+      "role": "You are…",
+      "rolePlaceholder": "Choose one",
+      "roleOptions": {
+        "student": "Student",
+        "shop": "Shop or business owner",
+        "town": "Town or city staff",
+        "designer": "Designer",
+        "developer": "Developer",
+        "translator": "Translator",
+        "other": "Something else"
+      },
+      "honeypot": "Leave this field empty",
+      "submit": "Join the waitlist",
+      "submitting": "Joining…",
+      "success": "You're on the list. We've sent a confirmation to your inbox.",
+      "successNoEmail": "You're on the list. We couldn't send the confirmation email just now, but your spot is saved.",
+      "already": "You're already on the list. We'll be in touch when it launches.",
+      "errorInvalid": "Please check the highlighted fields.",
+      "errorEmail": "Enter a valid email address.",
+      "errorRole": "Choose the option closest to you.",
+      "errorOrg": "Keep this under 120 characters.",
+      "errorRate": "Too many tries. Please wait a few minutes and try again.",
+      "errorServer": "Something went wrong on our side. Please try again.",
+      "privacy": "We'll only use your email for this announcement.",
+      "sectionTitle": "Coming soon to Yukikaki",
+      "sectionLead": "Three features we're building next. None of them are live yet; join one waitlist to hear when each one launches.",
+      "features": {
+        "team": {
+          "title": "Bring any team. AI helper robots fill in the rest.",
+          "body": "A few students, a town office, a shop owner and a friend: AI helpers will cover the prep roles your team is missing."
+        },
+        "pm": {
+          "title": "Virtual product manager",
+          "body": "An AI PM robot that checks in with everyone (owner, team lead, members, host) on what's next, spots blockers, nudges deadlines and suggests the next step. It proposes; people decide."
+        },
+        "points": {
+          "title": "Points & rewards",
+          "body": "Earn points and badges for joining more hackathons, delivering prototypes, mentoring and real impact (hours saved), with a season leaderboard and perks."
+        }
+      },
+      "demoLink": "Try the team demo",
+      "demoKicker": "Feature 1 preview",
+      "featuresLabel": "Which features interest you?",
+      "featureOptions": {
+        "team": "Bring any team",
+        "pm": "Virtual product manager",
+        "points": "Points & rewards"
+      },
+      "errorFeatures": "Pick at least one feature."
+    },
     "kicker": "雪かき · Yukikaki",
-    "eyebrow": "Project",
+    "eyebrow": "AI-native hackathons · Sapporo and beyond",
     "wordmarkLabel": "Project Yukikaki",
     "heroAlt": "A child shovels a snowy path to a glowing hall where builders arrive.",
     "mascotEmpty": "Nothing here yet — bring a problem?",
     "lead": "In a Hokkaido winter, someone shovels the path before anyone else can get through. We do that for the people who build.",
     "title": "Builders are not the bottleneck.",
     "subtitle": "What's missing is the work before they arrive.",
+    "positioning": "We accelerate local ideas into reality: Peatix or Luma for hackathons, with the prep done and the funding found.",
+    "valueStrip": {"label": "What Yukikaki does", "find": "Find & join local hackathons", "prep": "Prep done for you (nemawashi, data, teams)", "grants": "Grants & subsidies matched automatically"},
     "needsLead": "Nemawashi done. Mise en place ready.",
     "needs": "We're the sous chef for your hackathon. Problems defined, data sourced, venue and funding lined up, teams matched, and the nemawashi done: the quiet groundwork that gets the people who must say yes on board before the meeting. Builders start cooking in the first hour.",
     "searchLabel": "Search challenges",
@@ -52,7 +158,106 @@
     "ws5": "Live public-funding matching from official sources (jGrants): open subsidies for each challenge, with deadline and amount, handed off to Grantline for eligibility checks.",
     "ws6Title": "Teams",
     "ws6": "Builders matched by skill. Each team has one lead who supports the owner for 90 days.",
-    "howApproval": "AI does the legwork; the host approves each output.",
+    "howApproval": "AI-native: AI agents do the legwork at every step — interviews, research, data, matching, grants — and people make every call.",
+    "kitchen": {
+      "kicker": "Try, taste, adjust",
+      "title": "A test kitchen for your town",
+      "lead": "In a test kitchen, chefs try a new dish, taste it, adjust and try again before anything goes on the menu. Yukikaki does the same for local problems: small batches, local ingredients (local data, local partners), low cost and low risk.",
+      "step1": {
+        "title": "Bring a problem",
+        "body": "A resident or shop owner talks through the headache in a short voice interview. It comes back as a clear, scoped brief.",
+        "tag": "Voice interview → brief"
+      },
+      "step2": {
+        "title": "Prototype in days",
+        "body": "Students and builders cook up a fix in days, not months, working with stand-in data so nothing private leaves the shop.",
+        "tag": "Stand-in data"
+      },
+      "step3": {
+        "title": "Taste it in real work",
+        "body": "The owner tries the fix during a normal week. The team lead stays on for 90 days to adjust the recipe.",
+        "tag": "90-day lead support"
+      },
+      "step4": {
+        "title": "Keep, rework or drop",
+        "body": "An impact check counts the hours saved. What works stays on the menu; the rest is reworked or dropped, with no hard feelings.",
+        "tag": "Impact check · hours saved"
+      },
+      "loop": "Then on to the next problem. Each round adds a dish to the town's menu.",
+      "closing": "Every town deserves a test kitchen."
+    },
+    "formats": {
+      "title": "One harness, any format",
+      "lead": "Yukikaki is the rig that holds an event together. The same prep, the same guardrails (the host approves every output, sources are cited or we say we can't, private data stays private, one named owner) and the same follow-through, whatever the format.",
+      "before": "Before",
+      "during": "During",
+      "after": "After",
+      "hackathon": {
+        "title": "Hackathon",
+        "meta": "Builders · 1–3 days",
+        "out": "Working prototypes",
+        "before": "Briefs, data, buy-in, venue, funding and matched teams.",
+        "during": "Owners on hand to answer questions. AI drafts; the host approves.",
+        "after": "Delivery, 90-day lead support and an impact check."
+      },
+      "charrette": {
+        "title": "Design charrette",
+        "gloss": "A short, hands-on design session with residents",
+        "meta": "Residents + stakeholders · 1 day",
+        "out": "A shared plan and priorities",
+        "before": "Problems from interviews, cited local data, the right people invited.",
+        "during": "Ideas captured and sorted into a draft plan for the host to approve.",
+        "after": "Priorities turned into briefs for the next hackathon or test kitchen."
+      },
+      "testKitchen": {
+        "title": "Test kitchen",
+        "meta": "Owners + builders · ongoing",
+        "out": "Small prototypes tried in real work",
+        "before": "One brief at a time, prepped with stand-in data.",
+        "during": "The owner tastes it in a normal week; the lead adjusts.",
+        "after": "An impact check decides: keep, rework or drop."
+      }
+    },
+    "kitchenQuest": {
+      "kicker": "Try, taste, adjust",
+      "title": "A test kitchen for your town",
+      "lead": "Follow one problem around the kitchen: idea → prototype in days → in real use. Small batches, local ingredients, low cost and low risk, and nothing goes on the menu until the owner has tasted it.",
+      "steps": [
+        {
+          "title": "Bring a problem",
+          "body": "A shop owner drops a headache in the box: “Our winter orders still come in by fax, and I retype every one.”",
+          "does": "A short voice interview becomes a bilingual brief, grounded in official sources.",
+          "cta": "Talk through a problem"
+        },
+        {
+          "title": "Prototype in days",
+          "body": "A student team cooks up a fix in days, not months. One named lead owns it from first sketch to hand-over.",
+          "does": "The team builds with synthetic stand-in data, so nothing private leaves the shop.",
+          "cta": "Browse open challenges"
+        },
+        {
+          "title": "Taste it in real work",
+          "body": "The fix is delivered, and the owner tries it during a normal week, at the real counter, with real customers.",
+          "does": "After delivery, the team lead supports the owner for 90 days to adjust the recipe.",
+          "cta": "See challenges in progress"
+        },
+        {
+          "title": "Keep, rework or drop",
+          "body": "Did it earn a place on the menu? Keep it, rework it, or drop it with no hard feelings.",
+          "does": "An impact check (hours saved each week, owner satisfaction) makes the call.",
+          "cta": "Fund the next round"
+        }
+      ],
+      "next": "Next",
+      "back": "Back",
+      "stepLabel": "Step {n} of {total}",
+      "goTo": "Go to step {n}: {title}",
+      "doesLabel": "What Yukikaki does here",
+      "play": "Play tour",
+      "pause": "Pause tour",
+      "sceneAlt": "8-bit pixel art of a wooden hall on a snowy night with four stations along a snowy floor: a mailbox with a speech bubble, two builders at a desk with a glowing prototype, a shopkeeper tasting at a counter, and a chalkboard showing a check, a wrench and a cross.",
+      "loop": "Then on to the next problem. Each round adds a dish to the town's menu."
+    },
     "principlesKicker": "How we work",
     "principlesTitle": "Principles we don't bend",
     "p1Title": "Proposes, never decides.",
@@ -87,11 +292,98 @@
     "closingBody": "Bring a problem from your business, or bring Yukikaki to your town.",
     "openSource": "MIT-licensed open source.",
     "anyTown": "Any town can run it.",
+    "footerStory": "Your test kitchen for hackathons. Like snow shoveling, we clear the path so builders can get to work.",
     "github": "View on GitHub",
     "ws5Link": "See open grants →",
     "actionBarLabel": "Quick actions",
     "actionBarSearch": "Search challenges",
-    "actionBarProblem": "Bring a problem"
+    "actionBarProblem": "Bring a problem",
+    "formatsHarness": {
+      "kicker": "Under one roof",
+      "title": "One harness, any format",
+      "lead": "Hackathon, design charrette or test kitchen: pick a format and a phase to see what Yukikaki brings.",
+      "artAlt": "8-bit snowy wooden building with three lit windows: builders with laptops and pizza at a long table, residents around a town map covered in sticky notes, and a shopkeeper trying a glowing prototype at a counter.",
+      "formatLabel": "Format",
+      "phaseLabel": "Phase",
+      "supplies": "What Yukikaki supplies",
+      "swipeHint": "Swipe to see each format",
+      "phases": {
+        "before": "Before",
+        "during": "During",
+        "after": "After"
+      },
+      "formats": {
+        "hackathon": {
+          "title": "Hackathon",
+          "who": "Builders",
+          "time": "1–3 days",
+          "out": "Working prototypes",
+          "before": [
+            "Defined briefs, each with a named owner",
+            "Sourced local data, plus synthetic stand-ins for anything private",
+            "A venue",
+            "Grants and sponsors lined up",
+            "Teams matched to the briefs"
+          ],
+          "during": [
+            "An approval workflow: AI drafts, the host approves",
+            "A live challenge graph",
+            "One named lead per team"
+          ],
+          "after": [
+            "Delivery to the owner",
+            "90 days of support from the lead",
+            "An impact check"
+          ]
+        },
+        "charrette": {
+          "title": "Design charrette",
+          "gloss": "A hands-on design day with residents",
+          "who": "Residents + stakeholders",
+          "time": "About 1 day",
+          "out": "A shared plan and priorities",
+          "before": [
+            "A stakeholder map",
+            "Nemawashi asks: who to brief, and what to ask, before the day",
+            "A data briefing pack",
+            "A venue"
+          ],
+          "during": [
+            "Voice capture of resident input, turned into briefs",
+            "A live graph linking ideas to challenges"
+          ],
+          "after": [
+            "A prioritised challenge list, handed to builders",
+            "Grant matches"
+          ]
+        },
+        "kitchen": {
+          "title": "Test kitchen",
+          "who": "Owners + builders",
+          "time": "Ongoing",
+          "out": "Small prototypes tried in real work",
+          "before": [
+            "One problem",
+            "One owner",
+            "The data it needs"
+          ],
+          "during": [
+            "A rapid prototype",
+            "A weekly taste test"
+          ],
+          "after": [
+            "Keep, rework or drop, decided by an impact check"
+          ]
+        }
+      },
+      "sharedTitle": "Same prep. Same guardrails. Same follow-through.",
+      "guardrails": [
+        "The host approves every output",
+        "Cites a source, or says it can't",
+        "Private data stays private",
+        "One named owner"
+      ]
+    }
   },
   "onboarding": { "title": "First, tell us who you are", "business": "I run a business and need help", "student": "I'm a student who wants a challenge", "skills": "Your skills (students only, pick any)", "continue": "Continue", "hostNote": "Town hosts are added by the administrator." },
   "interview": {
@@ -194,5 +486,117 @@
     "none": "No grant matches yet",
     "background": "Runs in the background (about 30 s). Reload to see the results.",
     "sourcesNote": "Data: jGrants public API (デジタル庁). Amounts and deadlines are as published; always confirm on the official page."
+  },
+  "events": {
+    "eyebrow": "Events",
+    "pageTitle": "AI-native hackathons in Sapporo and beyond",
+    "pageSubtitle": "Hackathons, design charrettes and test kitchens. Meet the people behind real local challenges. RSVP, see which challenges each event tackles, and find the grants that can fund what you build.",
+    "newEvent": "Create event",
+    "newTitle": "Create an event",
+    "newSubtitle": "Pick a format, a date and the challenges teams will work on.",
+    "editTitle": "Edit event",
+    "demo": "Demo event",
+    "format": {
+      "hackathon": "Hackathon",
+      "charrette": "Design charrette",
+      "test_kitchen": "Test kitchen"
+    },
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "cancelled": "Cancelled"
+    },
+    "statusAction": {
+      "published": "Publish",
+      "draft": "Move to draft",
+      "cancelled": "Cancel event"
+    },
+    "filters": {
+      "city": "City",
+      "allCities": "All cities",
+      "format": "Format",
+      "allFormats": "All formats",
+      "month": "Month",
+      "anyMonth": "Any month",
+      "apply": "Apply",
+      "clear": "Clear filters"
+    },
+    "empty": "No upcoming events yet. Check back soon.",
+    "emptyFiltered": "No events match these filters.",
+    "full": "Full",
+    "waitlistCount": "{n} on waitlist",
+    "spotsLeft": "{n, plural, one {# spot left} other {# spots left}}",
+    "goingCount": "{n} going",
+    "hostDrafts": "Drafts & cancelled (hosts only)",
+    "cancelledBanner": "This event has been cancelled.",
+    "draftBanner": "Draft — only hosts can see this event until it is published.",
+    "flash": {
+      "going": "You're going! A confirmation email with a calendar invite is on its way.",
+      "waitlist": "The event is full — you're on the waitlist. We'll email you if a seat opens.",
+      "cancelled": "Your RSVP has been cancelled."
+    },
+    "errors": {
+      "not_found": "Event not found.",
+      "not_open": "This event isn't open for RSVPs.",
+      "ended": "This event has already ended.",
+      "forbidden": "You can't do that.",
+      "invalid": "Please check the form.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "hostedBy": "Hosted by",
+    "joinOnline": "Join online",
+    "registration": "Registration",
+    "capacityLine": "{going} / {capacity} going",
+    "capacity": "Capacity",
+    "ended": "This event has ended.",
+    "signInToRsvp": "Sign in to RSVP",
+    "youreHosting": "You're hosting this event.",
+    "youreGoing": "You're going as {role}.",
+    "youreWaitlisted": "You're #{n} on the waitlist.",
+    "role": {
+      "participant": "Participant",
+      "mentor": "Mentor",
+      "observer": "Observer",
+      "owner": "Host"
+    },
+    "cancelRsvp": "Cancel RSVP",
+    "leaveWaitlist": "Leave waitlist",
+    "joinAs": "Join as",
+    "rsvp": "RSVP",
+    "joinWaitlist": "Join waitlist",
+    "rsvpNote": "Free. If the event is full you'll join the waitlist and be promoted automatically when a seat opens.",
+    "addToCalendar": "Add to calendar",
+    "share": "Share",
+    "copied": "Link copied",
+    "hostTools": "Host tools",
+    "edit": "Edit",
+    "about": "About this event",
+    "challengesTitle": "Challenges at this event",
+    "challengesSubtitle": "Real problems from local businesses that teams will work on.",
+    "noChallenges": "No challenges linked yet.",
+    "grantsTitle": "Grants & subsidies for this event's projects",
+    "grantsSubtitle": "Open public funding matched to the challenges above — useful when a prototype needs to keep going after the event.",
+    "form": {
+      "error": "Could not save",
+      "titleEn": "Title (English)",
+      "titleJa": "Title (Japanese)",
+      "summaryEn": "Description (English)",
+      "summaryJa": "Description (Japanese)",
+      "format": "Format",
+      "startsAt": "Starts (JST)",
+      "endsAt": "Ends (JST)",
+      "jstNote": "Times are Japan Standard Time (Asia/Tokyo).",
+      "city": "City",
+      "venueName": "Venue name",
+      "venueAddress": "Venue address",
+      "capacity": "Capacity",
+      "onlineUrl": "Online link (optional)",
+      "coverImage": "Cover image URL (optional)",
+      "challenges": "Challenges",
+      "challengesHint": "Pick the published challenges teams will tackle. Their matched grants appear on the event page.",
+      "publish": "Publish",
+      "save": "Save changes",
+      "saveDraft": "Save as draft"
+    }
   }
 }

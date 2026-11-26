@@ -1,0 +1,1 @@
+ALTER TABLE "waitlist" ADD COLUMN "features" text[] DEFAULT '{}'::text[] NOT NULL;

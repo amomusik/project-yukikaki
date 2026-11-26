@@ -1,0 +1,44 @@
+name: Evals (live, manual)
+
+# Live partner APIs cost credits: never on push/PR. Run from the Actions tab.
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Comma-separated: brief-review,grounding,grants,interview"
+        default: "brief-review,grounding,grants,interview"
+      runs:
+        description: "Runs per Dify case (stability)"
+        default: "2"
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      REQUIRE_LIVE_SERVICES: "true"
+      ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+      ELEVENLABS_INTERVIEW_AGENT_ID: ${{ secrets.ELEVENLABS_INTERVIEW_AGENT_ID }}
+      ELEVENLABS_IMPACT_AGENT_ID: ${{ secrets.ELEVENLABS_IMPACT_AGENT_ID }}
+      LINKUP_API_KEY: ${{ secrets.LINKUP_API_KEY }}
+      DIFY_BRIEF_REVIEW_KEY: ${{ secrets.DIFY_BRIEF_REVIEW_KEY }}
+      DIFY_API_URL: ${{ secrets.DIFY_API_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "12.15.0"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Cost estimate
+        run: pnpm evals --suite=${{ inputs.suite }} --runs=${{ inputs.runs }} || [ $? -eq 2 ]
+      - name: Run evals
+        run: pnpm evals --suite=${{ inputs.suite }} --runs=${{ inputs.runs }} --yes
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: evals/results

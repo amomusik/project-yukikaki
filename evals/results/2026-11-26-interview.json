@@ -1,0 +1,74 @@
+{
+  "suite": "interview",
+  "startedAt": "2026-11-26T03:27:12.450Z",
+  "durationS": 48.576,
+  "metrics": [
+    {
+      "name": "schema_parse (briefDraftSchema)",
+      "value": 1,
+      "threshold": 1
+    },
+    {
+      "name": "strict_fields (all 11 present & typed)",
+      "value": 1,
+      "threshold": 0.66
+    },
+    {
+      "name": "hours_within_20pct",
+      "value": 1,
+      "threshold": 0.66
+    },
+    {
+      "name": "industry_correct",
+      "value": 1,
+      "threshold": 0.66
+    },
+    {
+      "name": "city_correct",
+      "value": 1,
+      "threshold": 1
+    }
+  ],
+  "cases": [
+    {
+      "id": "bakery-hakodate",
+      "pass": true,
+      "details": {
+        "conversation": "conv_5601m8ay9c2menhrt4n5p4tax5ek",
+        "hours": 3,
+        "truthHours": 3,
+        "industry": "パン屋",
+        "industryKey": "bakery",
+        "city": "函館",
+        "problems": []
+      }
+    },
+    {
+      "id": "guesthouse-otaru",
+      "pass": true,
+      "details": {
+        "conversation": "conv_0901m8ay9bphfpfbqjz31srj0zhf",
+        "hours": 4,
+        "truthHours": 4,
+        "industry": "ゲストハウス",
+        "industryKey": "guesthouse",
+        "city": "小樽市",
+        "problems": []
+      }
+    },
+    {
+      "id": "ramen-sapporo",
+      "pass": true,
+      "details": {
+        "conversation": "conv_2301m8ay9bwxfk3vm9gzr9hj1qyt",
+        "hours": 6,
+        "truthHours": 6,
+        "industry": "ラーメン店",
+        "industryKey": "ramen",
+        "city": "札幌",
+        "problems": []
+      }
+    }
+  ],
+  "errors": []
+}

@@ -107,7 +107,11 @@ const list = z.preprocess(
 export const roundHours = (n: number) => Math.round(n * 10) / 10;
 const hoursOrNull = z.preprocess((v) => {
   if (v == null || v === "") return null;
-  const n = Number(String(v).replace(/[^\d.]/g, ""));
+  const s = String(v);
+  const num = s.replace(/[^\d.]/g, "");
+  // No digits at all ("たくさん") is unknown, not zero. "2時間半" = 2.5.
+  if (!num) return null;
+  const n = Number(num) + (typeof v === "string" && /\d\s*時間半/.test(s) ? 0.5 : 0);
   return Number.isFinite(n) ? roundHours(n) : null;
 }, z.number().nonnegative().nullable());
 const bool = z.preprocess((v) => {
@@ -145,7 +149,6 @@ export const impactDraftSchema = z.object({
   would_recommend: bool,
   quote: str,
 });
-export type ImpactDraft = z.infer<typeof impactDraftSchema>;
 
 export type AgentKind = "interview" | "impact" | "unknown";
 export function agentKind(agentId: string): AgentKind {

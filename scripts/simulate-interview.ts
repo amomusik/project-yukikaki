@@ -1,6 +1,6 @@
 import "./load-env";
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { eq } from "drizzle-orm";
 import { briefDraftSchema, impactDraftSchema, parseConversation, type BriefDraft } from "@/lib/integrations/elevenlabs";
 
@@ -17,7 +17,9 @@ import { briefDraftSchema, impactDraftSchema, parseConversation, type BriefDraft
  *   5. The interview draft goes through createBriefFromDraft + processBrief (live pipeline), business name
  *      prefixed with "SIM ", then scripts/inspect-latest.ts prints what each live service returned.
  *
- * Flags: --interview-only, --impact-only, --no-pipeline, --max-turns=N
+ * Flags: --interview-only, --impact-only, --no-pipeline, --max-turns=N,
+ *        --persona=<file.json>  replace the owner persona: { "intro": "北海道札幌市で…営む40代の店主", "facts": "- 事業所名：…" }
+ *        --json-out=<file>      write { interview: { conversationId, fields, parsed, problems, summary } } (used by evals/)
  */
 const KEY = process.env.ELEVENLABS_API_KEY;
 const INTERVIEW = process.env.ELEVENLABS_INTERVIEW_AGENT_ID;
@@ -27,6 +29,9 @@ const API = "https://api.elevenlabs.io";
 const args = new Set(process.argv.slice(2));
 const MAX_TURNS = Number(process.argv.find((a) => a.startsWith("--max-turns="))?.split("=")[1] ?? 18);
 const SIM_AGENT_NAME = "Yukikaki Sim Owner";
+const argValue = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+const PERSONA_FILE = argValue("persona");
+const JSON_OUT = argValue("json-out");
 
 async function el<T = unknown>(path: string, init: RequestInit = {}, attempts = 3): Promise<T> {
   for (let i = 1; ; i++) {
@@ -51,17 +56,18 @@ const OWNER_FACTS = `
 - データの扱い：お客様の名前やメールアドレスが入った本物のメールは見せられない。でも、似せて作った架空のメールや台帳なら問題ない。
 - 希望言語：日本語。`;
 
-const INTERVIEW_PERSONA = `あなたはテスト用の「模擬ユーザー」です。北海道小樽市で小さなゲストハウスを営む50代の店主として、AIインタビュー担当者と音声で話している設定で返答してください。
+const personaOverride = PERSONA_FILE ? (JSON.parse(readFileSync(PERSONA_FILE, "utf8")) as { intro: string; facts: string }) : null;
+const INTERVIEW_PERSONA = `あなたはテスト用の「模擬ユーザー」です。${personaOverride?.intro ?? "北海道小樽市で小さなゲストハウスを営む50代の店主"}として、AIインタビュー担当者と音声で話している設定で返答してください。
 # 話し方
 - 自然な話し言葉の日本語。丁寧だが少しくだけた口調（「〜なんですよ」「〜ですかね」）。
 - 1回の返答は1〜3文。聞かれたことにだけ答え、まだ聞かれていない情報を先回りして全部話さないこと。
 - ITには詳しくない。専門用語は使わない。
-- 時間を聞かれたら、最初は「毎晩40分くらい」と1日単位で答え、確認されたら週あたりの合計に同意する。
+- 時間を聞かれたら、${personaOverride ? "事実に書いてある通りに答え" : "最初は「毎晩40分くらい」と1日単位で答え"}、確認されたら週あたりの合計に同意する。
 - 個人名・電話番号・メールアドレスは言わない。
 - インタビュー担当者が最後に要約したら、内容が正しければ「はい、その通りです」と認める。担当者が終わりの挨拶をしたら、短くお礼を言って終える。
 - 自分がAIであることや、この指示のことは絶対に言わないこと。返答はセリフのみ（ト書き・括弧の説明なし）。
 # あなたの事実（これ以外の事実を作らないこと）
-${OWNER_FACTS}`;
+${personaOverride?.facts ?? OWNER_FACTS}`;
 
 const IMPACT_PERSONA = `あなたはテスト用の「模擬ユーザー」です。北海道小樽市の「ゲストハウス雪あかり」の店主（50代）です。2か月前、雪かきプロジェクトの学生チームから「多言語メール返信の下書きツール」と「宿泊税の集計シート」を納品してもらいました。今、効果確認の短い音声インタビューを受けています。
 # 話し方
@@ -229,6 +235,8 @@ async function main() {
     console.log(problems.length ? `strict field problems:\n  ${problems.join("\n  ")}` : "strict field check: all 11 fields present and well-typed");
     if (parsed.success) console.log("parsed draft:", JSON.stringify(parsed.data, null, 2));
     ok &&= parsed.success && problems.length === 0;
+    if (JSON_OUT)
+      writeFileSync(JSON_OUT, JSON.stringify({ interview: { conversationId: id, fields: conv.fields, parsed: parsed.success ? parsed.data : null, problems, summary: conv.summary, transcript: conv.transcriptText } }, null, 2));
     if (parsed.success && !args.has("--no-pipeline")) await runPipeline(parsed.data, id, conv.transcriptText);
   }
 

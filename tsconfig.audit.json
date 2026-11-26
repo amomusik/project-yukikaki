@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "incremental": false,
+    "noEmit": true
+  },
+  "exclude": ["node_modules", ".next"]
+}

@@ -11,6 +11,9 @@ import { CountUp } from "@/components/landing/count-up";
 import { HeroArt } from "@/components/landing/hero-art";
 import { parseHeroVariant } from "@/components/landing/hero-variant";
 import { PathDivider, SnowbankEdge } from "@/components/landing/path-divider";
+import { KitchenQuest, type KitchenQuestStep } from "@/components/landing/kitchen-quest";
+import { PartyBuilder } from "@/components/landing/party-builder";
+import { FormatsHarness } from "@/components/landing/formats-harness";
 
 export const dynamic = "force-dynamic";
 
@@ -135,10 +138,11 @@ export default async function Landing({
 
         <div className="relative mx-auto max-w-4xl px-4 pb-[200px] pt-8 text-center sm:px-6 sm:pb-[23vw] sm:pt-10">
           <div className="flex flex-col items-center">
-            <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-sky-100/80 sm:text-sm">
+            {/* Positioning eyebrow ("AI-native hackathons · Sapporo and beyond"); one line on phones, so the hero height is unchanged. */}
+            <p className="flex items-center gap-3 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.12em] text-sky-100/80 sm:text-sm sm:tracking-[0.3em]">
               <span>{t("eyebrow")}</span>
-              <span aria-hidden className="h-px w-8 bg-sky-100/40" />
-              <span lang="ja" className="font-[family-name:var(--font-mincho)] text-base normal-case tracking-[0.3em] text-white sm:text-xl">
+              <span aria-hidden className="hidden h-px w-8 bg-sky-100/40 sm:inline-block" />
+              <span lang="ja" className="hidden font-[family-name:var(--font-mincho)] text-base normal-case tracking-[0.3em] text-white sm:inline sm:text-xl">
                 雪かき
               </span>
             </p>
@@ -158,10 +162,24 @@ export default async function Landing({
           </div>
           <h2 className="mt-7 text-balance text-2xl font-bold leading-tight tracking-tight sm:mt-9 sm:text-4xl">{t("title")}</h2>
           <p className="yk-phrase mx-auto mt-3 max-w-2xl text-balance text-base text-sky-100 sm:text-xl">{t("subtitle")}</p>
+          <p className="mx-auto mt-3 max-w-2xl text-balance text-sm font-semibold text-white [word-break:auto-phrase] sm:text-base">{t("positioning")}</p>
 
           <div className="mt-7 sm:mt-8">
             <HeroSearch locale={lang} />
           </div>
+
+          {/* Value strip: what Yukikaki does, in three pills. */}
+          <ul aria-label={t("valueStrip.label")} className="mx-auto mt-4 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-sm">
+            {(["find", "prep", "grants"] as const).map((k) => (
+              <li
+                key={k}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 font-medium text-white backdrop-blur-sm"
+              >
+                <span aria-hidden className="h-2 w-2 shrink-0 bg-lantern" />
+                {t(`valueStrip.${k}`)}
+              </li>
+            ))}
+          </ul>
 
           {(facets.skills.length > 0 || facets.cities.length > 0) && (
             <div className="mx-auto mt-4 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-sm">
@@ -275,6 +293,28 @@ export default async function Landing({
         </p>
       </section>
 
+      {/* ── TEST KITCHEN (interactive 8-bit walkthrough) ─────────────── */}
+      <KitchenQuest
+        copy={{
+          kicker: t("kitchenQuest.kicker"),
+          title: t("kitchenQuest.title"),
+          lead: t("kitchenQuest.lead"),
+          steps: t.raw("kitchenQuest.steps") as KitchenQuestStep[],
+          next: t("kitchenQuest.next"),
+          back: t("kitchenQuest.back"),
+          stepLabel: t.raw("kitchenQuest.stepLabel") as string,
+          goTo: t.raw("kitchenQuest.goTo") as string,
+          doesLabel: t("kitchenQuest.doesLabel"),
+          play: t("kitchenQuest.play"),
+          pause: t("kitchenQuest.pause"),
+          sceneAlt: t("kitchenQuest.sceneAlt"),
+          loop: t("kitchenQuest.loop"),
+        }}
+      />
+
+      {/* ── ONE HARNESS, ANY FORMAT (interactive 8-bit windows) ──────── */}
+      <FormatsHarness />
+
       <div className="h-20 sm:h-24" />
 
       {/* ── PRINCIPLES ───────────────────────────────────────────────── */}
@@ -313,6 +353,9 @@ export default async function Landing({
         </ul>
       </section>
 
+      {/* ── ROADMAP: coming-soon features + shared waitlist ──────────── */}
+      <PartyBuilder />
+
       {/* ── TESTIMONIALS (real impact reviews only) ──────────────────── */}
       {testimonials.length > 0 && (
         <>
@@ -323,6 +366,7 @@ export default async function Landing({
 
       {/* ── CLOSING ──────────────────────────────────────────────────── */}
       <section className="mb-20 mt-20 rounded-3xl bg-ice px-6 py-12 text-center sm:px-12">
+        <p className="mb-3 text-sm font-semibold text-frost">{t("kitchen.closing")}</p>
         <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{t("closingTitle")}</h2>
         <p className="mx-auto mt-3 max-w-xl text-muted">{t("closingBody")}</p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
