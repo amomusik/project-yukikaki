@@ -96,7 +96,16 @@ async function main() {
     results.push(r);
   }
 
-  const ok = await writeSummary(today(), results);
+  // The summary covers every suite saved for today (running one suite must not drop the others from
+  // it); the exit code reflects only the suites run now.
+  const { readdirSync, readFileSync } = await import("node:fs");
+  const ran = new Set(results.map((r) => r.suite));
+  const earlier = readdirSync("evals/results")
+    .filter((f) => f.startsWith(`${today()}-`) && f.endsWith(".json"))
+    .map((f) => JSON.parse(readFileSync(`evals/results/${f}`, "utf8")) as SuiteResult)
+    .filter((r) => !ran.has(r.suite));
+  await writeSummary(today(), [...earlier, ...results].sort((a, b) => a.suite.localeCompare(b.suite)));
+  const ok = results.every((r) => r.errors.length === 0 && r.metrics.length > 0 && r.metrics.every(passed));
   process.exit(ok ? 0 : 1);
 }
 

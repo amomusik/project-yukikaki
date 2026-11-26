@@ -1,7 +1,7 @@
 {
   "suite": "grounding",
-  "startedAt": "2026-11-26T03:26:13.238Z",
-  "durationS": 9.946,
+  "startedAt": "2026-11-26T06:24:26.736Z",
+  "durationS": 7.734,
   "metrics": [
     {
       "name": "official_domains_only (pairs)",
@@ -20,7 +20,7 @@
     },
     {
       "name": "precision_proxy (sources official ∧ city-consistent ∧ on-topic)",
-      "value": 0.5,
+      "value": 0.479,
       "threshold": 0.6
     }
   ],
@@ -46,11 +46,11 @@
         "level": "exact",
         "sources": 6,
         "offTopic": [
-          "https://www.city.otaru.lg.jp/docs/2022070700084/",
-          "https://www.city.otaru.lg.jp/docs/2022060600028",
+          "https://www.city.otaru.lg.jp/categories/bunya/about/opendata/",
+          "https://www.city.otaru.lg.jp/docs/2020120200171/",
           "https://www.city.otaru.lg.jp/soshiki/sougouseisaku/kikaku/kikakutoukei/more.html",
-          "https://www.city.otaru.lg.jp/categories/kubun/opendata/",
-          "https://www.city.otaru.lg.jp/categories/bunya/about/opendata/"
+          "https://www.city.otaru.lg.jp/docs/2022070700084/",
+          "https://www.city.otaru.lg.jp/categories/kubun/opendata/"
         ],
         "nonOfficial": [],
         "wrongCity": []
@@ -64,10 +64,11 @@
         "sources": 6,
         "offTopic": [
           "https://www.city.asahikawa.hokkaido.jp/700/jouhouseisaku/jouhouseisaku004/d054760.html",
+          "https://www.city.asahikawa.hokkaido.jp/500/501/502/d054512.html",
           "https://www.city.asahikawa.hokkaido.jp/500/562/work204/index.html",
           "https://www.city.asahikawa.hokkaido.jp/700/jouhouseisaku/jouhouseisaku004/d061839.html",
-          "https://www.city.asahikawa.hokkaido.jp/500/501/502/d054512.html",
-          "https://www.city.asahikawa.hokkaido.jp/700/701/705/p007257.html"
+          "https://www.city.asahikawa.hokkaido.jp/700/701/705/p007257.html",
+          "https://www.city.asahikawa.hokkaido.jp/700/701/705/p007234.html"
         ],
         "nonOfficial": [],
         "wrongCity": []
@@ -81,11 +82,11 @@
         "sources": 6,
         "offTopic": [
           "https://www.city.hakodate.hokkaido.jp/docs/2016072200055/",
-          "https://www.harp.lg.jp/opendata/dataset/1729.html",
           "https://www.harp.lg.jp/opendata/dataset/1604.html",
-          "https://www.city.hakodate.hokkaido.jp/docs/2015081200063",
+          "https://www.harp.lg.jp/opendata/dataset/1729.html",
           "https://www.harp.lg.jp/opendata/dataset/79.html",
-          "https://www.harp.lg.jp/opendata/dataset/search/?s%5Barea_id%5D=31&s%5Bcategory_id%5D=9"
+          "https://www.city.hakodate.hokkaido.jp/tag/%E3%82%AA%E3%83%BC%E3%83%97%E3%83%B3%E3%83%87%E3%83%BC%E3%82%BF",
+          "https://joruri-cms.city.hakodate.hokkaido.jp/category/bunya/gyoseimachizukuri/gaiyo/more@archive.p3.html"
         ],
         "nonOfficial": [],
         "wrongCity": []
@@ -100,8 +101,7 @@
         "offTopic": [
           "https://www.city.obihiro.hokkaido.jp/shisei/seisaku/toshi/opendata/1006509/index.html",
           "https://www.city.obihiro.hokkaido.jp/shisei/seisaku/toshi/opendata/index.html",
-          "https://www.city.obihiro.hokkaido.jp/_res/projects/default_project/_page_/001/001/447/001.pdf",
-          "https://www.city.obihiro.hokkaido.jp/_res/projects/default_project/_page_/001/009/169/all57.pdf"
+          "https://www.city.obihiro.hokkaido.jp/_res/projects/default_project/_page_/001/001/447/001.pdf"
         ],
         "nonOfficial": [],
         "wrongCity": []
@@ -113,7 +113,9 @@
       "details": {
         "level": "exact",
         "sources": 6,
-        "offTopic": [],
+        "offTopic": [
+          "https://opendata.pref.aomori.lg.jp/dataset/1699.html"
+        ],
         "nonOfficial": [],
         "wrongCity": []
       }
@@ -125,8 +127,8 @@
         "level": "exact",
         "sources": 6,
         "offTopic": [
-          "https://www.city.akita.lg.jp/kurashi/kenko/1005368/1010019/1017339.html",
-          "https://www.city.akita.lg.jp/opendata/"
+          "https://www.city.akita.lg.jp/opendata/",
+          "https://www.pref.akita.lg.jp/pages/archive/32419"
         ],
         "nonOfficial": [],
         "wrongCity": []
