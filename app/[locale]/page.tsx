@@ -221,6 +221,15 @@ export default async function Landing({
             </Link>
           </div>
         </div>
+        <a
+          href="#party-demo"
+          className="absolute bottom-[12%] left-4 z-10 hidden max-w-[15rem] rounded-2xl border border-lantern/60 bg-night/75 p-4 text-left text-white shadow-xl backdrop-blur-md transition hover:border-lantern lg:block xl:left-10"
+        >
+          <span className="inline-block rounded-sm bg-lantern px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-night">{lang === "ja" ? "近日公開" : "Coming soon"}</span>
+          <span className="mt-2 block text-sm font-bold leading-snug">{lang === "ja" ? "どんなチームでも大丈夫。足りない役はAIの仲間が埋めます。" : "Bring any team. AI teammates fill the missing roles."}</span>
+          <span aria-hidden className="mt-2 block text-lg tracking-widest">🤖🤖🤖</span>
+          <span className="mt-1 block text-xs text-sky-100/80">{lang === "ja" ? "プレビューを見る ↓" : "Try the preview ↓"}</span>
+        </a>
         {testimonials[0] && (
           <figure className="absolute bottom-[12%] right-4 z-10 hidden max-w-xs rounded-2xl border border-white/20 bg-night/70 p-4 text-left text-white shadow-xl backdrop-blur-md lg:block xl:right-10">
             <blockquote lang={hasJapanese(testimonials[0].quote) ? "ja" : undefined} className="text-sm leading-relaxed">“{testimonials[0].quote}”</blockquote>
