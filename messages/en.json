@@ -520,7 +520,19 @@
     "newInterview": "New request",
     "support": "If something breaks",
     "supportContact": "Lead: {name} ({email}) · supported until {date}",
-    "browse": "Browse challenges"
+    "browse": "Browse challenges",
+    "returned": "Returned by the town host",
+    "hostNote": "Host's note: {note}",
+    "noHostNote": "The host returned this request without a note. Add detail and resubmit.",
+    "revise": "Revise & resubmit",
+    "fieldTitle": "Title",
+    "field_problem": "What's the problem?",
+    "field_current_process": "How do you do it today?",
+    "field_desired_outcome": "What would you like instead?",
+    "resubmitHint": "Your request goes back to the host, and the sources and AI pre-check are re-run on the new text.",
+    "resubmit": "Resubmit for review",
+    "resubmitted": "Resubmitted. The host will review it again.",
+    "resubmitFailed": "Could not resubmit this request. It may already be back in review."
   },
   "admin": {
     "title": "Admin",
@@ -556,7 +568,11 @@
     "noEvaluations": "No responses yet.",
     "ok": "OK",
     "degraded": "Fallback",
-    "unknown": "Unused"
+    "unknown": "Unused",
+    "tabRejected": "Returned",
+    "noRejected": "No returned requests.",
+    "rejectedHint": "Returned requests wait for the owner to revise and resubmit them from My page. They then come back to “Challenges to review”.",
+    "rejectionNote": "Your note"
   },
   "feedback": {
     "title": "How is the solution working?",

@@ -17,10 +17,12 @@ import {
 import {
   detectThemes,
   inferIssuer,
+  isHeadlineTopical,
   isPastFiscalYear,
   isTopical,
   linkupMatches,
   matchGrants,
+  mergeMunicipal,
   parseDeadline,
   planGrantQueries,
   programmeKey,
@@ -134,7 +136,7 @@ describe("grant matching", () => {
   it("plans a few searches from problem themes + industry, with the brief's prefecture", () => {
     const plan = planGrantQueries({ city: "Sapporo", industry: "snow_removal", text: "LINEで依頼を自動受付し、手作業の配車をなくしたい。Excel台帳。" });
     expect(plan.prefecture?.ja).toBe("北海道");
-    expect(plan.queries.length).toBeLessThanOrEqual(4);
+    expect(plan.queries.length).toBeLessThanOrEqual(7);
     expect(plan.queries).toEqual(expect.arrayContaining(["DX", "除雪"]));
     expect(plan.queries.every((q) => q.length >= 2 && !/\s/.test(q))).toBe(true);
     expect(detectThemes("inbound tourists need English menus")).toContain("インバウンド");
@@ -243,12 +245,17 @@ describe("grant matching", () => {
     const plan = planGrantQueries(bakery);
     const out = linkupMatches(
       [
-        { title: "世田谷区 店舗改装補助金", url: "https://www.city.setagaya.lg.jp/a.html", snippet: "世田谷区の補助金。締切 令和8年12月25日まで" },
+        { title: "世田谷区 小売店舗改装補助金", url: "https://www.city.setagaya.lg.jp/a.html", snippet: "世田谷区の補助金。締切 令和8年12月25日まで" },
         { title: "世田谷区 昨年度補助金", url: "https://www.city.setagaya.lg.jp/b.html", snippet: "世田谷区の補助金。締切 令和7年3月31日まで" },
         { title: "世田谷区 補助金まとめ", url: "https://subsidy-blog.example.com/c", snippet: "世田谷区の補助金" },
         { title: "補助金見直し検討状況について", url: "https://www.city.setagaya.lg.jp/d.html", snippet: "世田谷区の補助金" },
         { title: "【８年度募集は終了しました】世田谷区 活性化補助金", url: "https://www.city.setagaya.lg.jp/e.html", snippet: "世田谷区の補助金" },
         { title: "令和7年度世田谷区中小事業者経営支援補助金のご案内", url: "https://www.city.setagaya.lg.jp/f.html", snippet: "世田谷区の補助金" },
+        { title: "【終了】世田谷区 DX推進補助金 公募説明会のご案内", url: "https://www.city.setagaya.lg.jp/g.html", snippet: "世田谷区の補助金" },
+        { title: "世田谷区 産業振興課 補助金等の名称 補助事業者等の名称 補助金等の額", url: "https://www.city.setagaya.lg.jp/h.html", snippet: "世田谷区の補助金の交付状況" },
+        { title: "世田谷区 店舗DX補助金（受付終了）", url: "https://www.city.setagaya.lg.jp/i.html", snippet: "世田谷区の補助金" },
+        { title: "移住・定住促進住宅取得費等補助金 | 世田谷区", url: "https://www.city.setagaya.lg.jp/k.html", snippet: "世田谷区の補助金" }, // off-topic title
+        { title: "創業支援補助金 | 世田谷区", url: "https://www.city.setagaya.lg.jp/j.html", snippet: "世田谷区で創業する方への補助金" },
       ],
       plan,
       ["lg.jp", "go.jp"],
@@ -276,6 +283,75 @@ describe("grant matching", () => {
     expect(detailFn).toHaveBeenCalledTimes(2);
     expect(r.prefecture).toBe("東京都");
     expect(r.warnings).toEqual([expect.stringContaining("linkup down")]);
+  });
+
+  it("searches industry-specific jGrants keywords for each industry", () => {
+    const q = (industry: string) => planGrantQueries({ city: "Sapporo", industry, text: "予約を自動化したい。手作業が多い。" }).queries;
+    expect(q("guesthouse")).toEqual(expect.arrayContaining(["宿泊", "観光"]));
+    expect(q("ryokan")).toEqual(expect.arrayContaining(["宿泊", "観光"]));
+    expect(q("ramen")).toEqual(expect.arrayContaining(["飲食", "小売"]));
+    expect(q("farm")).toEqual(expect.arrayContaining(["農業", "スマート農業"]));
+    expect(q("care")).toEqual(expect.arrayContaining(["介護", "福祉"]));
+    expect(q("snow_removal")).toEqual(expect.arrayContaining(["除雪", "建設業"]));
+    // The standard SME productivity programmes are searched for every brief.
+    expect(q("ramen")).toEqual(expect.arrayContaining(["生産性", "持続化"]));
+    // Bare 建設 is too ambiguous (reactor / childcare-facility construction programmes).
+    expect(planGrantQueries({ city: "Asahikawa", industry: "construction", text: "見積書" }).terms).not.toContain("建設");
+  });
+
+  it("ranks headline-topical programmes (title / catch phrase) above description-only matches", () => {
+    const ramen: BriefForMatching = { city: "Sapporo", industry: "ramen", text: "電話とLINEの予約対応に週6時間。LINEで予約を自動受付したい。" };
+    const plan = planGrantQueries(ramen);
+    const s = {
+      // Higher raw score (prefecture-level, more search hits) but only the description mentions 飲食.
+      smoking: summary({ id: "smoking", title: "北海道 受動喫煙防止対策助成金", area: "北海道", maxAmount: 1_000_000 }),
+      monozukuri: summary({ id: "monozukuri", title: "ものづくり・商業・サービス生産性向上促進補助金" }),
+      inshoku: summary({ id: "inshoku", title: "経営改善支援補助金", area: "北海道" }),
+    };
+    const cs: Candidate[] = [
+      { summary: s.smoking, hits: 3, detail: detail(s.smoking, { description: "飲食提供施設の喫煙室整備を助成", industry: "宿泊業、飲食サービス業" }) },
+      { summary: s.monozukuri, hits: 1, detail: detail(s.monozukuri) },
+      { summary: s.inshoku, hits: 1, detail: detail(s.inshoku, { catchPhrase: "飲食店のデジタル化を支援" }) },
+    ];
+    expect(isHeadlineTopical(cs[0], plan)).toBe(false);
+    expect(isHeadlineTopical(cs[2], plan)).toBe(true); // via the catch phrase
+    const ranked = rankCandidates(pool(cs), plan, { now: NOW });
+    expect(ranked.map((m) => m.externalId)).toEqual(["inshoku", "monozukuri", "smoking"]);
+    expect(ranked.map((m) => m.headline)).toEqual([true, true, false]);
+  });
+
+  it("drops founders-only programmes unless the brief is about starting up, and follow-up notices", () => {
+    const plan = planGrantQueries(bakery);
+    const founders = summary({ id: "f", title: "小規模事業者持続化補助金＜創業型＞ 第４回受付締切" });
+    const followUp = summary({ id: "g", title: "［第十回］事業再構築補助金（交付申請等）" });
+    expect(rankCandidates(pool([{ summary: founders, hits: 1 }, { summary: followUp, hits: 1 }]), plan, { now: NOW })).toEqual([]);
+    const startup = planGrantQueries({ ...bakery, text: `${bakery.text} 来年に二号店を開業予定。` });
+    expect(rankCandidates(pool([{ summary: founders, hits: 1 }]), startup, { now: NOW }).map((m) => m.externalId)).toEqual(["f"]);
+    expect(titleMunicipality("いわき市診療所開設・承継支援補助金")).toBe("いわき市");
+  });
+
+  it("lets municipal (Linkup) programmes fill the top three when jGrants is thin", () => {
+    const m = (id: string, headline: boolean, source: GrantMatch["source"] = "jgrants"): GrantMatch => ({
+      source, externalId: id, title: id, issuer: null, url: `https://x.lg.jp/${id}`, amountMax: null, subsidyRate: null, deadline: null, area: null, score: 1, headline,
+    });
+    const ids = (xs: GrantMatch[]) => xs.map((x) => x.externalId);
+    expect(ids(mergeMunicipal([m("J1", true), m("J2", false)], [m("L1", true, "linkup"), m("L2", false, "linkup"), m("L3", false, "linkup")]))).toEqual(["J1", "L1", "L2", "J2", "L3"]);
+    // Enough headline-topical jGrants programmes: municipal pages follow them.
+    expect(ids(mergeMunicipal([m("J1", true), m("J2", true), m("J3", true)], [m("L1", true, "linkup")]))).toEqual(["J1", "J2", "J3", "L1"]);
+    expect(ids(mergeMunicipal([], [m("L1", true, "linkup"), m("L2", true, "linkup"), m("L3", true, "linkup"), m("L4", true, "linkup")]))).toEqual(["L1", "L2", "L3"]);
+  });
+
+  it("runs a second, broader municipal search only while the top three are still not filled", async () => {
+    const guesthouse: BriefForMatching = { city: "Otaru", industry: "guesthouse", text: "海外客の多言語メール対応に週5時間。返信の下書きを自動化したい。" };
+    const page = (n: number, extra = "") => ({ title: `小樽市 ${extra}補助金${n}`, url: `https://www.city.otaru.lg.jp/p${n}.html`, snippet: `小樽市の事業者向け補助金。${extra}` });
+    const thin = vi.fn(async (q: string) => (q.includes("ゲストハウス") ? [page(1, "宿泊")] : [page(2, "生産性向上"), page(3, "DX"), page(4)]));
+    const r = await matchGrants(guesthouse, { search: async () => [], detail: async () => null, linkup: thin, now: NOW });
+    expect(thin).toHaveBeenCalledTimes(2);
+    expect(r.matches.map((x) => x.url)).toEqual(["https://www.city.otaru.lg.jp/p1.html", "https://www.city.otaru.lg.jp/p2.html", "https://www.city.otaru.lg.jp/p3.html"]);
+    expect(r.matches.every((x) => x.source === "linkup")).toBe(true);
+    const full = vi.fn(async () => [page(1, "宿泊"), page(2, "観光"), page(3, "DX")]);
+    await matchGrants(guesthouse, { search: async () => [], detail: async () => null, linkup: full, now: NOW });
+    expect(full).toHaveBeenCalledTimes(1);
   });
 
   it("surfaces jGrants failures instead of returning stand-in data", async () => {

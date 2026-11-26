@@ -172,7 +172,28 @@ export async function briefsForOwner(userId: string) {
         .innerJoin(schema.teams, eq(schema.deliveries.teamId, schema.teams.id))
         .where(inArray(schema.deliveries.briefId, rows.map((r) => r.brief.id)))
     : [];
-  return rows.map((r) => ({ ...r, deliveries: deliveries.filter((d) => d.delivery.briefId === r.brief.id) }));
+  const rejected = rows.filter((r) => r.brief.status === "rejected").map((r) => r.brief.id);
+  const rejections = await latestRejections(rejected);
+  return rows.map((r) => ({
+    ...r,
+    deliveries: deliveries.filter((d) => d.delivery.briefId === r.brief.id),
+    rejection: rejections.get(r.brief.id) ?? null,
+  }));
+}
+
+export type Rejection = { note: string | null; decidedAt: Date };
+
+/** The most recent host "reject" decision (and its note) per brief, from the decisions audit table. */
+export async function latestRejections(briefIds: string[]): Promise<Map<string, Rejection>> {
+  const out = new Map<string, Rejection>();
+  if (briefIds.length === 0) return out;
+  const rows = await getDb()
+    .select({ subjectId: schema.decisions.subjectId, note: schema.decisions.note, createdAt: schema.decisions.createdAt })
+    .from(schema.decisions)
+    .where(and(eq(schema.decisions.subjectType, "brief"), eq(schema.decisions.decision, "reject"), inArray(schema.decisions.subjectId, briefIds)))
+    .orderBy(desc(schema.decisions.createdAt));
+  for (const r of rows) if (!out.has(r.subjectId)) out.set(r.subjectId, { note: r.note, decidedAt: r.createdAt });
+  return out;
 }
 
 export async function teamsForUser(userId: string) {
@@ -198,6 +219,18 @@ export async function adminQueue() {
   const ids = briefs.map((b) => b.brief.id);
   const sources = ids.length ? await db.select().from(schema.dataSources).where(inArray(schema.dataSources.briefId, ids)) : [];
   return briefs.map((b) => ({ ...b, sources: sources.filter((s) => s.briefId === b.brief.id) }));
+}
+
+/** Returned (rejected) briefs waiting for the owner to revise & resubmit, with the host's note. */
+export async function adminRejected() {
+  const rows = await getDb()
+    .select({ brief: schema.briefs, business: schema.businesses })
+    .from(schema.briefs)
+    .innerJoin(schema.businesses, eq(schema.briefs.businessId, schema.businesses.id))
+    .where(eq(schema.briefs.status, "rejected"))
+    .orderBy(desc(schema.briefs.updatedAt));
+  const rejections = await latestRejections(rows.map((r) => r.brief.id));
+  return rows.map((r) => ({ ...r, rejection: rejections.get(r.brief.id) ?? null }));
 }
 
 export async function adminTeams() {

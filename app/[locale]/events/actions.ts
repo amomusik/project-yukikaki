@@ -98,7 +98,7 @@ export async function saveEventAction(_prev: SaveEventState, formData: FormData)
       const { event, promoted } = await updateEvent(user, eventId, input);
       notifyPromoted(promoted);
       slug = event.slug;
-      if (publish && event.status !== "published") await setEventStatus(user, eventId, "published");
+      if (publish && event.status !== "published") notifyPromoted((await setEventStatus(user, eventId, "published")).promoted);
     } else {
       slug = (await createEvent(user, input, { publish })).slug;
     }
@@ -116,7 +116,16 @@ export async function setEventStatusAction(formData: FormData) {
   const eventId = str(formData, "eventId");
   const status = str(formData, "status") as EventStatus;
   if (!isUuid(eventId) || !["draft", "published", "cancelled"].includes(status)) redirect(`/${locale}/events`);
-  const ev = await setEventStatus(user, eventId, status);
+  let slug: string;
+  try {
+    const { event, promoted } = await setEventStatus(user, eventId, status);
+    notifyPromoted(promoted);
+    slug = event.slug;
+  } catch (e) {
+    if (!(e instanceof EventError)) throw e;
+    const ev = e.code === "not_found" ? null : await getEventById(eventId);
+    redirect(ev ? `/${locale}/events/${ev.slug}?error=${e.code}` : `/${locale}/events`);
+  }
   revalidatePath(`/${locale}/events`);
-  redirect(`/${locale}/events/${ev.slug}`);
+  redirect(`/${locale}/events/${slug}`);
 }

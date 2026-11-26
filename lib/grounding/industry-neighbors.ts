@@ -52,3 +52,25 @@ export function industryNeighbors(input: string): Industry[] {
 export function industryJa(input: string): string {
   return findIndustry(input)?.ja ?? input;
 }
+
+/**
+ * Words that show a page is about this industry: its Japanese and English names, aliases and the
+ * Japanese names of adjacent industries. Unknown industries fall back to the raw input.
+ */
+export function industryVocabulary(input: string): string[] {
+  const ind = findIndustry(input);
+  if (!ind) return input.trim() ? [input.trim()] : [];
+  const words = [ind.ja, ind.en, ind.key.replace(/_/g, " "), ...ind.aliases, ...industryNeighbors(input).map((n) => n.ja)];
+  return [...new Set(words.map((w) => w.trim()).filter((w) => w.length >= 2))];
+}
+
+/** True when the text names one of the words; ASCII words match whole words only ("inn" ≠ "dinner"). */
+export function mentionsAny(text: string, words: string[]): boolean {
+  const lower = text.toLowerCase();
+  return words.some((w) => {
+    const lw = w.toLowerCase();
+    if (/[^\x00-\x7f]/u.test(w)) return text.includes(w);
+    const escaped = lw.replace(/[.*+?^$()|[\]\\{}]/g, "\\$&");
+    return new RegExp(`(?<![a-z0-9])${escaped}(?![a-z0-9])`, "u").test(lower);
+  });
+}

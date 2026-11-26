@@ -367,7 +367,8 @@
           ]
         },
         "charrette": {
-          "title": "デザイン・シャレット（住民参加の集中ワークショップ）",
+          "title": "デザイン・シャレット",
+          "gloss": "住民参加の集中ワークショップ",
           "who": "住民・関係者",
           "time": "約1日",
           "out": "みんなで共有できる計画と優先順位",
@@ -519,7 +520,19 @@
     "newInterview": "新しく相談する",
     "support": "困ったらこちら",
     "supportContact": "担当リーダー: {name}（{email}）・{date}までサポート",
-    "browse": "チャレンジを探す"
+    "browse": "チャレンジを探す",
+    "returned": "担当者から差し戻されました",
+    "hostNote": "担当者からのメモ：{note}",
+    "noHostNote": "メモなしで差し戻されました。内容を補足して再提出してください。",
+    "revise": "修正して再提出",
+    "fieldTitle": "タイトル",
+    "field_problem": "困っていること",
+    "field_current_process": "今のやり方",
+    "field_desired_outcome": "どうなってほしいか",
+    "resubmitHint": "再提出すると担当者の確認待ちに戻り、新しい内容で出典検索とAI事前チェックをやり直します。",
+    "resubmit": "再提出する",
+    "resubmitted": "再提出しました。担当者がもう一度確認します。",
+    "resubmitFailed": "再提出できませんでした。すでに確認待ちに戻っている可能性があります。"
   },
   "admin": {
     "title": "管理画面",
@@ -555,7 +568,11 @@
     "noEvaluations": "まだ回答がありません。",
     "ok": "正常",
     "degraded": "代替モード",
-    "unknown": "未使用"
+    "unknown": "未使用",
+    "tabRejected": "差し戻し",
+    "noRejected": "差し戻し中の依頼はありません。",
+    "rejectedHint": "差し戻した依頼は、事業者がマイページで修正・再提出するのを待っています。再提出されると「確認待ちの課題」に戻ります。",
+    "rejectionNote": "メモ"
   },
   "feedback": {
     "title": "導入したツールの効果を教えてください",

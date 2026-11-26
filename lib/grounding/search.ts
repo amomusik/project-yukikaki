@@ -2,7 +2,7 @@ import type { GroundingLevel } from "@/lib/db/schema";
 import { withFallback } from "@/lib/integrations/_guard";
 import { linkupSearch, type LinkupResult } from "@/lib/integrations/linkup";
 import { analogCities, findCity } from "./city-profiles";
-import { industryJa, industryNeighbors } from "./industry-neighbors";
+import { findIndustry, industryJa, industryNeighbors, industryVocabulary, mentionsAny } from "./industry-neighbors";
 
 export type GroundingSource = {
   title: string;
@@ -68,7 +68,12 @@ export function isOfficial(url: string, allowed: string[], cityKey?: string): bo
   }
 }
 
-/** Build the query plan for each cascade level. Exported for tests and the prebake script. */
+/**
+ * Build the query plan for each cascade level. Exported for tests and the prebake script.
+ * Every query names the industry (and the exact level adds a second industry word, e.g.
+ * ラーメン店 + ラーメン, or the adjacent sector), so city-wide pages about open data or DX
+ * policy don't crowd out industry pages.
+ */
 export function planQueries(input: { city: string; industry: string }): Record<GroundingSource["level"], Planned[]> {
   const profile = findCity(input.city);
   const city = profile ? { ja: profile.ja, en: profile.en, key: profile.key } : { ja: input.city, en: input.city };
@@ -77,20 +82,22 @@ export function planQueries(input: { city: string; industry: string }): Record<G
   const ind = industryJa(input.industry);
   const analogs = profile ? analogCities(profile.key, 3) : [];
   const neighbors = industryNeighbors(input.industry).slice(0, 2);
+  const alt = findIndustry(input.industry)?.aliases.find((a) => /[^\x00-\x7f]/u.test(a) && a !== ind) ?? neighbors[0]?.ja;
   return {
     exact: [
-      { query: `${city.ja} ${ind} 統計 オープンデータ`, level: "exact", city, includeDomains: cityDomains },
+      { query: `${city.ja} ${ind} 事業者 統計 調査`, level: "exact", city, includeDomains: cityDomains },
       { query: `${city.ja} ${ind} 補助金 支援制度`, level: "exact", city, includeDomains: cityDomains },
       { query: `${city.ja} ${ind} 業務効率化 DX 事例`, level: "exact", city, includeDomains: cityDomains },
+      ...(alt ? [{ query: `${city.ja} ${alt} 事業者 支援`, level: "exact" as const, city, includeDomains: cityDomains }] : []),
     ],
     analog: [
       ...analogs.map((a) => ({
-        query: `${a.ja} ${ind} 統計 データ`,
+        query: `${a.ja} ${ind} 事業者 統計`,
         level: "analog" as const,
         city: { ja: a.ja, en: a.en, key: a.key },
         includeDomains: domains(a.site),
       })),
-      ...neighbors.map((n) => ({ query: `${city.ja} ${n.ja} 統計 データ`, level: "analog" as const, city, includeDomains: cityDomains })),
+      ...neighbors.map((n) => ({ query: `${city.ja} ${n.ja} 事業者 統計`, level: "analog" as const, city, includeDomains: cityDomains })),
     ],
     national: [
       { query: `${ind} 全国 統計 e-Stat`, level: "national", city: null, includeDomains: ["go.jp"] },
@@ -99,9 +106,20 @@ export function planQueries(input: { city: string; industry: string }): Record<G
   };
 }
 
+/** Industry pages first; generic official pages only to reach `min` sources. Exported for tests. */
+export function preferOnTopic<T extends { title: string; snippet: string }>(found: T[], vocabulary: string[], min: number, max: number): T[] {
+  if (vocabulary.length === 0) return found.slice(0, max);
+  const onTopic = found.filter((s) => mentionsAny(`${s.title} ${s.snippet}`, vocabulary));
+  if (onTopic.length >= min) return onTopic.slice(0, max);
+  const generic = found.filter((s) => !onTopic.includes(s));
+  return [...onTopic, ...generic.slice(0, Math.max(0, min - onTopic.length))];
+}
+
 /**
  * Grounding cascade: exact city → analog cities / adjacent industries → national.
- * Stops at the first level with at least `minResults` relevant, de-duplicated results.
+ * Stops at the first level with at least `minResults` relevant, de-duplicated results, keeping
+ * only pages that mention the industry (or an adjacent one) when there are enough of them, and
+ * topping up with generic official pages of that level only to reach `minResults`.
  */
 export async function groundBrief(
   input: { city: string; industry: string },
@@ -111,6 +129,7 @@ export async function groundBrief(
   const minResults = opts.minResults ?? 2;
   const maxSources = opts.maxSources ?? 6;
   const plan = planQueries(input);
+  const vocabulary = industryVocabulary(input.industry);
   const seen = new Set<string>();
   const queries: string[] = [];
   let anyOk = false;
@@ -130,7 +149,7 @@ export async function groundBrief(
       }
     }
     if (found.length >= minResults) {
-      return { level, sources: found.slice(0, maxSources), unavailable: false, queries };
+      return { level, sources: preferOnTopic(found, vocabulary, minResults, maxSources), unavailable: false, queries };
     }
   }
   return { level: "ungrounded", sources: [], unavailable: !anyOk, queries };

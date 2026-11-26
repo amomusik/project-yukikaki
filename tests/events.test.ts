@@ -128,6 +128,42 @@ describe("RSVP capacity and waitlist", () => {
   });
 });
 
+describe("event status transitions (EVENT_TRANSITIONS)", () => {
+  it("draft → published → cancelled; cancelled is terminal; published can't go back to draft", async () => {
+    const host = await makeUser("host");
+    const ev = await createEvent(host, input());
+    expect((await setEventStatus(host, ev.id, "published")).event.status).toBe("published");
+    // Same status again is a no-op (double-click safe).
+    expect(await setEventStatus(host, ev.id, "published")).toMatchObject({ event: { status: "published" }, promoted: [] });
+    await expect(setEventStatus(host, ev.id, "draft")).rejects.toMatchObject({ code: "illegal_status" });
+    expect((await setEventStatus(host, ev.id, "cancelled")).event.status).toBe("cancelled");
+    await expect(setEventStatus(host, ev.id, "published")).rejects.toMatchObject({ code: "illegal_status" });
+    await expect(setEventStatus(host, ev.id, "draft")).rejects.toMatchObject({ code: "illegal_status" });
+    const draft = await createEvent(host, input());
+    expect((await setEventStatus(host, draft.id, "cancelled")).event.status).toBe("cancelled");
+    await expect(setEventStatus(host, "11111111-2222-4333-8444-555555555555", "cancelled")).rejects.toMatchObject({ code: "not_found" });
+  });
+
+  it("publishing returns the waitlisted RSVPs it promoted, in queue order, so they can be emailed", async () => {
+    const host = await makeUser("host");
+    const [a, b, c] = [await makeUser("student"), await makeUser("student"), await makeUser("student")];
+    const ev = await createEvent(host, input({ capacity: 2 }));
+    // Waitlist rows left on a draft (e.g. imported or from an earlier run): publish fills the free seats.
+    await getDb().insert(schema.eventRsvps).values([
+      { eventId: ev.id, userId: a.id, role: "participant", status: "waitlist", createdAt: new Date("2026-11-20T00:00:00Z") },
+      { eventId: ev.id, userId: b.id, role: "participant", status: "waitlist", createdAt: new Date("2026-11-21T00:00:00Z") },
+      { eventId: ev.id, userId: c.id, role: "participant", status: "waitlist", createdAt: new Date("2026-11-22T00:00:00Z") },
+    ]);
+    const { promoted } = await setEventStatus(host, ev.id, "published");
+    expect(promoted).toEqual([
+      { userId: a.id, eventId: ev.id },
+      { userId: b.id, eventId: ev.id },
+    ]);
+    expect(await getEventDetail(ev.slug)).toMatchObject({ going: 2, waitlist: 1 });
+    expect((await setEventStatus(host, ev.id, "cancelled")).promoted).toEqual([]);
+  });
+});
+
 describe("listing filters", () => {
   it("lists upcoming published events filtered by city, format and JST month", async () => {
     const host = await makeUser("host");
@@ -221,7 +257,7 @@ describe("ICS export", () => {
     expect(mail.html).toContain("&lt;Aoi&gt;");
     expect(mail.html.indexOf("キャンセル待ち")).toBeLessThan(mail.html.indexOf("waitlist"));
     expect(rsvpEmail({ ev, kind: "promoted", locale: "en", name: "A" }).subject).toBe("You're off the waitlist: Kitchen Night");
-    const cancelled = await setEventStatus(host, ev.id, "cancelled");
+    const { event: cancelled } = await setEventStatus(host, ev.id, "cancelled");
     expect(eventIcs(cancelled, "en")).toContain("STATUS:CANCELLED");
   });
 });

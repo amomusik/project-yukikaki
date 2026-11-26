@@ -17,12 +17,12 @@ step (≈ 24 searches, ≈ €0.12) · jGrants free · ElevenLabs 0 (re-run bloc
 | grounding | official domains only | 1.00 (8/8 pairs) | = 1 | ✅ |
 | grounding | city or analog-city match | 1.00 (8/8) | = 1 | ✅ |
 | grounding | ≥ 2 sources | 1.00 (8/8) | ≥ 0.875 | ✅ |
-| grounding | precision proxy (official ∧ city ∧ on-topic) | 0.479 (23/48 sources) | ≥ 0.60 | ❌ |
+| grounding | precision proxy (official ∧ city ∧ on-topic) | **1.00 (45/45 sources)** — was 0.479 (23/48) | ≥ 0.60 | ✅ |
 | grants | top-3 open | 1.00 (8/8) | = 1 | ✅ |
 | grants | top-3 in area | 1.00 (8/8) | = 1 | ✅ |
-| grants | top-3 on topic (keyword overlap) | 0.375 (3/8) | ≥ 0.60 | ❌ |
+| grants | top-3 on topic (keyword overlap) | **0.571 (8/14)** — was 0.375 (3/8) | ≥ 0.60 | ❌ |
 | grants | no unrelated generic scheme | 1.00 (8/8) | ≥ 0.90 | ✅ |
-| grants | briefs with 3 matches (coverage) | 0.40 (2/5) | ≥ 0.60 | ❌ |
+| grants | briefs with 3 matches (coverage) | **0.80 (4/5)** — was 0.40 (2/5) | ≥ 0.60 | ✅ |
 | interview* | schema parse | 1.00 (3/3) | = 1 | ✅ |
 | interview* | all 11 fields present & typed | 1.00 (3/3) | ≥ 0.66 | ✅ |
 | interview* | hours within ±20 % | 1.00 (3/3, exact) | ≥ 0.66 | ✅ |
@@ -33,6 +33,31 @@ step (≈ 24 searches, ≈ €0.12) · jGrants free · ElevenLabs 0 (re-run bloc
 `2026-11-26-interview.json`). The re-run at 15:26 JST could not finish: ElevenLabs returned *"exceeds your quota of
 10000 … 0 credits remaining"* mid-conversation for all 3 personas (`2026-11-26-interview-rerun-blocked.md`). That
 is a billing blocker, not a quality result.
+
+## Re-run after the precision fixes (grounding + grants only, 2026-11-26 evening)
+
+Only the two cheap suites were re-run live (`pnpm evals --suite=grounding,grants --yes`; Linkup ≈ 40 searches ≈ €0.20,
+jGrants free). The other rows are unchanged from the morning run: brief-review (Dify) waits for the workflow to be
+re-imported with the new business-name guard, and interview is blocked on ElevenLabs credits.
+
+- **Grounding precision 0.479 → 1.00.** Every query now names the industry (plus a second industry word at the exact
+  level), and `groundBrief` keeps only pages whose title/snippet mention the industry or an adjacent one, topping up
+  with generic official pages only to reach 2 sources. All 8 pairs still resolve at the exact city, official-only,
+  ≥ 2 sources (45 sources instead of 48).
+- **Grants coverage 0.40 → 0.80, on-topic 0.375 → 0.571** (still just under 0.60). jGrants is now searched with
+  every industry keyword (宿泊/観光/民泊 for lodging, 飲食/小売 for food, 農業/スマート農業, 介護/福祉, 除雪/建設業)
+  plus the standard SME productivity programmes (生産性 / 持続化 / 省力化); programmes whose title or catch phrase
+  names a brief term rank first; founders-only (創業型) programmes and follow-up notices are dropped; and Linkup
+  municipal programmes (title must name a brief term; closed calls, briefing sessions and grant ledgers dropped) fill
+  the top 3 when jGrants is thin. This suite now also runs the Linkup enrichment production uses. The remaining
+  "off-topic" slots are mostly 働き方改革推進支援助成金 (a labour-hours programme the keyword list doesn't count) and two
+  building-decarbonisation programmes for construction. Otaru/guesthouse has only 2 matches: no open lodging
+  programme for Hokkaido exists on jGrants this week.
+- **Business-name preservation (Dify): fix shipped, not yet measured.** The bilingual editor now must output
+  `business_name_ja` / `business_name_en` and use them verbatim, and the ⑥ code node deterministically restores the
+  name (replaces "a ramen shop in Sapporo"-style phrases with the romanized name, or prefixes it; restores
+  森野ファーム over a katakana variant). Unit-tested on the deployed Python (`tests/unit/dify-name-guard.test.ts`).
+  Re-run `pnpm evals --suite=brief-review --yes` after re-importing `dify/brief-review.yml`.
 
 ## Findings (real model/retrieval behaviour, not label errors; datasets left unchanged)
 

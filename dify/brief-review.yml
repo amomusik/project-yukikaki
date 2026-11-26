@@ -337,20 +337,28 @@ workflow:
               text: |-
                 Project Yukikaki (雪かき) is a municipal program in Japan. Small business owners describe a bureaucratic or menial task; teams of 2–6 AI-capable students build a fix in 2–6 weeks. A human town host makes every decision — you only advise.
 
-                You are the BILINGUAL EDITOR. Rewrite the brief so a student who never met the owner understands it. Keep the owner's meaning, be concise and concrete, fill in the missing language by translating. Remove ONLY the exact personal-data values listed (replace them with a generic word such as 「お客様」/"a customer"); keep everything else, including statements that private data exists. Japanese: natural, polite です・ます調. Title ≤ 40 characters. Business names, shop names, product names and other proper nouns must be kept exactly as-is or romanized (e.g. 雪あかり → Yukiakari in English, and the original 雪あかり in Japanese) — never translate their meaning, replace them, or invent a different name.
+                You are the BILINGUAL EDITOR. Rewrite the brief so a student who never met the owner understands it. Keep the owner's meaning, be concise and concrete, fill in the missing language by translating. Remove ONLY the exact personal-data values listed (replace them with a generic word such as 「お客様」/"a customer"); keep everything else, including statements that private data exists. Japanese: natural, polite です・ます調. Title ≤ 40 characters.
+
+                BUSINESS NAME — the most important rule. The business name is given in Meta as "business" (and usually appears in the brief). It is a proper noun, never personal data:
+                - business_name_ja: copy the business name EXACTLY as written in Meta/the brief, character for character (森野ファーム stays 森野ファーム — never convert kanji to katakana or the reverse).
+                - business_name_en: its English form — keep generic words in English and romanize the proper part in Hepburn, capitalized, without macrons or apostrophes (麺屋ゆき → "Menya Yuki", ゲストハウス雪あかり → "Guesthouse Yukiakari", 森野ファーム → "Morino Farm"). If the name is already in Latin letters, copy it unchanged.
+                - The Japanese title or problem MUST contain business_name_ja verbatim, and the English title or problem MUST contain business_name_en verbatim. Never replace the name with a description such as "a ramen shop in Sapporo" or "a guesthouse near Otaru Canal", never translate its meaning, and never invent a different name. Other shop, product and place names follow the same rule.
 
                 Return ONE JSON object only:
-                {"ja": {"title": "", "problem": "", "current_process": "", "desired_outcome": ""}, "en": {"title": "", "problem": "", "current_process": "", "desired_outcome": ""}}
+                {"business_name_ja": "", "business_name_en": "", "ja": {"title": "", "problem": "", "current_process": "", "desired_outcome": ""}, "en": {"title": "", "problem": "", "current_process": "", "desired_outcome": ""}}
             - id: 1732500000005-user
               role: user
               text: |-
+                Meta (business name, city, industry):
+                {{#1732500000001.meta#}}
+
                 Brief:
                 {{#1732500000001.brief#}}
 
                 Personal-data values to remove (JSON from the privacy scan):
                 {{#1732500000002.text#}}
           title: ⑤ Bilingual editor (日本語 / English)
-          desc: Rewrites the brief into clear, publishable Japanese (です・ます) and English, removing the exact personal-data values found in step ②.
+          desc: Rewrites the brief into clear, publishable Japanese (です・ます) and English, removing the exact personal-data values found in step ②. Keeps the business name verbatim in Japanese and outputs its romanized English form (business_name_en).
           selected: false
         position:
           x: 1340
@@ -467,10 +475,61 @@ workflow:
                 item = re.sub(r"\s+", " ", item).strip(" :：,、;-–—")
                 return item or "personal data"
 
+            GENERIC_EN = re.compile(
+                r"\b(?:a|an|the|this|our|my|one)\s+"
+                r"(?:(?:small|local|family[- ]run|family[- ]owned|popular|busy|traditional|independent|little|tiny|cozy|old|new)\s+)*"
+                r"(?:[A-Za-z][A-Za-z-]*\s+){0,2}?"
+                r"(?:ramen shop|noodle shop|shop|store|restaurant|guest ?house|inn|ryokan|hotel|hostel|farm|bakery|cafe|caf\u00e9|salon|clinic|brewery|business|company|izakaya|diner|eatery|bar|firm|contractor)"
+                r"(?![A-Za-z])(?!['\u2019]s\s+(?:owner|manager)|\s+(?:owner|owners|manager|managers|staff|operator)\b)",
+                re.I,
+            )
+
+
+            def business_names(meta, brief, n):
+                """(ja, en) business name: Meta first, else the draft title prefix ("<name>: ..."); en from the editor."""
+                m = parse(meta) if meta else {}
+                ja = str(m.get("business", "") or "").strip() if isinstance(m, dict) else ""
+                if not ja:
+                    b = parse(brief)
+                    t = str(((b.get("ja") or {}) if isinstance(b, dict) else {}).get("title", "") or "")
+                    if re.search(r"[:\uff1a]", t):
+                        ja = re.split(r"[:\uff1a]", t, 1)[0].strip()
+                if len(ja) > 40 or ja.startswith("("):
+                    ja = ""
+                en = re.sub(r"\s+", " ", str(n.get("business_name_en", "") or "")).strip()
+                if en and (len(en) > 60 or not any(c.isalpha() and ord(c) < 128 for c in en)):
+                    en = ""
+                if not en and ja and all(ord(c) < 128 for c in ja):
+                    en = ja
+                return ja, en
+
+
+            def ensure_business_name(n, ja_name, en_name, ja_used=""):
+                """Deterministic guard: the name must appear in en.title/en.problem and ja.title/ja.problem."""
+                en = n.get("en")
+                if en_name and isinstance(en, dict):
+                    head = (str(en.get("title", "")) + " " + str(en.get("problem", ""))).lower()
+                    if en_name.lower() not in head and not (ja_name and ja_name in head):
+                        prob = str(en.get("problem", ""))
+                        new, k = GENERIC_EN.subn(en_name, prob, count=1)
+                        en["problem"] = new if k else (en_name + ": " + prob if prob else en_name)
+                ja = n.get("ja")
+                if ja_name and isinstance(ja, dict):
+                    if ja_name not in str(ja.get("title", "")) + str(ja.get("problem", "")):
+                        # The editor wrote a variant (e.g. katakana モリノファーム for 森野ファーム): restore the original everywhere.
+                        if ja_used and ja_used != ja_name and len(ja_used) >= 2:
+                            for k in list(ja.keys()):
+                                if isinstance(ja[k], str):
+                                    ja[k] = ja[k].replace(ja_used, ja_name)
+                        if ja_name not in str(ja.get("title", "")) + str(ja.get("problem", "")):
+                            prob = str(ja.get("problem", ""))
+                            ja["problem"] = ja_name + "\uff1a" + prob if prob else ja_name
+                return n
+
             ALLOWED = {"ai-automation", "spreadsheets", "line-bot", "booking-automation", "email-automation", "inventory", "bookkeeping", "social-media", "translation", "paperwork-automation", "web", "data-analysis"}
 
 
-            def main(pii: str, feasibility: str, grounding: str, normalized: str, grounding_level: str, brief: str, transcript: str) -> dict:
+            def main(pii: str, feasibility: str, grounding: str, normalized: str, grounding_level: str, brief: str, transcript: str, meta: str = "") -> dict:
                 p, f, g, n = parse(pii), parse(feasibility), parse(grounding), parse(normalized)
                 level = (grounding_level or "").strip().lower()
                 feas = float(f.get("feasibility_score", 50) or 50)
@@ -516,6 +575,8 @@ workflow:
                 }
                 keys = ("title", "problem", "current_process", "desired_outcome")
                 if all(isinstance(n.get(l), dict) and all(isinstance(n[l].get(k), str) for k in keys) for l in ("ja", "en")):
+                    ja_name, en_name = business_names(meta, brief, n)
+                    ensure_business_name(n, ja_name, en_name, str(n.get("business_name_ja", "") or "").strip())
                     out["normalized"] = {l: {k: scrub(n[l][k], scrubbers, l) for k in keys} for l in ("ja", "en")}
                 return {"result": json.dumps(out, ensure_ascii=False)}
           variables:
@@ -547,12 +608,16 @@ workflow:
               value_selector:
                 - '1732500000001'
                 - transcript
+            - variable: meta
+              value_selector:
+                - '1732500000001'
+                - meta
           outputs:
             result:
               type: string
               children: null
           title: ⑥ House rules & final recommendation
-          desc: 'Deterministic merge: weights the scores, caps ungrounded briefs below 60, forces ''revise'' when PII was found, deterministically scrubs verified PII (and its romaji) from the brief text and issues, and emits the JSON the app expects.'
+          desc: 'Deterministic merge: weights the scores, caps ungrounded briefs below 60, forces ''revise'' when PII was found, guarantees the business name appears in the ja and en title/problem, deterministically scrubs verified PII (and its romaji) from the brief text and issues, and emits the JSON the app expects.'
           selected: false
         position:
           x: 1660

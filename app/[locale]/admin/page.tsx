@@ -8,6 +8,7 @@ import { grantMatchSummary } from "@/lib/grants/store";
 import { decideAction, reEnrichAction } from "./actions";
 import { refreshAllGrantsAction, refreshGrantsAction } from "./grant-actions";
 import { ImpactCheckButton } from "./impact-check-button";
+import { RejectedTab } from "./rejected-tab";
 
 // Server actions on this page start the brief/team pipeline with after(); that work counts
 // against this function's duration (300 s = Vercel Hobby max; Pro allows up to 800 s).
@@ -15,7 +16,7 @@ export const maxDuration = 300;
 
 export const dynamic = "force-dynamic";
 
-const TABS = ["briefs", "teams", "deliveries", "impact"] as const;
+const TABS = ["briefs", "rejected", "teams", "deliveries", "impact"] as const;
 type Tab = (typeof TABS)[number];
 const SERVICES = ["neon", "neo4j", "elevenlabs", "linkup", "dify", "adaption", "resend", "jgrants"];
 
@@ -34,7 +35,7 @@ export default async function AdminPage({
   const t = await getTranslations("admin");
   const tn = await getTranslations("nav");
   const status = await serviceStatus().catch(() => []);
-  const tabLabel: Record<Tab, string> = { briefs: t("tabBriefs"), teams: t("tabTeams"), deliveries: t("tabDeliveries"), impact: t("tabImpact") };
+  const tabLabel: Record<Tab, string> = { briefs: t("tabBriefs"), rejected: t("tabRejected"), teams: t("tabTeams"), deliveries: t("tabDeliveries"), impact: t("tabImpact") };
 
   return (
     <div>
@@ -71,6 +72,7 @@ export default async function AdminPage({
         ))}
       </nav>
       {tab === "briefs" && <BriefsTab locale={locale} />}
+      {tab === "rejected" && <RejectedTab locale={locale} />}
       {tab === "teams" && <TeamsTab locale={locale} />}
       {tab === "deliveries" && <DeliveriesTab locale={locale} />}
       {tab === "impact" && <ImpactTab locale={locale} />}

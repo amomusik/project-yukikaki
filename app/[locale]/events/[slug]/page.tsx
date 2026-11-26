@@ -9,6 +9,7 @@ import { getEventBySlug, getEventDetail } from "@/lib/events/store";
 import { Badge, Card, Select, buttonClass, cn } from "@/components/ui";
 import { GrantList, GrantNotice } from "../../grants/grant-list";
 import { cancelRsvpAction, rsvpAction, setEventStatusAction } from "../actions";
+import { canTransition } from "@/lib/workflow/status";
 import { AvatarStack, DemoBadge, EventCover, FormatPill } from "../event-bits";
 import { ShareButton } from "../share-button";
 import { cityLabel, industryLabel } from "@/components/landing/labels";
@@ -223,7 +224,7 @@ export default async function EventPage({
                 {t("edit")}
               </Link>
               {(["published", "draft", "cancelled"] as const)
-                .filter((s) => s !== ev.status)
+                .filter((s) => canTransition("event", ev.status, s))
                 .map((s) => (
                   <form key={s} action={setEventStatusAction}>
                     <input type="hidden" name="locale" value={locale} />

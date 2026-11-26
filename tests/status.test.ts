@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { BRIEF_TRANSITIONS, TEAM_TRANSITIONS, TransitionError, assertTransition, canTransition } from "@/lib/workflow/status";
-import type { BriefStatus, TeamStatus } from "@/lib/db/schema";
+import { BRIEF_TRANSITIONS, EVENT_TRANSITIONS, TEAM_TRANSITIONS, TransitionError, assertTransition, canTransition } from "@/lib/workflow/status";
+import type { BriefStatus, EventStatus, TeamStatus } from "@/lib/db/schema";
 
 const briefStates = Object.keys(BRIEF_TRANSITIONS) as BriefStatus[];
 const teamStates = Object.keys(TEAM_TRANSITIONS) as TeamStatus[];
@@ -43,5 +43,22 @@ describe("team transitions", () => {
   });
   it("cannot deliver before approval", () => {
     expect(() => assertTransition("team", "pending", "delivered")).toThrow(TransitionError);
+  });
+});
+
+describe("event transitions", () => {
+  const eventStates = Object.keys(EVENT_TRANSITIONS) as EventStatus[];
+  it("allows exactly the transitions in the table", () => {
+    for (const from of eventStates)
+      for (const to of eventStates) {
+        const allowed = EVENT_TRANSITIONS[from].includes(to);
+        expect(canTransition("event", from, to)).toBe(allowed);
+        if (!allowed) expect(() => assertTransition("event", from, to)).toThrow(TransitionError);
+      }
+  });
+  it("publishes or drops drafts, only cancels published events, and never reopens a cancelled one", () => {
+    expect(EVENT_TRANSITIONS).toEqual({ draft: ["published", "cancelled"], published: ["cancelled"], cancelled: [] });
+    expect(canTransition("event", "published", "draft")).toBe(false);
+    expect(canTransition("event", "cancelled", "published")).toBe(false);
   });
 });

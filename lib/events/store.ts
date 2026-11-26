@@ -3,10 +3,11 @@ import { z } from "zod";
 import { getDb, schema } from "@/lib/db";
 import type { EventFormat, EventRow, EventStatus, GrantMatchRow, RsvpRole, RsvpStatus, User } from "@/lib/db/schema";
 import { PUBLIC_STATUSES } from "@/lib/queries";
+import { canTransition } from "@/lib/workflow/status";
 import { EVENT_FORMATS, monthRange, slugify } from "./format";
 
 /* ── Errors ──────────────────────────────────────────────────────── */
-export type EventErrorCode = "not_found" | "not_open" | "ended" | "forbidden" | "invalid";
+export type EventErrorCode = "not_found" | "not_open" | "ended" | "forbidden" | "invalid" | "illegal_status";
 export class EventError extends Error {
   constructor(
     public code: EventErrorCode,
@@ -405,14 +406,26 @@ export async function updateEvent(
   });
 }
 
-/** Host-only status change (publish / unpublish to draft / cancel). */
-export async function setEventStatus(user: Pick<User, "id" | "role"> | null | undefined, eventId: string, status: EventStatus): Promise<EventRow> {
+/**
+ * Host-only status change, enforced by EVENT_TRANSITIONS (lib/workflow/status): draft → published |
+ * cancelled, published → cancelled, cancelled is terminal. Setting the current status again is a no-op.
+ * Publishing promotes waitlisted RSVPs into free seats; the caller must notify them (notifyPromoted).
+ */
+export async function setEventStatus(
+  user: Pick<User, "id" | "role"> | null | undefined,
+  eventId: string,
+  status: EventStatus,
+): Promise<{ event: EventRow; promoted: Promotion[] }> {
   assertHost(user);
   return getDb().transaction(async (tx) => {
-    await lockEvent(tx, eventId);
+    const current = await lockEvent(tx, eventId);
+    if (current.status === status) return { event: current, promoted: [] };
+    if (!canTransition("event", current.status, status)) {
+      throw new EventError("illegal_status", `Illegal event transition: ${current.status} → ${status}`);
+    }
     const [ev] = await tx.update(schema.events).set({ status, updatedAt: new Date() }).where(eq(schema.events.id, eventId)).returning();
-    if (status === "published") await promoteWaitlist(tx, ev);
-    return ev;
+    const promoted = status === "published" ? await promoteWaitlist(tx, ev) : [];
+    return { event: ev, promoted };
   });
 }
 
