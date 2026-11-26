@@ -12,305 +12,9 @@
     {
       "category": "knip: unused devDependencies",
       "severity": "cosmetic",
-      "where": "package.json:60",
+      "where": "package.json:62",
       "what": "@types/js-yaml is never imported.",
       "fix": "pnpm remove @types/js-yaml (verify it is not loaded implicitly).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grounding/prebaked.ts:41",
-      "what": "`listPrebaked` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/format.ts:5",
-      "what": "`EVENT_TZ` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/format.ts:32",
-      "what": "`formatTime` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/format.ts:50",
-      "what": "`jstMonthKey` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/store.ts:109",
-      "what": "`eventChallenges` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/store.ts:209",
-      "what": "`RSVP_ROLES` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/store.ts:293",
-      "what": "`eventInputSchema` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/integrations/adaption.ts:41",
-      "what": "`datasetName` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/briefs.ts:8",
-      "what": "`draftContent` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/briefs.ts:90",
-      "what": "`draftFromConversation` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/teams.ts:16",
-      "what": "`SUPPORT_DAYS` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/email.ts:11",
-      "what": "`eventUrl` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/events/ics.ts:17",
-      "what": "`icsDate` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "other-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/feedback.ts:10",
-      "what": "`TOKEN_TTL_DAYS` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/store.ts:15",
-      "what": "`liveLinkup` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/store.ts:21",
-      "what": "`briefForMatching` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/areas.ts:8",
-      "what": "`NATIONWIDE` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/areas.ts:10",
-      "what": "`PREFECTURES` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/areas.ts:71",
-      "what": "`splitAreas` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/jgrants.ts:20",
-      "what": "`JGRANTS_API` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/jgrants.ts:21",
-      "what": "`JGRANTS_PORTAL` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/jgrants.ts:22",
-      "what": "`jgrantsDetailUrl` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/jgrants.ts:104",
-      "what": "`stripHtml` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:49",
-      "what": "`PROBLEM_THEMES` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:61",
-      "what": "`INDUSTRY_TERMS` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:159",
-      "what": "`OFF_TOPIC_FACTOR` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:161",
-      "what": "`OFF_TOPIC_MIN_SCORE` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:164",
-      "what": "`topicalText` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:177",
-      "what": "`NOT_A_CALL` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:184",
-      "what": "`scoreCandidate` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:304",
-      "what": "`fiscalYear` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused exported type",
-      "severity": "cosmetic",
-      "where": "lib/grants/match.ts:14",
-      "what": "`GrantSource` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/party.ts:5",
-      "what": "`HELPER_ROLES` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/party.ts:12",
-      "what": "`COVERS` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused exported type",
-      "severity": "cosmetic",
-      "where": "lib/party.ts:6",
-      "what": "`HelperRole` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused exported type",
-      "severity": "dead code",
-      "where": "lib/party.ts:33",
-      "what": "`WaitlistRole` is exported and never referenced anywhere.",
-      "fix": "Delete it (or wire it up if it was meant to be used).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused export",
-      "severity": "cosmetic",
-      "where": "lib/waitlist.ts:51",
-      "what": "`waitlistLimiter` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
       "owner": "audit-agent"
     },
     {
@@ -346,145 +50,121 @@
       "owner": "audit-agent"
     },
     {
-      "category": "knip: unused exported type",
-      "severity": "cosmetic",
-      "where": "lib/graph/queries.ts:6",
-      "what": "`GraphNode` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "knip: unused exported type",
-      "severity": "cosmetic",
-      "where": "lib/graph/queries.ts:7",
-      "what": "`GraphLink` is exported but only used inside its own file.",
-      "fix": "Drop the `export` keyword (or add a test that needs it).",
-      "owner": "audit-agent"
-    },
-    {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:450#admin.decided",
+      "where": "messages/en.json:554#admin.decided",
       "what": "`admin.decided` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:447#admin.rebuilt",
+      "where": "messages/en.json:551#admin.rebuilt",
       "what": "`admin.rebuilt` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:418#challenges.download",
+      "where": "messages/en.json:475#challenges.download",
       "what": "`challenges.download` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:418#challenges.empty",
+      "where": "messages/en.json:462#challenges.empty",
       "what": "`challenges.empty` is never referenced by t()/getTranslations. (The leaf \"empty\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.back",
+      "where": "messages/en.json:25#common.back",
       "what": "`common.back` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.cancel",
+      "where": "messages/en.json:28#common.cancel",
       "what": "`common.cancel` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.demoNotice",
+      "where": "messages/en.json:32#common.demoNotice",
       "what": "`common.demoNotice` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.hoursPerWeek",
+      "where": "messages/en.json:31#common.hoursPerWeek",
       "what": "`common.hoursPerWeek` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.loading",
+      "where": "messages/en.json:30#common.loading",
       "what": "`common.loading` is never referenced by t()/getTranslations. (The leaf \"loading\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.none",
+      "where": "messages/en.json:29#common.none",
       "what": "`common.none` is never referenced by t()/getTranslations. (The leaf \"none\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.save",
+      "where": "messages/en.json:26#common.save",
       "what": "`common.save` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.submit",
+      "where": "messages/en.json:27#common.submit",
       "what": "`common.submit` is never referenced by t()/getTranslations. (The leaf \"submit\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:4#common.synthetic",
-      "what": "`common.synthetic` is never referenced by t()/getTranslations. (The leaf \"synthetic\" appears as a string literal — possibly an indirect key; verify.)",
-      "fix": "Verify the indirect lookup; delete if unused.",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "i18n: unused key",
-      "severity": "dead code",
-      "where": "messages/en.json:458#errors.generic",
+      "where": "messages/en.json:580#errors.generic",
       "what": "`errors.generic` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:479#grants.fetched",
+      "where": "messages/en.json:608#grants.fetched",
       "what": "`grants.fetched` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:194#landing.formats.after",
+      "where": "messages/en.json:252#landing.formats.after",
       "what": "`landing.formats.after` is never referenced by t()/getTranslations. (The leaf \"after\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -492,7 +172,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:192#landing.formats.before",
+      "where": "messages/en.json:250#landing.formats.before",
       "what": "`landing.formats.before` is never referenced by t()/getTranslations. (The leaf \"before\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -500,7 +180,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:194#landing.formats.charrette.after",
+      "where": "messages/en.json:252#landing.formats.charrette.after",
       "what": "`landing.formats.charrette.after` is never referenced by t()/getTranslations. (The leaf \"after\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -508,7 +188,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:192#landing.formats.charrette.before",
+      "where": "messages/en.json:250#landing.formats.charrette.before",
       "what": "`landing.formats.charrette.before` is never referenced by t()/getTranslations. (The leaf \"before\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -516,7 +196,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:193#landing.formats.charrette.during",
+      "where": "messages/en.json:251#landing.formats.charrette.during",
       "what": "`landing.formats.charrette.during` is never referenced by t()/getTranslations. (The leaf \"during\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -524,7 +204,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:205#landing.formats.charrette.gloss",
+      "where": "messages/en.json:263#landing.formats.charrette.gloss",
       "what": "`landing.formats.charrette.gloss` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -540,7 +220,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:198#landing.formats.charrette.out",
+      "where": "messages/en.json:256#landing.formats.charrette.out",
       "what": "`landing.formats.charrette.out` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -548,7 +228,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.formats.charrette.title",
+      "where": "messages/en.json:3#landing.formats.charrette.title",
       "what": "`landing.formats.charrette.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -556,7 +236,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:193#landing.formats.during",
+      "where": "messages/en.json:251#landing.formats.during",
       "what": "`landing.formats.during` is never referenced by t()/getTranslations. (The leaf \"during\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -564,7 +244,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:194#landing.formats.hackathon.after",
+      "where": "messages/en.json:252#landing.formats.hackathon.after",
       "what": "`landing.formats.hackathon.after` is never referenced by t()/getTranslations. (The leaf \"after\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -572,7 +252,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:192#landing.formats.hackathon.before",
+      "where": "messages/en.json:250#landing.formats.hackathon.before",
       "what": "`landing.formats.hackathon.before` is never referenced by t()/getTranslations. (The leaf \"before\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -580,7 +260,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:193#landing.formats.hackathon.during",
+      "where": "messages/en.json:251#landing.formats.hackathon.during",
       "what": "`landing.formats.hackathon.during` is never referenced by t()/getTranslations. (The leaf \"during\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -596,7 +276,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:198#landing.formats.hackathon.out",
+      "where": "messages/en.json:256#landing.formats.hackathon.out",
       "what": "`landing.formats.hackathon.out` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -604,7 +284,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.formats.hackathon.title",
+      "where": "messages/en.json:3#landing.formats.hackathon.title",
       "what": "`landing.formats.hackathon.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -612,7 +292,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:13#landing.formats.lead",
+      "where": "messages/en.json:85#landing.formats.lead",
       "what": "`landing.formats.lead` is never referenced by t()/getTranslations. (The leaf \"lead\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -620,7 +300,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:194#landing.formats.testKitchen.after",
+      "where": "messages/en.json:252#landing.formats.testKitchen.after",
       "what": "`landing.formats.testKitchen.after` is never referenced by t()/getTranslations. (The leaf \"after\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -628,7 +308,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:192#landing.formats.testKitchen.before",
+      "where": "messages/en.json:250#landing.formats.testKitchen.before",
       "what": "`landing.formats.testKitchen.before` is never referenced by t()/getTranslations. (The leaf \"before\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -636,7 +316,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:193#landing.formats.testKitchen.during",
+      "where": "messages/en.json:251#landing.formats.testKitchen.during",
       "what": "`landing.formats.testKitchen.during` is never referenced by t()/getTranslations. (The leaf \"during\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -652,7 +332,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:198#landing.formats.testKitchen.out",
+      "where": "messages/en.json:256#landing.formats.testKitchen.out",
       "what": "`landing.formats.testKitchen.out` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -660,7 +340,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.formats.testKitchen.title",
+      "where": "messages/en.json:3#landing.formats.testKitchen.title",
       "what": "`landing.formats.testKitchen.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -668,7 +348,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.formats.title",
+      "where": "messages/en.json:3#landing.formats.title",
       "what": "`landing.formats.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -676,7 +356,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:10#landing.kicker",
+      "where": "messages/en.json:184#landing.kicker",
       "what": "`landing.kicker` is never referenced by t()/getTranslations. (The leaf \"kicker\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -684,7 +364,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:10#landing.kitchen.kicker",
+      "where": "messages/en.json:184#landing.kitchen.kicker",
       "what": "`landing.kitchen.kicker` is never referenced by t()/getTranslations. (The leaf \"kicker\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -692,7 +372,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:13#landing.kitchen.lead",
+      "where": "messages/en.json:85#landing.kitchen.lead",
       "what": "`landing.kitchen.lead` is never referenced by t()/getTranslations. (The leaf \"lead\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -700,7 +380,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:186#landing.kitchen.loop",
+      "where": "messages/en.json:245#landing.kitchen.loop",
       "what": "`landing.kitchen.loop` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -708,7 +388,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:92#landing.kitchen.step1.body",
+      "where": "messages/en.json:164#landing.kitchen.step1.body",
       "what": "`landing.kitchen.step1.body` is never referenced by t()/getTranslations. (The leaf \"body\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -716,7 +396,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:169#landing.kitchen.step1.tag",
+      "where": "messages/en.json:228#landing.kitchen.step1.tag",
       "what": "`landing.kitchen.step1.tag` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -724,7 +404,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.kitchen.step1.title",
+      "where": "messages/en.json:3#landing.kitchen.step1.title",
       "what": "`landing.kitchen.step1.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -732,7 +412,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:92#landing.kitchen.step2.body",
+      "where": "messages/en.json:164#landing.kitchen.step2.body",
       "what": "`landing.kitchen.step2.body` is never referenced by t()/getTranslations. (The leaf \"body\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -740,7 +420,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:169#landing.kitchen.step2.tag",
+      "where": "messages/en.json:228#landing.kitchen.step2.tag",
       "what": "`landing.kitchen.step2.tag` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -748,7 +428,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.kitchen.step2.title",
+      "where": "messages/en.json:3#landing.kitchen.step2.title",
       "what": "`landing.kitchen.step2.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -756,7 +436,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:92#landing.kitchen.step3.body",
+      "where": "messages/en.json:164#landing.kitchen.step3.body",
       "what": "`landing.kitchen.step3.body` is never referenced by t()/getTranslations. (The leaf \"body\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -764,7 +444,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:169#landing.kitchen.step3.tag",
+      "where": "messages/en.json:228#landing.kitchen.step3.tag",
       "what": "`landing.kitchen.step3.tag` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -772,7 +452,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.kitchen.step3.title",
+      "where": "messages/en.json:3#landing.kitchen.step3.title",
       "what": "`landing.kitchen.step3.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -780,7 +460,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:92#landing.kitchen.step4.body",
+      "where": "messages/en.json:164#landing.kitchen.step4.body",
       "what": "`landing.kitchen.step4.body` is never referenced by t()/getTranslations. (The leaf \"body\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -788,7 +468,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:169#landing.kitchen.step4.tag",
+      "where": "messages/en.json:228#landing.kitchen.step4.tag",
       "what": "`landing.kitchen.step4.tag` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -796,7 +476,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.kitchen.step4.title",
+      "where": "messages/en.json:3#landing.kitchen.step4.title",
       "what": "`landing.kitchen.step4.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -804,7 +484,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:2#landing.kitchen.title",
+      "where": "messages/en.json:3#landing.kitchen.title",
       "what": "`landing.kitchen.title` is never referenced by t()/getTranslations. (The leaf \"title\" appears as a string literal — possibly an indirect key; verify.)",
       "fix": "Verify the indirect lookup; delete if unused.",
       "owner": "other-agent"
@@ -812,7 +492,7 @@
     {
       "category": "i18n: unused key",
       "severity": "dead code",
-      "where": "messages/en.json:117#landing.mascotEmpty",
+      "where": "messages/en.json:188#landing.mascotEmpty",
       "what": "`landing.mascotEmpty` is never referenced by t()/getTranslations.",
       "fix": "Delete the key from every locale.",
       "owner": "other-agent"
@@ -820,7 +500,7 @@
     {
       "category": "i18n: locale mismatch",
       "severity": "bug",
-      "where": "messages/en.json:205#landing.formatsHarness.formats.charrette.gloss",
+      "where": "messages/en.json:263#landing.formatsHarness.formats.charrette.gloss",
       "what": "`landing.formatsHarness.formats.charrette.gloss` exists in en but not in ja.",
       "fix": "Translate and add it to ja.",
       "owner": "other-agent"
@@ -828,7 +508,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/admin/page.tsx:151",
+      "where": "app/[locale]/admin/page.tsx:157",
       "what": "Dynamic key brief.status → prefix `status.` covers 9 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "audit-agent"
@@ -836,50 +516,74 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/[slug]/page.tsx:65",
+      "where": "app/[locale]/challenges/[id]/page.tsx:37",
+      "what": "Dynamic key `skills.${s}` → prefix `common.skills.` covers 12 keys.",
+      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "i18n: dynamic key (verify manually)",
+      "severity": "cosmetic",
+      "where": "app/[locale]/challenges/page.tsx:29",
+      "what": "Dynamic key `skills.${s}` → prefix `common.skills.` covers 12 keys.",
+      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "i18n: dynamic key (verify manually)",
+      "severity": "cosmetic",
+      "where": "app/[locale]/events/[slug]/page.tsx:67",
       "what": "Dynamic key `flash.${flash}` → prefix `events.flash.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/[slug]/page.tsx:70",
+      "where": "app/[locale]/events/[slug]/page.tsx:72",
       "what": "Dynamic key `errors.${error}` → prefix `events.errors.` covers 6 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/[slug]/page.tsx:173",
+      "where": "app/[locale]/events/[slug]/page.tsx:175",
       "what": "Dynamic key `role.${myRsvp.role}` → prefix `events.role.` covers 4 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/[slug]/page.tsx:194",
+      "where": "app/[locale]/events/[slug]/page.tsx:196",
       "what": "Dynamic key `role.${r}` → prefix `events.role.` covers 4 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/[slug]/page.tsx:231",
+      "where": "app/[locale]/events/[slug]/page.tsx:233",
       "what": "Dynamic key `statusAction.${s}` → prefix `events.statusAction.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/event-bits.tsx:26",
+      "where": "app/[locale]/events/[slug]/page.tsx:266",
+      "what": "Dynamic key `skills.${s}` → prefix `common.skills.` covers 12 keys.",
+      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "i18n: dynamic key (verify manually)",
+      "severity": "cosmetic",
+      "where": "app/[locale]/events/event-bits.tsx:27",
       "what": "Dynamic key `format.${format}` → prefix `events.format.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
@@ -887,23 +591,23 @@
       "where": "app/[locale]/events/event-form.tsx:69",
       "what": "Dynamic key `format.${f}` → prefix `events.format.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/page.tsx:60",
+      "where": "app/[locale]/events/page.tsx:59",
       "what": "Dynamic key `format.${f}` → prefix `events.format.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/events/page.tsx:144",
+      "where": "app/[locale]/events/page.tsx:143",
       "what": "Dynamic key `status.${e.status}` → prefix `events.status.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
@@ -940,39 +644,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/page.tsx:85",
-      "what": "Dynamic key `ws${n}Title` → prefix `landing.ws` covers 13 keys.",
-      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "i18n: dynamic key (verify manually)",
-      "severity": "cosmetic",
-      "where": "app/[locale]/page.tsx:85",
-      "what": "Dynamic key `ws${n}` → prefix `landing.ws` covers 13 keys.",
-      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "i18n: dynamic key (verify manually)",
-      "severity": "cosmetic",
-      "where": "app/[locale]/page.tsx:86",
-      "what": "Dynamic key `p${n}Title` → prefix `landing.p` covers 89 keys.",
-      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "i18n: dynamic key (verify manually)",
-      "severity": "cosmetic",
-      "where": "app/[locale]/page.tsx:86",
-      "what": "Dynamic key `p${n}` → prefix `landing.p` covers 89 keys.",
-      "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "i18n: dynamic key (verify manually)",
-      "severity": "cosmetic",
-      "where": "app/[locale]/page.tsx:179",
+      "where": "app/[locale]/page.tsx:168",
       "what": "Dynamic key `valueStrip.${k}` → prefix `landing.valueStrip.` covers 4 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "audit-agent"
@@ -980,7 +652,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "app/[locale]/page.tsx:193",
+      "where": "app/[locale]/page.tsx:182",
       "what": "Dynamic key `skills.${s}` → prefix `common.skills.` covers 12 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "audit-agent"
@@ -991,7 +663,7 @@
       "where": "components/badges.tsx:19",
       "what": "Dynamic key status → prefix `status.` covers 9 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
@@ -999,7 +671,7 @@
       "where": "components/badges.tsx:26",
       "what": "Dynamic key level → prefix `grounding.` covers 9 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
@@ -1007,7 +679,7 @@
       "where": "components/badges.tsx:60",
       "what": "Dynamic key review.recommendation → prefix `ai.` covers 6 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "i18n: dynamic key (verify manually)",
@@ -1036,7 +708,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:232",
+      "where": "components/landing/formats-harness.tsx:231",
       "what": "Dynamic key `formats.${f}.title` → prefix `landing.formatsHarness.formats.` covers 22 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1044,7 +716,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:269",
+      "where": "components/landing/formats-harness.tsx:268",
       "what": "Dynamic key `formats.${f}.title` → prefix `landing.formatsHarness.formats.` covers 22 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1052,7 +724,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:317",
+      "where": "components/landing/formats-harness.tsx:316",
       "what": "Dynamic key `phases.${p}` → prefix `landing.formatsHarness.phases.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1060,7 +732,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:327",
+      "where": "components/landing/formats-harness.tsx:326",
       "what": "Dynamic key `formats.${format}.title` → prefix `landing.formatsHarness.formats.` covers 22 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1068,7 +740,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:338",
+      "where": "components/landing/formats-harness.tsx:337",
       "what": "Dynamic key `formats.${format}.who` → prefix `landing.formatsHarness.formats.` covers 22 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1076,7 +748,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:339",
+      "where": "components/landing/formats-harness.tsx:338",
       "what": "Dynamic key `formats.${format}.time` → prefix `landing.formatsHarness.formats.` covers 22 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1084,7 +756,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:343",
+      "where": "components/landing/formats-harness.tsx:342",
       "what": "Dynamic key `formats.${format}.out` → prefix `landing.formatsHarness.formats.` covers 22 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1092,7 +764,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/formats-harness.tsx:357",
+      "where": "components/landing/formats-harness.tsx:356",
       "what": "Dynamic key `phases.${phase}` → prefix `landing.formatsHarness.phases.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1116,7 +788,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:206",
+      "where": "components/landing/party-builder.tsx:205",
       "what": "Dynamic key `features.${f}.title` → prefix `landing.party.features.` covers 6 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1124,7 +796,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:207",
+      "where": "components/landing/party-builder.tsx:206",
       "what": "Dynamic key `features.${f}.body` → prefix `landing.party.features.` covers 6 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1132,7 +804,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:269",
+      "where": "components/landing/party-builder.tsx:267",
       "what": "Dynamic key `members.${m}` → prefix `landing.party.members.` covers 6 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1140,7 +812,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:307",
+      "where": "components/landing/party-builder.tsx:305",
       "what": "Dynamic key `roles.${s.role}.name` → prefix `landing.party.roles.` covers 12 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1148,7 +820,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:317",
+      "where": "components/landing/party-builder.tsx:315",
       "what": "Dynamic key `members.${s.by}` → prefix `landing.party.members.` covers 6 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1156,7 +828,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:317",
+      "where": "components/landing/party-builder.tsx:315",
       "what": "Dynamic key `roles.${s.role}.job` → prefix `landing.party.roles.` covers 12 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1164,7 +836,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:430",
+      "where": "components/landing/party-builder.tsx:428",
       "what": "Dynamic key `roleOptions.${r}` → prefix `landing.party.roleOptions.` covers 7 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1172,7 +844,7 @@
     {
       "category": "i18n: dynamic key (verify manually)",
       "severity": "cosmetic",
-      "where": "components/landing/party-builder.tsx:456",
+      "where": "components/landing/party-builder.tsx:454",
       "what": "Dynamic key `featureOptions.${f}` → prefix `landing.party.featureOptions.` covers 3 keys.",
       "fix": "Verify every runtime value has a key in en and ja (or guard with t.has).",
       "owner": "other-agent"
@@ -1180,10 +852,50 @@
     {
       "category": "env: used but undeclared",
       "severity": "cosmetic",
+      "where": "scripts/design-check-live.mjs:22",
+      "what": "DESIGN_CDP_PORT is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
+      "fix": "Add DESIGN_CDP_PORT= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: used but undeclared",
+      "severity": "cosmetic",
+      "where": "scripts/design-check-live.mjs:18",
+      "what": "DESIGN_PAGES is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
+      "fix": "Add DESIGN_PAGES= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: used but undeclared",
+      "severity": "cosmetic",
+      "where": "scripts/design-check-live.mjs:20",
+      "what": "DESIGN_SCHEME is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
+      "fix": "Add DESIGN_SCHEME= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: used but undeclared",
+      "severity": "cosmetic",
+      "where": "scripts/design-check-live.mjs:17",
+      "what": "DESIGN_URL is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
+      "fix": "Add DESIGN_URL= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: used but undeclared",
+      "severity": "cosmetic",
+      "where": "scripts/design-check-live.mjs:19",
+      "what": "DESIGN_VIEWPORT is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
+      "fix": "Add DESIGN_VIEWPORT= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: used but undeclared",
+      "severity": "cosmetic",
       "where": "scripts/setup-elevenlabs.ts:12",
       "what": "ELEVENLABS_VOICE_SEARCH is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
       "fix": "Add ELEVENLABS_VOICE_SEARCH= with a comment to .env.example.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "env: used but undeclared",
@@ -1196,9 +908,25 @@
     {
       "category": "env: used but undeclared",
       "severity": "cosmetic",
+      "where": "scripts/design-check-live.mjs:24",
+      "what": "IMPECCABLE_BIN is read (1×) but not documented in .env.example nor validated in lib/env.ts. Tooling-only.",
+      "fix": "Add IMPECCABLE_BIN= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: used but undeclared",
+      "severity": "cosmetic",
       "where": "lib/db/index.ts:34",
       "what": "PGLITE_DIR is read (3×) but not documented in .env.example.",
       "fix": "Add PGLITE_DIR= with a comment to .env.example.",
+      "owner": "audit-agent"
+    },
+    {
+      "category": "env: in .env.local only",
+      "severity": "cosmetic",
+      "where": ".env.local (name only)",
+      "what": "VERCEL_OIDC_TOKEN is set locally but not declared in .env.example and never read.",
+      "fix": "Remove it from .env.local.",
       "owner": "audit-agent"
     },
     {
@@ -1255,7 +983,7 @@
       "where": "lib/events/store.ts",
       "what": "rsvp status changes are not validated by lib/workflow/status.ts (any → any is possible).",
       "fix": "Add RSVP_TRANSITIONS and assertTransition() calls.",
-      "owner": "other-agent"
+      "owner": "audit-agent"
     },
     {
       "category": "react: incomplete effect cleanup",
@@ -1271,7 +999,7 @@
       "where": "app/api/webhooks/elevenlabs/route.ts",
       "what": "/api/webhooks/elevenlabs [POST] has no caller in UI, lib or tests (documented as externally called).",
       "fix": "Add a route test that exercises the handler.",
-      "owner": "audit-agent"
+      "owner": "other-agent"
     },
     {
       "category": "query param: declared but never read",
@@ -1280,22 +1008,6 @@
       "what": "searchParams type declares `unknown` but the page never reads it.",
       "fix": "Remove `unknown` from the type (or handle it).",
       "owner": "audit-agent"
-    },
-    {
-      "category": "query param: documented but unused",
-      "severity": "bug",
-      "where": "README.md:12",
-      "what": "Docs mention ?logo= but no route reads it.",
-      "fix": "Fix the docs or implement the param.",
-      "owner": "audit-agent"
-    },
-    {
-      "category": "query param: read but undocumented",
-      "severity": "cosmetic",
-      "where": "app/api/elevenlabs/signed-url/route.ts:21",
-      "what": "?token is read but never generated by a link nor documented.",
-      "fix": "Document it (README/docs) or remove the handler.",
-      "owner": "audit-agent"
     }
   ],
   "notes": {
@@ -1303,11 +1015,10 @@
       "tsc -p tsconfig.audit.json (noUnusedLocals + noUnusedParameters): 0 unused-symbol errors, exit 0"
     ],
     "i18n": [
-      "en/ja: 592 keys; 366 static references, 50 dynamic references; 57 unused."
+      "en/ja: 546 keys; 345 static references, 52 dynamic references; 56 unused."
     ],
     "env": [
-      "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: declared, not referenced in code — read by @clerk/nextjs (OK)",
-      "26 vars read in code; 22 in .env.example; 22 names in .env.local; 21 in lib/env.ts."
+      "33 vars read in code; 22 in .env.example; 23 names in .env.local; 21 in lib/env.ts."
     ],
     "db": [
       "drizzle-kit check: exit 0 — Everything's fine 🐶🔥",
@@ -1319,13 +1030,13 @@
       "### rsvp (report only — lib/events is owned by another agent; no transition table exists)\n| status | code paths that set it |\n|---|---|\n| going | lib/events/store.ts:239 (promoteWaitlist)<br>lib/events/store.ts:369 (createEvent) |\n| waitlist | (default only) |\n| cancelled | lib/events/store.ts:283 (cancelRsvp) |"
     ],
     "react": [
-      "16 files with hooks scanned."
+      "18 files with hooks scanned."
     ],
     "routes": [
-      "/api/challenges/search [GET] — UI: components/landing/hero-search.tsx; tests: tests/search.test.ts; docs: no",
-      "/api/datasets/[id] [GET] — UI: app/[locale]/challenges/[id]/page.tsx; tests: tests/datasets.test.ts; docs: no",
+      "/api/challenges/search [GET] — UI: components/landing/hero-search.tsx; tests: tests/search.test.ts; docs: yes",
+      "/api/datasets/[id] [GET] — UI: app/[locale]/challenges/[id]/page.tsx; tests: tests/datasets.test.ts; docs: yes",
       "/api/elevenlabs/signed-url [GET] — UI: components/voice-session.tsx; tests: none; docs: yes",
-      "/api/events/[slug]/ics [GET] — UI: app/[locale]/events/[slug]/page.tsx; tests: none; docs: no",
+      "/api/events/[slug]/ics [GET] — UI: app/[locale]/events/[slug]/page.tsx; tests: none; docs: yes",
       "/api/events [GET] — UI: app/[locale]/events/[slug]/page.tsx; tests: none; docs: yes",
       "/api/grants/refresh [POST] — UI: none; tests: tests/grants-auth.test.ts; docs: no",
       "/api/grants [GET] — UI: none; tests: tests/grants-auth.test.ts; docs: yes",
@@ -1333,7 +1044,7 @@
       "/api/webhooks/elevenlabs [POST] — UI: none; tests: none; docs: yes"
     ],
     "query params": [
-      "read: tab, city, industry, skill, q, rsvp, error, hero, unknown, brief, locale, limit, format, agent, token, month; produced by links/redirects: tab, format, q, city, industry, skill, locale, error, rsvp, month, hero, unknown, limit, brief, agent; documented: logo, agent"
+      "read: tab, city, industry, skill, q, rsvp, error, hero, unknown, brief, locale, limit, format, agent, token, month; produced by links/redirects: tab, format, q, city, industry, skill, locale, error, rsvp, month, hero, unknown, limit, brief, agent, token; documented: agent, tab, q"
     ]
   }
 }

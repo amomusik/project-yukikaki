@@ -17,9 +17,9 @@ import { withFallback } from "@/lib/integrations/_guard";
  * with a minimum interval and 429s are retried with backoff. All calls go through the
  * integration guard (timeout + service_events row) and failures throw — no stand-in data.
  */
-export const JGRANTS_API = "https://api.jgrants-portal.go.jp/exp/v1/public";
-export const JGRANTS_PORTAL = "https://www.jgrants-portal.go.jp";
-export const jgrantsDetailUrl = (id: string) => `${JGRANTS_PORTAL}/subsidy/${encodeURIComponent(id)}`;
+const JGRANTS_API = "https://api.jgrants-portal.go.jp/exp/v1/public";
+const JGRANTS_PORTAL = "https://www.jgrants-portal.go.jp";
+const jgrantsDetailUrl = (id: string) => `${JGRANTS_PORTAL}/subsidy/${encodeURIComponent(id)}`;
 
 export class JGrantsError extends Error {
   constructor(
@@ -101,7 +101,7 @@ function toAmount(v: number | string | null | undefined): number | null {
 
 const clean = (v: string | null | undefined) => (v && v.trim() ? v.trim() : null);
 
-export function stripHtml(html: string | null | undefined, max = 1500): string | null {
+function stripHtml(html: string | null | undefined, max = 1500): string | null {
   if (!html) return null;
   const text = html
     .replace(/<(br|\/p|\/li|\/div)[^>]*>/gi, "\n")

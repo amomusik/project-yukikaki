@@ -3,8 +3,8 @@ import { getDb, schema } from "@/lib/db";
 import { withFallback } from "@/lib/integrations/_guard";
 import { runRead } from "./client";
 
-export type GraphNode = { id: string; label: string; name: string };
-export type GraphLink = { source: string; target: string; type: string };
+type GraphNode = { id: string; label: string; name: string };
+type GraphLink = { source: string; target: string; type: string };
 export type GraphData = { nodes: GraphNode[]; links: GraphLink[]; available: boolean };
 
 type Rec = {

@@ -12,13 +12,13 @@ import { matchGrants, type BriefForMatching, type GrantMatch, type LinkupSearchF
 export const GRANTLINE_URL = "https://grantline.foundrylabs.co.jp/en/grants";
 
 /** Live Linkup search restricted to official domains; throws on failure so it surfaces as a warning. */
-export const liveLinkup: LinkupSearchFn = async (query, includeDomains) => {
+const liveLinkup: LinkupSearchFn = async (query, includeDomains) => {
   const r = await withFallback("linkup", "grants-search", (signal) => linkupSearch(query, signal, { includeDomains, maxResults: 8 }), null);
   if (!r.ok || !r.value) throw new Error(r.error ?? "linkup failed");
   return r.value;
 };
 
-export async function briefForMatching(briefId: string): Promise<{ input: BriefForMatching; status: string } | null> {
+async function briefForMatching(briefId: string): Promise<{ input: BriefForMatching; status: string } | null> {
   const [row] = await getDb()
     .select({ brief: schema.briefs, business: schema.businesses })
     .from(schema.briefs)

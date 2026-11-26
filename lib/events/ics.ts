@@ -14,7 +14,7 @@ export type IcsEvent = {
 };
 
 /** UTC basic format: 20261212T010000Z */
-export function icsDate(d: Date): string {
+function icsDate(d: Date): string {
   return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 }
 

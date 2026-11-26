@@ -2,14 +2,14 @@
  * "Bring any team" (coming soon): client-safe constants for the landing-page party demo and
  * the waitlist form. The demo is a fixed mapping computed in the browser; no API calls.
  */
-export const HELPER_ROLES = ["researcher", "scout", "fundraiser", "diplomat", "translator", "datachef"] as const;
-export type HelperRole = (typeof HELPER_ROLES)[number];
+const HELPER_ROLES = ["researcher", "scout", "fundraiser", "diplomat", "translator", "datachef"] as const;
+type HelperRole = (typeof HELPER_ROLES)[number];
 
 export const TEAM_MEMBERS = ["students", "shop", "town", "designer", "developer", "translator"] as const;
 export type TeamMember = (typeof TEAM_MEMBERS)[number];
 
 /** Which prep workstreams each kind of human usually covers. */
-export const COVERS: Record<TeamMember, HelperRole[]> = {
+const COVERS: Record<TeamMember, HelperRole[]> = {
   students: ["researcher"],
   shop: ["diplomat"],
   town: ["fundraiser", "scout"],
@@ -30,4 +30,3 @@ export const ROADMAP_FEATURES = ["team", "pm", "points"] as const;
 export type RoadmapFeature = (typeof ROADMAP_FEATURES)[number];
 
 export const WAITLIST_ROLES = ["student", "shop", "town", "designer", "developer", "translator", "other"] as const;
-export type WaitlistRole = (typeof WAITLIST_ROLES)[number];

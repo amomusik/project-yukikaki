@@ -11,7 +11,7 @@ import { getSubsidyDetail, searchSubsidies, type JGrantDetail, type JGrantSummar
  * so the host files with a licensed professional.
  */
 
-export type GrantSource = "jgrants" | "linkup";
+type GrantSource = "jgrants" | "linkup";
 
 export type GrantMatch = {
   source: GrantSource;
@@ -46,7 +46,7 @@ export type MatchResult = {
 /* ── Keyword vocabulary ─────────────────────────────────────────────── */
 
 /** Problem themes: jGrants search keyword + text triggers found in briefs. */
-export const PROBLEM_THEMES: { keyword: string; triggers: RegExp }[] = [
+const PROBLEM_THEMES: { keyword: string; triggers: RegExp }[] = [
   { keyword: "DX", triggers: /DX|デジタル|digital|\bAI\b|ＡＩ|自動|automat|LINE|ボット|\bbot\b|アプリ|\bapp\b|予約|booking|オンライン|online/giu },
   { keyword: "省力化", triggers: /省力|人手不足|手作業|手書き|by hand|manual|labou?r|staff|効率|efficien|時間|hours|負担/giu },
   { keyword: "IT導入", triggers: /\bIT\b|ＩＴ|システム|system|ソフト|software|ツール|\btool|POS|レジ|register|クラウド|cloud|Excel|エクセル|スプレッドシート|spreadsheet|台帳|ledger/giu },
@@ -58,7 +58,7 @@ export const PROBLEM_THEMES: { keyword: string; triggers: RegExp }[] = [
 ];
 
 /** Industry → jGrants search keywords and jGrants `industry` categories. */
-export const INDUSTRY_TERMS: Record<string, { keywords: string[]; categories: string[] }> = {
+const INDUSTRY_TERMS: Record<string, { keywords: string[]; categories: string[] }> = {
   snow_removal: { keywords: ["除雪", "建設業"], categories: ["建設業"] },
   construction: { keywords: ["建設業", "リフォーム"], categories: ["建設業"] },
   ramen: { keywords: ["飲食", "飲食店"], categories: ["宿泊業、飲食サービス業"] },
@@ -156,12 +156,12 @@ export type Candidate = { summary: JGrantSummary; detail?: JGrantDetail | null; 
 const INDUSTRY_ENUMERATION = /(?:[一-龥ァ-ヶー・]{1,10}業[\s　]*[、，,・／/]?[\s　]*){3,}/gu;
 
 /** Off-topic candidates (no problem/industry keyword in title or description) keep this share of their score… */
-export const OFF_TOPIC_FACTOR = 0.5;
+const OFF_TOPIC_FACTOR = 0.5;
 /** …and are dropped when that falls below this floor. Topical candidates are never dropped by it. */
-export const OFF_TOPIC_MIN_SCORE = 2.5;
+const OFF_TOPIC_MIN_SCORE = 2.5;
 
 /** What the programme is about: title, catch phrase and description, minus eligibility industry lists. */
-export function topicalText(c: Candidate): string {
+function topicalText(c: Candidate): string {
   const d = c.detail;
   const desc = (d?.description ?? "").slice(0, 1200).replace(INDUSTRY_ENUMERATION, " ");
   return `${c.summary.title} ${d?.catchPhrase ?? ""} ${desc}`;
@@ -174,14 +174,14 @@ export function isTopical(c: Candidate, plan: QueryPlan): boolean {
 }
 
 /** jGrants also lists follow-up notices (status reports, registrations) that are not calls for applications. */
-export const NOT_A_CALL = /状況報告|実績報告|報告等について|事業者の登録|変更届|交付決定|採択結果/u;
+const NOT_A_CALL = /状況報告|実績報告|報告等について|事業者の登録|変更届|交付決定|採択結果/u;
 
 /**
  * Score a candidate, or null when it must be excluded: expired / not yet open, outside the
  * brief's prefecture/region/nationwide, another municipality's programme, an administrative
  * notice, a programme whose listed industries exclude the brief's industry, or a weak off-topic one.
  */
-export function scoreCandidate(c: Candidate, plan: QueryPlan, now = new Date()): number | null {
+function scoreCandidate(c: Candidate, plan: QueryPlan, now = new Date()): number | null {
   const s = c.summary;
   if (NOT_A_CALL.test(s.title)) return null;
   if (s.end && s.end.getTime() < now.getTime()) return null; // expired
@@ -301,7 +301,7 @@ export function parseDeadline(text: string): Date | null {
 }
 
 /** Japanese fiscal year (April–March) of a date, in JST. */
-export function fiscalYear(d: Date): number {
+function fiscalYear(d: Date): number {
   const jst = new Date(d.getTime() + 9 * 3_600_000);
   return jst.getUTCMonth() >= 3 ? jst.getUTCFullYear() : jst.getUTCFullYear() - 1;
 }

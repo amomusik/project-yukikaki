@@ -5,9 +5,9 @@
  */
 export type Prefecture = { en: string; ja: string; region: string };
 
-export const NATIONWIDE = "全国";
+const NATIONWIDE = "全国";
 
-export const PREFECTURES: Prefecture[] = [
+const PREFECTURES: Prefecture[] = [
   { en: "Hokkaido", ja: "北海道", region: "北海道地方" },
   { en: "Aomori", ja: "青森県", region: "東北地方" },
   { en: "Iwate", ja: "岩手県", region: "東北地方" },
@@ -68,7 +68,7 @@ export function findPrefecture(name: string | null | undefined): Prefecture | un
 }
 
 /** jGrants joins multiple areas with " / ". */
-export function splitAreas(area: string | null | undefined): string[] {
+function splitAreas(area: string | null | undefined): string[] {
   return (area ?? "")
     .split("/")
     .map((s) => s.trim())

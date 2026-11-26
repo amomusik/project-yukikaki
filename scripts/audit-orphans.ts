@@ -37,17 +37,18 @@ const note = (cat: string, line: string) => (notes[cat] ??= []).push(line);
 
 /** Files owned by concurrently-working agents: report, never fix. */
 const OTHER_OWNED = [
-  /^app\/\[locale\]\/page\.tsx$/,
-  /^components\/landing\//,
-  /^app\/\[locale\]\/events\//,
-  /^app\/api\/events\//,
-  /^lib\/events\//,
-  /^components\/header\.tsx$/,
+  /^app\/\[locale\]\/(page|layout)\.tsx$/,
+  /^components\//,
+  /^messages\//,
+  /^middleware\.ts$/,
+  /^lib\/(env|auth)\.ts/,
+  /^(README|CONTRIBUTING|DESIGN)\.md/,
+  /^docs\/(design|submission|demo)\//,
+  /^docs\/deploy\.md/,
+  /^evals\//,
+  /^scripts\/setup-elevenlabs\.ts/,
+  /^app\/api\/webhooks\//,
   /^app\/globals\.css$/,
-  /^playwright\.config\.ts$/,
-  /^e2e\/flow\.spec\.ts$/,
-  /^public\/images\//,
-  /^messages\/.*#(landing|events)\./,
 ];
 const ownerOf = (where: string): Finding["owner"] => (OTHER_OWNED.some((r) => r.test(where)) ? "other-agent" : "audit-agent");
 function add(f: Omit<Finding, "owner">) {
@@ -553,7 +554,8 @@ function auditQueryParams() {
   const docs = ["README.md", ...walk("docs", [".md"]).filter((f) => !f.startsWith("docs/audit/"))];
   const documented = new Map<string, string>();
   for (const d of docs) {
-    const t = read(d);
+    // Blank out external URLs (badges, third-party links) — same length, so line numbers stay right.
+    const t = read(d).replace(/https?:\/\/(?!localhost)[^\s)"'>]+/g, (u) => " ".repeat(u.length));
     for (const m of t.matchAll(/[?&]([a-z_]+)=([\w-]*)/g)) if (!["sslmode"].includes(m[1])) documented.set(m[1], `${d}:${lineOf(t, m.index!)}`);
   }
   const read_ = new Map<string, string>();
@@ -583,7 +585,8 @@ function auditQueryParams() {
       for (const m of t.matchAll(/\bname=["'](\w+)["']/g)) if (!produced.has(m[1])) produced.set(m[1], `${f}:${lineOf(t, m.index!)}`);
     if (/^(app|components)\//.test(f))
       for (const m of t.matchAll(/new URLSearchParams\(\{([^}]*)\}/g)) for (const part of m[1].split(",")) {
-          const k = part.split(":")[0].trim();
+          // also handles conditional spreads: `...(token ? { token } : {})`
+          const k = part.replace(/^.*\{\s*/, "").split(":")[0].trim();
           if (/^\w+$/.test(k)) produced.set(k, `${f}:${lineOf(t, m.index!)}`);
         }
   }

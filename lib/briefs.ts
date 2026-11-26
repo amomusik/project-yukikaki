@@ -5,7 +5,7 @@ import { briefDraftSchema, type BriefDraft, type ParsedConversation } from "@/li
 import { inferSkills } from "@/lib/skills";
 
 /** Same text in both languages until Dify normalises/translates it. */
-export function draftContent(d: BriefDraft): BriefContent {
+function draftContent(d: BriefDraft): BriefContent {
   const title = `${d.business_name}: ${d.problem.slice(0, 60)}`;
   const lang = {
     title,
@@ -87,7 +87,7 @@ export async function createBriefFromDraft(
 }
 
 /** Map an analysed interview conversation to a draft brief. Missing fields fall back to the summary. */
-export function draftFromConversation(conv: ParsedConversation): BriefDraft {
+function draftFromConversation(conv: ParsedConversation): BriefDraft {
   const dv = conv.dynamicVariables;
   const merged = {
     business_name: dv.business_name,

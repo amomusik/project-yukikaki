@@ -13,7 +13,7 @@ export class PermissionError extends Error {
   }
 }
 
-export const SUPPORT_DAYS = 90;
+const SUPPORT_DAYS = 90;
 
 export async function getLead(teamId: string) {
   const [lead] = await getDb()

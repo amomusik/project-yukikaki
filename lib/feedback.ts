@@ -7,7 +7,7 @@ import { sendImpactCheckEmail } from "@/lib/integrations/email";
 import { impactDraftSchema, roundHours, type ParsedConversation } from "@/lib/integrations/elevenlabs";
 import { setBriefStatus } from "@/lib/pipeline/brief";
 
-export const TOKEN_TTL_DAYS = 14;
+const TOKEN_TTL_DAYS = 14;
 
 export function hashToken(token: string): string {
   return createHmac("sha256", feedbackSecret()).update(token).digest("hex");

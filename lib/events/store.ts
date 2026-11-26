@@ -106,7 +106,7 @@ export async function eventChallengeIds(eventId: string): Promise<string[]> {
 }
 
 /** Linked challenges that are publicly visible. */
-export async function eventChallenges(eventId: string): Promise<EventChallenge[]> {
+async function eventChallenges(eventId: string): Promise<EventChallenge[]> {
   const rows = await getDb()
     .select({ brief: schema.briefs, business: schema.businesses })
     .from(schema.eventChallenges)
@@ -206,7 +206,7 @@ export async function getMyRsvp(eventId: string, userId: string): Promise<EventD
 }
 
 /* ── RSVP with capacity + waitlist ───────────────────────────────── */
-export const RSVP_ROLES: RsvpRole[] = ["participant", "mentor", "observer"];
+const RSVP_ROLES: RsvpRole[] = ["participant", "mentor", "observer"];
 
 async function lockEvent(tx: Exec, eventId: string): Promise<EventRow> {
   const [ev] = await tx.select().from(schema.events).where(eq(schema.events.id, eventId)).for("update");
@@ -290,7 +290,7 @@ export async function cancelRsvp(eventId: string, userId: string): Promise<{ can
 const bilingual = (max: number) => z.object({ ja: z.string().trim().min(1).max(max), en: z.string().trim().min(1).max(max) });
 const optUrl = z.preprocess((v) => (v === "" || v == null ? null : v), z.string().url().max(500).nullable());
 
-export const eventInputSchema = z
+const eventInputSchema = z
   .object({
     title: bilingual(120),
     summary: bilingual(2000),

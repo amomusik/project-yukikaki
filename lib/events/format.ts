@@ -2,7 +2,7 @@
 import type { EventFormat } from "@/lib/db/schema";
 
 export const EVENT_FORMATS: EventFormat[] = ["hackathon", "charrette", "test_kitchen"];
-export const EVENT_TZ = "Asia/Tokyo";
+const EVENT_TZ = "Asia/Tokyo";
 /** Japan has no DST, so JST is always UTC+9. */
 const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
 
@@ -29,7 +29,7 @@ export function formatMonthDay(d: Date, locale: string, timeZone = EVENT_TZ): st
   return new Intl.DateTimeFormat(intlLocale(toLang(locale)), { timeZone, month: "short", day: "numeric" }).format(d);
 }
 
-export function formatTime(d: Date, timeZone = EVENT_TZ): string {
+function formatTime(d: Date, timeZone = EVENT_TZ): string {
   return new Intl.DateTimeFormat("en-GB", { timeZone, hour: "2-digit", minute: "2-digit", hour12: false }).format(d);
 }
 
@@ -47,7 +47,7 @@ export function jstDateKey(d: Date): string {
 }
 
 /** YYYY-MM in JST. */
-export function jstMonthKey(d: Date): string {
+function jstMonthKey(d: Date): string {
   return jstDateKey(d).slice(0, 7);
 }
 

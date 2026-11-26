@@ -38,7 +38,7 @@ const headers = () => ({
 const base = () => env.ADAPTION_API_URL.replace(/\/$/, "");
 
 /** Stable, searchable name so later briefs can reuse earlier datasets. */
-export function datasetName(spec: Pick<StandInSpec, "industry" | "city">): string {
+function datasetName(spec: Pick<StandInSpec, "industry" | "city">): string {
   const city = findCity(spec.city)?.key ?? spec.city.trim().toLowerCase();
   return `yukikaki:${industryKey(spec.industry)}:${city}`;
 }

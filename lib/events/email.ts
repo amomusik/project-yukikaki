@@ -8,7 +8,7 @@ import { buildIcs } from "./ics";
 const escape = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
-export function eventUrl(slug: string, locale: string, appUrl = env.APP_URL): string {
+function eventUrl(slug: string, locale: string, appUrl = env.APP_URL): string {
   return `${appUrl.replace(/\/$/, "")}/${locale === "ja" ? "ja" : "en"}/events/${slug}`;
 }
 

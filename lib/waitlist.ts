@@ -48,7 +48,7 @@ export function createRateLimiter(limit = 5, windowMs = 10 * 60_000) {
 }
 
 const g = globalThis as unknown as { __ykWaitlistLimiter?: ReturnType<typeof createRateLimiter> };
-export const waitlistLimiter = (g.__ykWaitlistLimiter ??= createRateLimiter());
+const waitlistLimiter = (g.__ykWaitlistLimiter ??= createRateLimiter());
 
 type Deps = {
   limiter?: ReturnType<typeof createRateLimiter>;

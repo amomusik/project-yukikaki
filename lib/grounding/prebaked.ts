@@ -38,7 +38,7 @@ export type Prebaked = z.infer<typeof prebakedSchema>;
 
 export const PREBAKED_DIR = path.join(process.cwd(), "seed", "prebaked");
 
-export function listPrebaked(dir = PREBAKED_DIR): Prebaked[] {
+function listPrebaked(dir = PREBAKED_DIR): Prebaked[] {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
     .filter((f) => f.endsWith(".json"))
