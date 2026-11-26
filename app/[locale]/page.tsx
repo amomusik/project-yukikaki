@@ -6,6 +6,7 @@ import { listChallenges } from "@/lib/queries";
 import { listTestimonials, type Testimonial } from "@/lib/testimonials";
 import { ChallengeMarquee, type MarqueeChallenge } from "@/components/landing/challenge-marquee";
 import { HeroSearch } from "@/components/landing/hero-search";
+import { HeroQuoteBar } from "@/components/landing/hero-quote-bar";
 import { cityLabel, industryLabel } from "@/components/landing/labels";
 import { CountUp } from "@/components/landing/count-up";
 import { HeroArt } from "@/components/landing/hero-art";
@@ -231,13 +232,11 @@ export default async function Landing({
           <span className="mt-1 block text-xs text-sky-100/80">{lang === "ja" ? "プレビューを見る ↓" : "Try the preview ↓"}</span>
         </a>
         {testimonials[0] && (
-          <figure className="absolute right-6 top-[14%] z-10 hidden max-w-[15rem] border-l-2 border-lantern/70 pl-3 text-left text-white/90 lg:block xl:right-12">
-            <blockquote lang={hasJapanese(testimonials[0].quote) ? "ja" : undefined} className="text-xs italic leading-relaxed">“{testimonials[0].quote}”</blockquote>
-            <figcaption className="mt-2 text-xs text-sky-100/80">
-              — {testimonials[0].businessName} · {cityLabel(testimonials[0].city, lang)} · <span className="text-lantern">{"★".repeat(testimonials[0].satisfaction)}</span>
-              {testimonials[0].isDemo && <span className="ml-1 opacity-70">({tc("demoData")})</span>}
-            </figcaption>
-          </figure>
+          <HeroQuoteBar
+            quote={testimonials[0].quote}
+            lang={hasJapanese(testimonials[0].quote) ? "ja" : undefined}
+            byline={`${testimonials[0].businessName} · ${cityLabel(testimonials[0].city, lang)} · ${"★".repeat(testimonials[0].satisfaction)}${testimonials[0].isDemo ? ` (${tc("demoData")})` : ""}`}
+          />
         )}
         {/* On phones the pixel scene's shoveller stands right at the bottom edge; keep the bank low there. */}
         <SnowbankEdge className={`absolute inset-x-0 bottom-0 ${pixel ? "h-5" : "h-8"} sm:h-20`} />
