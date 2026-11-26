@@ -1,5 +1,7 @@
 import { clerk } from "@clerk/testing/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import en from "../messages/en.json";
+import ja from "../messages/ja.json";
 import { E2E_USERS } from "./users";
 
 /**
@@ -35,11 +37,13 @@ async function ensureRole(page: Page, role: "business" | "student") {
 test("landing renders in both languages; / defaults to English", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveURL(/\/en\/?$/);
-  await expect(page).toHaveTitle("Yukikaki — Your test kitchen for hackathons.");
+  await expect(page).toHaveTitle(en.meta.title);
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();
   await expect(page.locator("h1")).toContainText("Yukikaki");
   await expect(page.getByRole("heading", { level: 2, name: "Your test kitchen for ideas and prototypes." })).toBeVisible();
-  await expect(page.getByRole("banner")).toContainText("Your test kitchen for hackathons.");
+  // Header tagline, read from messages so copy edits don't leave this stale.
+  expect(en.nav.tagline).toBe("AI-native hackathons for Sapporo and beyond.");
+  await expect(page.getByRole("banner")).toContainText(en.nav.tagline);
   await expect(page.getByRole("combobox", { name: "Search challenges" })).toBeVisible();
   // The 8-bit scene is the default hero; ?hero=paper still opts into the paper-cut art.
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-hero", "pixel");
@@ -48,10 +52,11 @@ test("landing renders in both languages; / defaults to English", async ({ page }
   await expect(page.locator("section[data-hero]")).toHaveAttribute("data-hero", "papercut");
   await expect(page.locator("section[data-hero] img")).toHaveAttribute("src", /hero-yukikaki/);
   await page.goto("/ja");
-  await expect(page).toHaveTitle("雪かき Yukikaki — ハッカソンのための、まちのテストキッチン。");
+  await expect(page).toHaveTitle(ja.meta.title);
   await expect(page.getByRole("heading", { level: 1, name: "Project Yukikaki" })).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "アイデアと試作のための、テストキッチン。" })).toBeVisible();
-  await expect(page.getByRole("banner")).toContainText("ハッカソンのための、まちのテストキッチン。");
+  expect(ja.nav.tagline).toBe("札幌から全国へ、AIネイティブなハッカソンを。");
+  await expect(page.getByRole("banner")).toContainText(ja.nav.tagline);
 });
 
 test("owner files a brief with the text fallback; it lands in the host queue with grounding + fallbacks", async ({ page }) => {

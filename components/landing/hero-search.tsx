@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { ShovelKid } from "@/components/mascot";
@@ -17,6 +17,20 @@ type Suggestion = {
 };
 
 type State = "idle" | "loading" | "ready" | "unavailable";
+
+// Same breakpoint as the button's `hidden sm:inline` label: below `sm` the long placeholder is cut mid-word.
+const SM_QUERY = "(min-width: 640px)";
+function subscribeSm(cb: () => void) {
+  const mq = window.matchMedia(SM_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+const useIsSmUp = () =>
+  useSyncExternalStore(
+    subscribeSm,
+    () => window.matchMedia(SM_QUERY).matches,
+    () => true,
+  );
 
 function parseResults(data: unknown): Suggestion[] {
   const results = (data as { results?: unknown })?.results;
@@ -45,6 +59,7 @@ export function HeroSearch({ locale }: { locale: "en" | "ja" }) {
   const ts = useTranslations("status");
   const tc = useTranslations("common");
   const router = useRouter();
+  const smUp = useIsSmUp();
   const [q, setQ] = useState("");
   const [state, setState] = useState<State>("idle");
   const [results, setResults] = useState<Suggestion[]>([]);
@@ -154,7 +169,7 @@ export function HeroSearch({ locale }: { locale: "en" | "ja" }) {
             }}
             onFocus={() => setOpen(true)}
             onKeyDown={onKeyDown}
-            placeholder={t("searchPlaceholder")}
+            placeholder={smUp ? t("searchPlaceholder") : t("searchPlaceholderShort")}
             autoComplete="off"
             enterKeyHint="search"
             role="combobox"

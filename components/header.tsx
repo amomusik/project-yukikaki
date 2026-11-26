@@ -28,7 +28,7 @@ export async function Header({ locale }: { locale: string }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-snow/85 backdrop-blur-md supports-[backdrop-filter]:bg-snow/70">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5 sm:px-6">
-        <Link href="/" aria-label={t("home")} className="group mr-2 flex min-w-0 items-center gap-3 rounded-lg">
+        <Link href="/" className="group mr-2 flex min-w-0 items-center gap-3 rounded-lg">
           <MarkFlurry className="h-9 w-9 shrink-0" />
           <span className="min-w-0 leading-tight">
             <span className="flex items-baseline gap-2">

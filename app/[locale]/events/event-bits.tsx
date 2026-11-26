@@ -7,7 +7,7 @@ import { cn } from "@/components/ui";
 
 const formatTone: Record<EventFormat, string> = {
   hackathon: "bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-200",
-  charrette: "bg-violet-100 text-violet-800 dark:bg-violet-900/50 dark:text-violet-200",
+  charrette: "bg-surface text-frost ring-1 ring-inset ring-ice-strong",
   test_kitchen: "bg-amber-100 text-amber-900 dark:bg-amber-900/50 dark:text-amber-100",
 };
 const formatGradient: Record<EventFormat, string> = {
@@ -44,24 +44,34 @@ export function EventCover({ format, src, alt, className }: { format: EventForma
   );
 }
 
-const avatarColors = ["bg-sky-200 text-sky-900", "bg-amber-200 text-amber-900", "bg-emerald-200 text-emerald-900", "bg-violet-200 text-violet-900", "bg-rose-200 text-rose-900"];
+// Winter palette only (No-Violet Rule); dark text on light tints reads the same in both themes.
+const avatarColors = ["bg-sky-200 text-sky-950", "bg-amber-200 text-amber-950", "bg-emerald-200 text-emerald-950", "bg-[#a9c8de] text-[#0c1a2b]", "bg-slate-200 text-slate-900"];
 
+/**
+ * Overlapping attendee initials. Circles are 32px with a 4px overlap, so the 2px surface ring
+ * never reaches the 11px initials of the avatar underneath (no clipped letters).
+ */
 export function AvatarStack({ attendees, total, max = 5, showMore = true }: { attendees: Attendee[]; total: number; max?: number; showMore?: boolean }) {
   const shown = attendees.slice(0, max);
   return (
     <span className="inline-flex items-center">
-      <span className="flex -space-x-1.5">
+      <span className="flex -space-x-1">
         {shown.map((a, i) => (
           <span
             key={a.userId}
             title={a.displayName}
-            className={cn("inline-flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold ring-2 ring-surface", avatarColors[i % avatarColors.length])}
+            className={cn(
+              "relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[11px] leading-none font-bold tracking-tight ring-2 ring-surface",
+              avatarColors[i % avatarColors.length],
+            )}
           >
             {initials(a.displayName)}
           </span>
         ))}
       </span>
-      {showMore && total > shown.length && <span className="ml-1.5 text-xs text-muted">+{total - shown.length}</span>}
+      {showMore && total > shown.length && (
+        <span className="ml-2 inline-flex h-6 items-center rounded-full bg-ice px-2 text-xs font-semibold text-muted">+{total - shown.length}</span>
+      )}
     </span>
   );
 }

@@ -198,6 +198,7 @@
     "needs": "Defining the problem, finding data and funding, getting the right people on board: that groundwork takes months. We do it first, the way someone shovels the path in a Hokkaido winter.",
     "searchLabel": "Search challenges",
     "searchPlaceholder": "Search challenges by town, industry or skill…",
+    "searchPlaceholderShort": "Search by town or skill…",
     "searchButton": "Search",
     "searchLoading": "Searching…",
     "searchEmpty": "No matching challenges yet. Press Enter to see them all.",

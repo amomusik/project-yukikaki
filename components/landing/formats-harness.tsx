@@ -352,7 +352,7 @@ export function FormatsHarness() {
             {["-left-0.5 -top-0.5", "-right-0.5 -top-0.5", "-bottom-0.5 -left-0.5", "-bottom-0.5 -right-0.5"].map((c) => (
               <span key={c} aria-hidden className={`absolute h-1.5 w-1.5 ${c}`} style={{ backgroundColor: SKY }} />
             ))}
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3f739c]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#386a91]">
               {t(`phases.${phase}`)} · {t("supplies")}
             </p>
             <ul key={`${format}-${phase}`} className="mt-4 space-y-2.5">

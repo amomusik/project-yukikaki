@@ -198,6 +198,7 @@
     "needs": "課題の整理、データと資金の確保、関係者への根回し。その準備に何か月もかかります。北海道の冬に誰かが先に雪をかくように、私たちが先に道をひらきます。",
     "searchLabel": "チャレンジを検索",
     "searchPlaceholder": "まち・業種・スキルで検索…",
+    "searchPlaceholderShort": "まち・スキルで検索…",
     "searchButton": "検索",
     "searchLoading": "検索しています…",
     "searchEmpty": "一致するチャレンジはまだありません。Enterキーで一覧を表示します。",

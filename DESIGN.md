@@ -6,7 +6,7 @@ colors:
   surface: "#ffffff"
   ice: "#e4eef7"
   ice-strong: "#a9c8de"
-  frost: "#3f739c"
+  frost: "#386a91"
   night: "#0c1a2b"
   night-2: "#16304b"
   hero-sky: "#041a40"
@@ -282,7 +282,7 @@ UI is soft and round: pill buttons and chips (`rounded-full`), 12px inputs, 16â€
 ### Don't:
 - **Don't** add eyebrows or kickers above headings, or a second "Your test kitchenâ€¦" line anywhere (it appears once, as the hero h2).
 - **Don't** put text smaller than 11px on anything functional.
-- **Don't** use frost (#3f739c) text on night; use sky-200 or dark-frost.
+- **Don't** use frost (#386a91) text on night; use sky-200 or dark-frost.
 - **Don't** cover the shoveller or the hall in the hero art with floating UI.
 - **Don't** use bounce/elastic easing, infinite motion without a pause control, or motion that ignores reduced-motion.
 - **Don't** draw AI as ghosts; draw robots.

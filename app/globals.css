@@ -10,7 +10,7 @@
   --surface: #ffffff; /* cards */
   --ice: #e4eef7; /* tinted panels, chips */
   --ice-strong: #a9c8de; /* lines, the swept path */
-  --frost: #3f739c; /* accent text on light */
+  --frost: #386a91; /* accent text on light: ≥4.5:1 on ice, surface and snow */
   --night: #0c1a2b; /* hero, footer: deep winter night */
   --night-2: #16304b;
   --lantern: #e9a23b; /* primary CTA */

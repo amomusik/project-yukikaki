@@ -15,6 +15,29 @@ function NoAuth({ children }: React.ComponentProps<typeof ClerkProvider>) {
   return <>{children}</>;
 }
 
+// Clerk's stock copy greets everyone with "Welcome back!", which is wrong for a first-time owner coming from
+// "Bring a problem". Name the product and say what the account is for; JA uses ログイン like the rest of the site.
+const clerkCopy = {
+  en: {
+    signIn: { title: "Sign in to Yukikaki", subtitle: "Bring a problem, RSVP to events or join a team.", titleCombined: "Continue to Yukikaki" },
+    signUp: { title: "Create your Yukikaki account", subtitle: "It takes about a minute.", titleCombined: "Create your Yukikaki account" },
+  },
+  ja: {
+    signIn: { title: "Yukikakiにログイン", subtitle: "課題の相談、イベントへの参加登録、チームへの参加ができます。", titleCombined: "Yukikakiへ進む" },
+    signUp: { title: "Yukikakiのアカウントを作成", subtitle: "1分ほどで登録できます。", titleCombined: "Yukikakiのアカウントを作成" },
+  },
+} as const;
+
+function clerkLocalization(locale: string) {
+  const base = locale === "ja" ? jaJP : enUS;
+  const copy = locale === "ja" ? clerkCopy.ja : clerkCopy.en;
+  return {
+    ...base,
+    signIn: { ...base.signIn, start: { ...base.signIn?.start, ...copy.signIn, subtitleCombined: copy.signIn.subtitle } },
+    signUp: { ...base.signUp, start: { ...base.signUp?.start, ...copy.signUp, subtitleCombined: copy.signUp.subtitle } },
+  };
+}
+
 // Every page depends on the signed-in user and live data, so render on request.
 export const dynamic = "force-dynamic";
 
@@ -43,7 +66,7 @@ export default async function LocaleLayout({
 
   return (
     <Auth
-      localization={locale === "ja" ? jaJP : enUS}
+      localization={clerkLocalization(locale)}
       signInUrl={`/${locale}/sign-in`}
       signUpUrl={`/${locale}/sign-up`}
       signInFallbackRedirectUrl={`/${locale}/onboarding`}

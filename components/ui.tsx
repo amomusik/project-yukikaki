@@ -8,15 +8,16 @@ export function cn(...inputs: ClassValue[]) {
 
 type Variant = "primary" | "secondary" | "ghost" | "danger";
 const variants: Record<Variant, string> = {
-  primary: "bg-slate-900 text-white hover:bg-slate-700 dark:bg-sky-200 dark:text-slate-900 dark:hover:bg-sky-100",
-  secondary: "border border-slate-300 bg-white text-slate-900 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800",
-  ghost: "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800",
-  danger: "bg-rose-600 text-white hover:bg-rose-500",
+  // Lantern amber is the one next action on a screen (DESIGN.md: One Lantern Rule).
+  primary: "bg-lantern font-semibold text-lantern-ink hover:bg-lantern-hover",
+  secondary: "border border-ice-strong bg-surface text-ink hover:border-frost hover:bg-ice",
+  ghost: "text-muted hover:bg-ice hover:text-ink",
+  danger: "bg-rose-700 text-white hover:bg-rose-600",
 };
 
 export function buttonClass(variant: Variant = "primary", className?: string) {
   return cn(
-    "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50",
+    "inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-colors duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] disabled:cursor-not-allowed disabled:opacity-50",
     variants[variant],
     className,
   );
@@ -29,7 +30,7 @@ export function Button({ variant = "primary", className, ...props }: ButtonHTMLA
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900", className)}
+      className={cn("rounded-2xl border border-line bg-surface p-5 text-ink shadow-sm", className)}
       {...props}
     />
   );
@@ -37,16 +38,18 @@ export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 
 type Tone = "slate" | "sky" | "green" | "amber" | "rose" | "violet";
 const tones: Record<Tone, string> = {
-  slate: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
-  sky: "bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-200",
+  // Neutral and info tones use the winter tokens; status colours stay tinted with dark text.
+  slate: "bg-ice text-muted",
+  sky: "bg-ice text-frost",
   green: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200",
   amber: "bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200",
   rose: "bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-200",
-  violet: "bg-violet-100 text-violet-800 dark:bg-violet-900/50 dark:text-violet-200",
+  // Kept as an API name; drawn as an outlined frost chip (No-Violet Rule).
+  violet: "bg-surface text-frost ring-1 ring-inset ring-ice-strong",
 };
 
 export function Badge({ tone = "slate", className, ...props }: HTMLAttributes<HTMLSpanElement> & { tone?: Tone }) {
-  return <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium", tones[tone], className)} {...props} />;
+  return <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold", tones[tone], className)} {...props} />;
 }
 
 const field =
@@ -62,15 +65,15 @@ export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
   return <select {...props} className={cn(field, props.className)} />;
 }
 export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn("mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300", className)} {...props} />;
+  return <label className={cn("mb-1 block text-sm font-medium text-ink", className)} {...props} />;
 }
 
 export function PageHeader({ title, subtitle, children }: { title: string; subtitle?: string; children?: React.ReactNode }) {
   return (
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">{title}</h1>
-        {subtitle && <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-400">{subtitle}</p>}
+        <h1 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">{title}</h1>
+        {subtitle && <p className="yk-phrase mt-2 max-w-2xl text-muted">{subtitle}</p>}
       </div>
       {children}
     </div>
@@ -78,5 +81,5 @@ export function PageHeader({ title, subtitle, children }: { title: string; subti
 }
 
 export function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-muted dark:border-slate-700">{children}</p>;
+  return <p className="rounded-2xl border border-dashed border-ice-strong p-8 text-center text-sm text-muted">{children}</p>;
 }
