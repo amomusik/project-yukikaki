@@ -48,7 +48,7 @@ const AGENTS = [
     prompt: fenceAfter("### 2.2 System prompt"),
     dataCollection: tableAfter("### 2.3 Data collection fields"),
     maxSeconds: 900,
-    vars: { user_id: "", business_id: "", locale: "ja" },
+    vars: { yk_nonce: "", locale: "ja" },
   },
   {
     name: "Yukikaki Impact Review",
@@ -57,7 +57,7 @@ const AGENTS = [
     prompt: fenceAfter("### 3.2 System prompt"),
     dataCollection: tableAfter("### 3.3 Data collection fields"),
     maxSeconds: 300,
-    vars: { delivery_id: "", locale: "ja" },
+    vars: { yk_nonce: "", locale: "ja" },
   },
 ];
 
