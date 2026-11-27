@@ -34,6 +34,8 @@ export const groundingEnum = pgEnum("grounding_level", ["exact", "analog", "nati
 export const sourceKindEnum = pgEnum("source_kind", ["live", "synthetic"]);
 export const providerEnum = pgEnum("source_provider", ["linkup", "adaption", "manual", "prebaked"]);
 export const memberRoleEnum = pgEnum("member_role", ["lead", "member"]);
+/** Team invitations: invitees join only after accepting (the creator/lead is accepted on creation). */
+export const memberStatusEnum = pgEnum("member_status", ["invited", "accepted", "declined"]);
 export const entityKindEnum = pgEnum("entity_kind", ["stakeholder", "venue", "funder"]);
 export const subjectEnum = pgEnum("subject_type", ["brief", "team"]);
 export const decisionEnum = pgEnum("decision", ["approve", "reject"]);
@@ -162,6 +164,7 @@ export const teamMembers = pgTable(
       .notNull()
       .references(() => users.id),
     role: memberRoleEnum("role").notNull().default("member"),
+    status: memberStatusEnum("status").notNull().default("invited"),
   },
   (t) => [
     primaryKey({ columns: [t.teamId, t.userId] }),
@@ -366,4 +369,5 @@ export type GrantMatchRow = typeof grantMatches.$inferSelect;
 export type NewGrantMatchRow = typeof grantMatches.$inferInsert;
 export type BriefStatus = (typeof briefStatusEnum.enumValues)[number];
 export type TeamStatus = (typeof teamStatusEnum.enumValues)[number];
+export type MemberStatus = (typeof memberStatusEnum.enumValues)[number];
 export type GroundingLevel = (typeof groundingEnum.enumValues)[number];

@@ -494,7 +494,7 @@
     "newTitle": "Form a team",
     "name": "Team name",
     "pitch": "How will you solve it?",
-    "invite": "Member emails (comma separated, must be registered builders)",
+    "invite": "Member emails (comma separated)",
     "leadNote": "You will be the lead. The lead is the business owner's point of contact.",
     "create": "Create team",
     "unknown": "Emails not found: {emails}",
@@ -511,7 +511,14 @@
     "submitDelivery": "Submit delivery",
     "supportUntil": "Support until {date}",
     "onlyLead": "Only the team lead can submit the delivery.",
-    "status": "Status"
+    "status": "Status",
+    "inviteNote": "We'll invite anyone with a builder account. They join the team once they accept.",
+    "invitesSent": "Invitations sent. We invite anyone with a builder account, and they appear on the team once they accept.",
+    "invitedTitle": "You've been invited to this team",
+    "invitedBody": "Accept to join. Until you accept you are not listed as a member, not counted in the team review, and can't be made lead.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "declined": "You declined this invitation."
   },
   "me": {
     "title": "My page",
@@ -573,7 +580,10 @@
     "tabRejected": "Returned",
     "noRejected": "No returned requests.",
     "rejectedHint": "Returned requests wait for the owner to revise and resubmit them from My page. They then come back to “Challenges to review”.",
-    "rejectionNote": "Your note"
+    "rejectionNote": "Your note",
+    "stuck": "Stuck",
+    "retry": "Retry",
+    "stuckHint": "Enrichment has not finished for over 10 minutes. Retry runs it again in the background."
   },
   "feedback": {
     "title": "How is the solution working?",

@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, or, sql, type SQL } from "drizzle-orm";
+import { and, desc, eq, inArray, ne, or, sql, type SQL } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import type { BriefStatus } from "@/lib/db/schema";
 import { findCity } from "@/lib/grounding/city-profiles";
@@ -146,14 +146,19 @@ export async function getTeamDetail(id: string) {
   const db = getDb();
   const [team] = await db.select().from(schema.teams).where(eq(schema.teams.id, id));
   if (!team) return null;
-  const members = await db
-    .select({ user: schema.users, role: schema.teamMembers.role })
+  const all = await db
+    .select({ user: schema.users, role: schema.teamMembers.role, status: schema.teamMembers.status })
     .from(schema.teamMembers)
     .innerJoin(schema.users, eq(schema.teamMembers.userId, schema.users.id))
     .where(eq(schema.teamMembers.teamId, id));
+  // Only accepted members are on the roster. Pending/declined invitations are returned
+  // separately (ids + status only) so a page can show the invitee their own invitation
+  // without revealing to anyone else which invited emails belong to registered builders.
+  const members = all.filter((m) => m.status === "accepted" || m.role === "lead");
+  const invitations = all.filter((m) => !members.includes(m)).map((m) => ({ userId: m.user.id, status: m.status }));
   const [brief] = await db.select().from(schema.briefs).where(eq(schema.briefs.id, team.briefId));
   const [delivery] = await db.select().from(schema.deliveries).where(eq(schema.deliveries.teamId, id));
-  return { team, members, brief, delivery: delivery ?? null };
+  return { team, members, invitations, brief, delivery: delivery ?? null };
 }
 
 export async function briefsForOwner(userId: string) {
@@ -199,11 +204,12 @@ export async function latestRejections(briefIds: string[]): Promise<Map<string, 
 export async function teamsForUser(userId: string) {
   const db = getDb();
   return db
-    .select({ team: schema.teams, role: schema.teamMembers.role, brief: schema.briefs })
+    .select({ team: schema.teams, role: schema.teamMembers.role, memberStatus: schema.teamMembers.status, brief: schema.briefs })
     .from(schema.teamMembers)
     .innerJoin(schema.teams, eq(schema.teamMembers.teamId, schema.teams.id))
     .innerJoin(schema.briefs, eq(schema.teams.briefId, schema.briefs.id))
-    .where(eq(schema.teamMembers.userId, userId))
+    // Accepted teams plus pending invitations (so the invitee can open the team and answer); never declined ones.
+    .where(and(eq(schema.teamMembers.userId, userId), ne(schema.teamMembers.status, "declined")))
     .orderBy(desc(schema.teams.createdAt));
 }
 
@@ -247,7 +253,7 @@ export async function adminTeams() {
         .select({ teamId: schema.teamMembers.teamId, role: schema.teamMembers.role, user: schema.users })
         .from(schema.teamMembers)
         .innerJoin(schema.users, eq(schema.teamMembers.userId, schema.users.id))
-        .where(inArray(schema.teamMembers.teamId, ids))
+        .where(and(inArray(schema.teamMembers.teamId, ids), or(eq(schema.teamMembers.status, "accepted"), eq(schema.teamMembers.role, "lead"))))
     : [];
   return teams.map((t) => ({ ...t, members: members.filter((m) => m.teamId === t.team.id) }));
 }

@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray, lt, or } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import type { AiReview, BriefStatus, GroundingLevel } from "@/lib/db/schema";
 import { saveSynthetic } from "@/lib/datasets/store";
@@ -8,7 +8,7 @@ import { withFallback } from "@/lib/integrations/_guard";
 import * as adaption from "@/lib/integrations/adaption";
 import * as dify from "@/lib/integrations/dify";
 import { inferSkills } from "@/lib/skills";
-import { assertTransition } from "@/lib/workflow/status";
+import { assertTransition, STUCK_AFTER_MS } from "@/lib/workflow/status";
 import { requireLiveServices } from "@/lib/env";
 
 export type PipelineDeps = {
@@ -43,22 +43,36 @@ export async function setBriefStatus(id: string, from: BriefStatus, to: BriefSta
 }
 
 /**
- * Host action: in_review → enriching. Atomic (conditional on the current status), so
- * double-clicks can't start two runs. Returns false if the brief is not in review.
+ * Host action: claim a brief for (re-)enrichment. Atomic (conditional on the current status),
+ * so double-clicks can't start two runs. Claims either
+ *   - a brief in review: in_review → enriching (Re-run enrichment), or
+ *   - a stuck brief: draft/enriching untouched for STUCK_AFTER_MS → enriching (Retry). The
+ *     updatedAt bump means a second click within the window can't start a parallel run.
+ * Returns false if the brief is in neither state.
  */
-export async function startReEnrichment(briefId: string): Promise<boolean> {
+export async function startReEnrichment(briefId: string, now: Date = new Date()): Promise<boolean> {
   assertTransition("brief", "in_review", "enriching");
+  const stuckBefore = new Date(now.getTime() - STUCK_AFTER_MS);
   const rows = await getDb()
     .update(schema.briefs)
-    .set({ status: "enriching", updatedAt: new Date() })
-    .where(and(eq(schema.briefs.id, briefId), eq(schema.briefs.status, "in_review")))
+    .set({ status: "enriching", updatedAt: now })
+    .where(
+      and(
+        eq(schema.briefs.id, briefId),
+        or(
+          eq(schema.briefs.status, "in_review"),
+          and(inArray(schema.briefs.status, ["draft", "enriching"]), lt(schema.briefs.updatedAt, stuckBefore)),
+        ),
+      ),
+    )
     .returning({ id: schema.briefs.id });
   return rows.length > 0;
 }
 
 /**
- * Re-run grounding + Adaption + Dify for a brief already in review
- * (e.g. after a live-only failure): in_review → enriching → in_review.
+ * Re-run grounding + Adaption + Dify for a brief already in review (e.g. after a live-only
+ * failure) or stuck in draft/enriching: → enriching → in_review. processBrief always lands
+ * the brief in in_review, including when a step fails.
  * Pass `alreadyStarted` when startReEnrichment() was called separately.
  */
 export async function reEnrichBrief(

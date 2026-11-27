@@ -14,7 +14,7 @@ export default async function NewTeamPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ brief?: string; unknown?: string }>;
+  searchParams: Promise<{ brief?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -43,7 +43,8 @@ export default async function NewTeamPage({
           </div>
           <div>
             <Label htmlFor="emails">{t("invite")}</Label>
-            <Input id="emails" name="emails" placeholder="a@example.com, b@example.com" />
+            <Input id="emails" name="emails" placeholder="a@example.com, b@example.com" aria-describedby="emails-note" />
+            <p id="emails-note" className="mt-1 text-xs text-muted">{t("inviteNote")}</p>
           </div>
           <p className="rounded-lg bg-sky-50 p-3 text-sm text-sky-900 dark:bg-sky-950 dark:text-sky-100">👑 {t("leadNote")}</p>
           <Button type="submit">{t("create")}</Button>

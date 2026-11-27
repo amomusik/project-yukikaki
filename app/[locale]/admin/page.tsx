@@ -9,6 +9,7 @@ import { decideAction, reEnrichAction } from "./actions";
 import { refreshAllGrantsAction, refreshGrantsAction } from "./grant-actions";
 import { ImpactCheckButton } from "./impact-check-button";
 import { RejectedTab } from "./rejected-tab";
+import { isStuck } from "@/lib/workflow/status";
 
 // Server actions on this page start the brief/team pipeline with after(); that work counts
 // against this function's duration (300 s = Vercel Hobby max; Pro allows up to 800 s).
@@ -108,6 +109,7 @@ async function BriefsTab({ locale }: { locale: string }) {
         <Card key={brief.id} data-testid="brief-card">
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={brief.status} />
+            {isStuck(brief) && <Badge tone="rose" data-testid="stuck-badge">{t("stuck")}</Badge>}
             <AiBadge review={brief.aiReview} />
             <GroundingBadge level={brief.groundingLevel} city={sources.find((s) => s.matchedCity)?.matchedCity} />
           </div>
@@ -155,6 +157,13 @@ async function BriefsTab({ locale }: { locale: string }) {
                 <Button type="submit" variant="secondary" data-testid="re-enrich">↻ {t("reEnrich")}</Button>
               </form>
             </>
+          ) : isStuck(brief) ? (
+            <form action={reEnrichAction} className="mt-3 flex flex-wrap items-center gap-2">
+              <input type="hidden" name="locale" value={locale} />
+              <input type="hidden" name="briefId" value={brief.id} />
+              <Button type="submit" variant="secondary" data-testid="retry-stuck">↻ {t("retry")}</Button>
+              <span className="text-xs text-muted">{t("stuckHint")}</span>
+            </form>
           ) : (
             <p className="mt-3 text-xs text-muted">{ts(brief.status)}…</p>
           )}

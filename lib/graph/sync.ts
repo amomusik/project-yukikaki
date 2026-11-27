@@ -1,4 +1,4 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import { withFallback } from "@/lib/integrations/_guard";
 import { CITY_PROFILES, analogCities, findCity } from "@/lib/grounding/city-profiles";
@@ -87,7 +87,7 @@ export async function teamSyncStatements(teamId: string): Promise<Statement[]> {
     .select({ user: schema.users, role: schema.teamMembers.role })
     .from(schema.teamMembers)
     .innerJoin(schema.users, eq(schema.teamMembers.userId, schema.users.id))
-    .where(eq(schema.teamMembers.teamId, teamId));
+    .where(and(eq(schema.teamMembers.teamId, teamId), or(eq(schema.teamMembers.status, "accepted"), eq(schema.teamMembers.role, "lead"))));
   const lead = members.find((m) => m.role === "lead");
   if (!lead) return [];
   return teamStatements({

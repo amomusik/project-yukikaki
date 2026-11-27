@@ -49,7 +49,10 @@ export async function rebuildGraphAction(formData: FormData) {
   revalidatePath(`/${locale}/admin/graph`);
 }
 
-/** Host: re-run grounding + Adaption + Dify for a brief in review (in_review → enriching → in_review). */
+/**
+ * Host: re-run grounding + Adaption + Dify for a brief in review (in_review → enriching → in_review),
+ * or retry one stuck in draft/enriching for over 10 minutes (→ enriching → in_review). Runs under after().
+ */
 export async function reEnrichAction(formData: FormData) {
   const locale = String(formData.get("locale") ?? "ja");
   await requireRole(locale, "host");

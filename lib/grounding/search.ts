@@ -25,10 +25,42 @@ export type SearchFn = (query: string, opts?: { includeDomains?: string[] }) => 
 
 /**
  * Grounding only counts official, citable sources: national ministries and agencies (go.jp),
- * prefectures and municipalities (lg.jp, plus each city's own site), public bodies (or.jp)
- * and universities (ac.jp). Blogs and SEO sites never ground a brief.
+ * prefectures and municipalities (lg.jp, plus each city's own site), universities (ac.jp)
+ * and a narrow set of public bodies under or.jp (see isOfficial). Blogs and SEO sites never
+ * ground a brief.
  */
 export const OFFICIAL_DOMAINS = ["go.jp", "lg.jp", "or.jp", "ac.jp"];
+
+/**
+ * or.jp is open to anyone who registers an organisation, so it is NOT trusted as a whole.
+ * An or.jp host counts only when its organisation label looks like a local public body:
+ *   - social welfare councils      *-shakyo.or.jp, *shakyo.or.jp   (e.g. sapporo-shakyo.or.jp)
+ *   - chambers of commerce         *-cci.or.jp, cci-*.or.jp        (e.g. sapporo-cci.or.jp)
+ *   - tourism associations         *kanko*, *kankou*, *tourism*    (e.g. kanazawa-kankoukyoukai.or.jp)
+ *   - city foundations             *.city-*.or.jp, city-*.or.jp
+ * …and, for a city-level search, the host label must also contain the city key or the page
+ * title/snippet must name the city. Both conditions are required: いぶすき観光ネット
+ * (ibusuki.or.jp) has a page titled 「札幌ラーメン休次郎」 that mentions 札幌 but is a Kagoshima
+ * site with no public-body host pattern, so it must not ground a Sapporo brief.
+ */
+const OR_JP_PUBLIC_BODY = /(?:shakyo|(?:^|-)cci(?:-|$)|kank(?:o|ou)|tourism)/;
+
+export type OfficialContext = {
+  /** Title + snippet of the page, used to confirm an or.jp public body is about the city. */
+  text?: string;
+  city?: { ja: string; en: string } | null;
+};
+
+function orJpAllowed(host: string, cityKey: string | undefined, ctx: OfficialContext): boolean {
+  const labels = host.replace(/\.or\.jp$/, "").split(".");
+  const org = labels[labels.length - 1] ?? "";
+  const publicBody = OR_JP_PUBLIC_BODY.test(org) || labels.some((l) => /^city-[a-z-]+$/.test(l));
+  if (!publicBody) return false;
+  if (!cityKey) return true;
+  if (host.includes(cityKey)) return true;
+  const text = ctx.text ?? "";
+  return !!ctx.city && (text.includes(ctx.city.ja) || text.toLowerCase().includes(ctx.city.en.toLowerCase()));
+}
 
 export const defaultSearch: SearchFn = async (query, opts) => {
   const r = await withFallback("linkup", "search", (signal) => linkupSearch(query, signal, opts), [] as LinkupResult[]);
@@ -51,10 +83,11 @@ function mentions(r: LinkupResult, city: Planned["city"]): boolean {
 
 /**
  * Defence in depth: keep only URLs whose host ends with an allowed domain, drop personal
- * pages (`/~user/`), and — for city-level searches — drop another municipality's site
- * (e.g. Yokohama's Kanazawa *ward* must not ground Kanazawa *city*).
+ * pages (`/~user/`), narrow or.jp to public bodies (see OR_JP_PUBLIC_BODY), and — for
+ * city-level searches — drop another municipality's site (e.g. Yokohama's Kanazawa *ward*
+ * must not ground Kanazawa *city*). Also applied to every committed prebaked source.
  */
-export function isOfficial(url: string, allowed: string[], cityKey?: string): boolean {
+export function isOfficial(url: string, allowed: string[], cityKey?: string, ctx: OfficialContext = {}): boolean {
   try {
     const u = new URL(url);
     const host = u.hostname.toLowerCase();
@@ -62,6 +95,10 @@ export function isOfficial(url: string, allowed: string[], cityKey?: string): bo
     if (u.pathname.includes("/~")) return false;
     const muni = host.match(/(?:^|\.)(?:city|town|vill)\.([a-z-]+)\./);
     if (cityKey && muni && muni[1] !== cityKey) return false;
+    // Only when or.jp is the sole reason the host is allowed (a city's own site may be listed too).
+    if (host.endsWith(".or.jp") && !allowed.some((d) => d !== "or.jp" && (host === d || host.endsWith(`.${d}`)))) {
+      if (!orJpAllowed(host, cityKey, ctx)) return false;
+    }
     return true;
   } catch {
     return false;
@@ -143,7 +180,7 @@ export async function groundBrief(
       queries.push(p.query);
       anyOk ||= res.ok;
       for (const r of res.results) {
-        if (seen.has(r.url) || !mentions(r, p.city) || !isOfficial(r.url, p.includeDomains, p.city?.key)) continue;
+        if (seen.has(r.url) || !mentions(r, p.city) || !isOfficial(r.url, p.includeDomains, p.city?.key, { text: `${r.title} ${r.snippet}`, city: p.city })) continue;
         seen.add(r.url);
         found.push({ ...r, level, matchedCity: p.city?.en ?? null, query: p.query });
       }

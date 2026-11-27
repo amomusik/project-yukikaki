@@ -1,9 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { BRIEF_TRANSITIONS, EVENT_TRANSITIONS, TEAM_TRANSITIONS, TransitionError, assertTransition, canTransition } from "@/lib/workflow/status";
+import { BRIEF_TRANSITIONS, EVENT_TRANSITIONS, STUCK_AFTER_MS, TEAM_TRANSITIONS, TransitionError, assertTransition, canTransition, isStuck } from "@/lib/workflow/status";
 import type { BriefStatus, EventStatus, TeamStatus } from "@/lib/db/schema";
 
 const briefStates = Object.keys(BRIEF_TRANSITIONS) as BriefStatus[];
 const teamStates = Object.keys(TEAM_TRANSITIONS) as TeamStatus[];
+
+describe("stuck enrichment", () => {
+  const now = new Date("2026-11-27T12:00:00Z");
+  const ago = (ms: number) => new Date(now.getTime() - ms);
+  it("allows a retry of an enriching brief (enriching → enriching) and still lands it in review", () => {
+    expect(canTransition("brief", "enriching", "enriching")).toBe(true);
+    expect(canTransition("brief", "enriching", "in_review")).toBe(true);
+  });
+  it("flags draft/enriching briefs untouched for more than 10 minutes", () => {
+    expect(isStuck({ status: "enriching", updatedAt: ago(STUCK_AFTER_MS + 1) }, now)).toBe(true);
+    expect(isStuck({ status: "draft", updatedAt: ago(STUCK_AFTER_MS + 1) }, now)).toBe(true);
+    expect(isStuck({ status: "enriching", updatedAt: ago(9 * 60_000) }, now)).toBe(false);
+    expect(isStuck({ status: "in_review", updatedAt: ago(60 * 60_000) }, now)).toBe(false);
+  });
+});
 
 describe("brief transitions", () => {
   it("allows exactly the transitions in the table", () => {

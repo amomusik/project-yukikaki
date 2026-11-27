@@ -6,7 +6,7 @@ import { getTeamDetail } from "@/lib/queries";
 import { isUuid } from "@/lib/uuid";
 import { AiBadge, StatusBadge } from "@/components/badges";
 import { Badge, Button, Card, PageHeader, Select, buttonClass } from "@/components/ui";
-import { transferLeadAction } from "../actions";
+import { respondToInviteAction, transferLeadAction } from "../actions";
 
 // Server actions on this page start the brief/team pipeline with after(); that work counts
 // against this function's duration (300 s = Vercel Hobby max; Pro allows up to 800 s).
@@ -19,7 +19,7 @@ export default async function TeamPage({
   searchParams,
 }: {
   params: Promise<{ locale: string; id: string }>;
-  searchParams: Promise<{ unknown?: string }>;
+  searchParams: Promise<{ invited?: string }>;
 }) {
   const { locale, id } = await params;
   setRequestLocale(locale);
@@ -27,10 +27,11 @@ export default async function TeamPage({
   if (!isUuid(id)) notFound();
   const detail = await getTeamDetail(id);
   if (!detail) notFound();
-  const { unknown } = await searchParams;
+  const { invited } = await searchParams;
   const t = await getTranslations("teams");
   const lang = locale === "en" ? "en" : "ja";
-  const { team, members, brief, delivery } = detail;
+  const { team, members, invitations, brief, delivery } = detail;
+  const myInvite = invitations.find((i) => i.userId === user.id)?.status ?? null;
   const lead = members.find((m) => m.role === "lead");
   const isLead = lead?.user.id === user.id;
   const others = members.filter((m) => m.role !== "lead");
@@ -40,7 +41,20 @@ export default async function TeamPage({
       <PageHeader title={team.name} subtitle={brief.content[lang].title}>
         <StatusBadge status={team.status} />
       </PageHeader>
-      {unknown && <p className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900">{t("unknown", { emails: unknown })}</p>}
+      {invited && isLead && <p className="rounded-lg bg-sky-50 p-3 text-sm text-sky-900 dark:bg-sky-950 dark:text-sky-100" role="status">{t("invitesSent")}</p>}
+      {myInvite === "invited" && (
+        <Card data-testid="team-invite">
+          <h2 className="font-semibold">{t("invitedTitle")}</h2>
+          <p className="mt-1 text-sm text-muted">{t("invitedBody")}</p>
+          <form action={respondToInviteAction} className="mt-3 flex flex-wrap gap-2">
+            <input type="hidden" name="locale" value={locale} />
+            <input type="hidden" name="teamId" value={team.id} />
+            <Button name="response" value="accept" type="submit">✓ {t("accept")}</Button>
+            <Button name="response" value="decline" type="submit" variant="secondary">{t("decline")}</Button>
+          </form>
+        </Card>
+      )}
+      {myInvite === "declined" && <p className="rounded-lg bg-slate-50 p-3 text-sm text-muted dark:bg-slate-900">{t("declined")}</p>}
 
       <Card>
         <p className="whitespace-pre-wrap text-sm">{team.pitch}</p>

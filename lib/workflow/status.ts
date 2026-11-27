@@ -3,7 +3,7 @@ import type { BriefStatus, EventStatus, TeamStatus } from "@/lib/db/schema";
 /** The single source of truth for which status changes are legal. */
 export const BRIEF_TRANSITIONS: Record<BriefStatus, BriefStatus[]> = {
   draft: ["enriching"],
-  enriching: ["in_review"],
+  enriching: ["in_review", "enriching"], // in_review = pipeline finished or failed; enriching = host retries a stuck run
   in_review: ["approved", "rejected", "enriching"], // enriching = host re-runs enrichment
   rejected: ["in_review"],
   approved: ["in_progress"],
@@ -11,6 +11,16 @@ export const BRIEF_TRANSITIONS: Record<BriefStatus, BriefStatus[]> = {
   delivered: ["evaluated"],
   evaluated: [],
 };
+
+/**
+ * A brief whose enrichment never finished (e.g. the serverless function was killed before the
+ * pipeline's `finally` moved it to in_review). After this long in draft/enriching, hosts may retry.
+ */
+export const STUCK_AFTER_MS = 10 * 60_000;
+
+export function isStuck(brief: { status: BriefStatus; updatedAt: Date }, now: Date = new Date()): boolean {
+  return (brief.status === "enriching" || brief.status === "draft") && now.getTime() - brief.updatedAt.getTime() > STUCK_AFTER_MS;
+}
 
 export const TEAM_TRANSITIONS: Record<TeamStatus, TeamStatus[]> = {
   pending: ["approved", "rejected"],

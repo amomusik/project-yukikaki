@@ -7,7 +7,7 @@ import { getDb, schema } from "@/lib/db";
 import type { Prebaked } from "@/lib/grounding/prebaked";
 import type { SearchFn } from "@/lib/grounding/search";
 import { UngroundedError, buildInventPrompt, generateGrounded, parseDownloadedRows } from "@/lib/integrations/adaption";
-import { processBrief, reEnrichBrief, type PipelineDeps } from "@/lib/pipeline/brief";
+import { processBrief, reEnrichBrief, startReEnrichment, type PipelineDeps } from "@/lib/pipeline/brief";
 import { makeBrief } from "./helpers";
 
 const goodSearch: SearchFn = async (q) => ({
@@ -116,7 +116,7 @@ describe("processBrief", () => {
       industryKey: "ramen",
       city: "Asahikawa",
       groundingLevel: "analog",
-      live: [{ title: "旭川 ラーメン", url: "https://example.jp/a", snippet: "旭川", matchedCity: "Asahikawa", level: "analog", foundBy: "linkup" }],
+      live: [{ title: "旭川 ラーメン", url: "https://www.city.asahikawa.hokkaido.jp/a", snippet: "旭川", matchedCity: "Asahikawa", level: "analog", foundBy: "linkup" }],
       synthetic: { name: "yukikaki:ramen:asahikawa", externalId: "ds_pre", generatedBy: "adaption", rows },
       generatedAt: "2026-11-25T00:00:00Z",
     };
@@ -223,5 +223,52 @@ describe("reEnrichBrief", () => {
     expect(await reEnrichBrief(brief.id, d)).toBe(false);
     expect((await load(brief.id)).brief.status).toBe("approved");
     expect(d.reviewBrief).not.toHaveBeenCalled();
+  });
+});
+
+describe("stuck enrichment retry", () => {
+  const backdate = (id: string, minutesAgo: number) =>
+    getDb().update(schema.briefs).set({ updatedAt: new Date(Date.now() - minutesAgo * 60_000) }).where(eq(schema.briefs.id, id));
+
+  it("retries a brief stuck in enriching for over 10 minutes: enriching → enriching → in_review", async () => {
+    const { brief } = await makeBrief("enriching");
+    await backdate(brief.id, 11);
+    const d = deps();
+    expect(await startReEnrichment(brief.id)).toBe(true);
+    expect((await load(brief.id)).brief.status).toBe("enriching");
+    expect(await startReEnrichment(brief.id)).toBe(false); // claim bumped updatedAt: no parallel second run
+    expect(await reEnrichBrief(brief.id, d, { alreadyStarted: true })).toBe(true);
+    const r = await load(brief.id);
+    expect(r.brief.status).toBe("in_review");
+    expect(r.brief.groundingLevel).toBe("exact");
+    expect(d.reviewBrief).toHaveBeenCalledOnce();
+  });
+
+  it("retries a brief stuck in draft", async () => {
+    const { brief } = await makeBrief("draft");
+    await backdate(brief.id, 30);
+    expect(await reEnrichBrief(brief.id, deps())).toBe(true);
+    expect((await load(brief.id)).brief.status).toBe("in_review");
+  });
+
+  it("does not claim a brief that is still enriching within 10 minutes", async () => {
+    const { brief } = await makeBrief("enriching");
+    await backdate(brief.id, 5);
+    const d = deps();
+    expect(await reEnrichBrief(brief.id, d)).toBe(false);
+    expect((await load(brief.id)).brief.status).toBe("enriching");
+    expect(d.reviewBrief).not.toHaveBeenCalled();
+  });
+
+  it("a failing pipeline still lands the retried brief in in_review", async () => {
+    const { brief } = await makeBrief("enriching");
+    await backdate(brief.id, 15);
+    const boom = async () => {
+      throw new Error("boom");
+    };
+    await reEnrichBrief(brief.id, deps({ search: boom, findExisting: boom, reviewBrief: boom }));
+    const r = await load(brief.id);
+    expect(r.brief.status).toBe("in_review");
+    expect(r.brief.aiReview?.recommendation).toBeNull();
   });
 });

@@ -1,5 +1,6 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, or } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
+import type { MemberStatus } from "@/lib/db/schema";
 import { syncDelivery, syncTeam } from "@/lib/graph/sync";
 import { withFallback } from "@/lib/integrations/_guard";
 import * as dify from "@/lib/integrations/dify";
@@ -23,14 +24,19 @@ export async function getLead(teamId: string) {
   return lead ?? null;
 }
 
-/** The creator becomes the lead (the business owner's point of contact). */
+/**
+ * The creator becomes the lead (the business owner's point of contact) and is accepted at once.
+ * Everyone else is only *invited*: they appear on the roster, count toward the team review and
+ * can take over the lead only after accepting on /teams/[id]. The result never says which emails
+ * matched a builder account, so the form can't be used to probe who is registered.
+ */
 export async function createTeam(input: {
   briefId: string;
   creatorUserId: string;
   name: string;
   pitch: string;
   memberEmails: string[];
-}): Promise<{ teamId: string; unknownEmails: string[] }> {
+}): Promise<{ teamId: string; invitedUserIds: string[] }> {
   const db = getDb();
   const [brief] = await db.select().from(schema.briefs).where(eq(schema.briefs.id, input.briefId));
   if (!brief || !["approved", "in_progress"].includes(brief.status)) {
@@ -41,7 +47,6 @@ export async function createTeam(input: {
     ? await db.select().from(schema.users).where(inArray(schema.users.email, emails))
     : [];
   const students = found.filter((u) => u.role === "student" && u.id !== input.creatorUserId);
-  const unknownEmails = emails.filter((e) => !students.some((u) => u.email.toLowerCase() === e));
 
   const teamId = await db.transaction(async (tx) => {
     const [team] = await tx
@@ -49,12 +54,37 @@ export async function createTeam(input: {
       .values({ briefId: input.briefId, name: input.name, pitch: input.pitch })
       .returning({ id: schema.teams.id });
     await tx.insert(schema.teamMembers).values([
-      { teamId: team.id, userId: input.creatorUserId, role: "lead" as const },
-      ...students.map((u) => ({ teamId: team.id, userId: u.id, role: "member" as const })),
+      { teamId: team.id, userId: input.creatorUserId, role: "lead" as const, status: "accepted" as const },
+      ...students.map((u) => ({ teamId: team.id, userId: u.id, role: "member" as const, status: "invited" as const })),
     ]);
     return team.id;
   });
-  return { teamId, unknownEmails };
+  return { teamId, invitedUserIds: students.map((u) => u.id) };
+}
+
+/**
+ * Invitee accepts or declines. Only a pending invitation can be answered (an accepted member
+ * can't silently drop to declined, and the lead can't decline their own team).
+ * Returns the new status, or null when there was no pending invitation for this user.
+ */
+export async function respondToInvite(teamId: string, userId: string, accept: boolean): Promise<MemberStatus | null> {
+  const status: MemberStatus = accept ? "accepted" : "declined";
+  const rows = await getDb()
+    .update(schema.teamMembers)
+    .set({ status })
+    .where(
+      and(
+        eq(schema.teamMembers.teamId, teamId),
+        eq(schema.teamMembers.userId, userId),
+        eq(schema.teamMembers.status, "invited"),
+        eq(schema.teamMembers.role, "member"),
+      ),
+    )
+    .returning({ userId: schema.teamMembers.userId });
+  if (rows.length === 0) return null;
+  const [team] = await getDb().select().from(schema.teams).where(eq(schema.teams.id, teamId));
+  if (accept && team && team.status !== "pending" && team.status !== "rejected") await syncTeam(teamId);
+  return status;
 }
 
 /** Swap lead and member in one transaction so the one-lead index is never violated. */
@@ -66,7 +96,7 @@ export async function transferLead(teamId: string, actorUserId: string, toUserId
     .select()
     .from(schema.teamMembers)
     .where(and(eq(schema.teamMembers.teamId, teamId), eq(schema.teamMembers.userId, toUserId)));
-  if (!target) throw new PermissionError("New lead must already be a team member");
+  if (!target || target.status !== "accepted") throw new PermissionError("New lead must be a team member who has accepted the invitation");
   await db.transaction(async (tx) => {
     await tx
       .update(schema.teamMembers)
@@ -128,7 +158,7 @@ export async function processTeam(teamId: string, review: typeof dify.reviewTeam
     .select({ name: schema.users.displayName, skills: schema.users.skills, role: schema.teamMembers.role })
     .from(schema.teamMembers)
     .innerJoin(schema.users, eq(schema.teamMembers.userId, schema.users.id))
-    .where(eq(schema.teamMembers.teamId, teamId));
+    .where(and(eq(schema.teamMembers.teamId, teamId), or(eq(schema.teamMembers.status, "accepted"), eq(schema.teamMembers.role, "lead"))));
   const r = await withFallback(
     "dify",
     "reviewTeam",

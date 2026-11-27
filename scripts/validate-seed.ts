@@ -7,7 +7,7 @@
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import path from "node:path";
 import { seedSchema } from "@/lib/seed-schema";
-import { prebakedSchema, type Prebaked } from "@/lib/grounding/prebaked";
+import { prebakedSchema, prebakedSourceIsOfficial, type Prebaked } from "@/lib/grounding/prebaked";
 import { findCity } from "@/lib/grounding/city-profiles";
 import { findIndustry } from "@/lib/grounding/industry-neighbors";
 
@@ -117,6 +117,8 @@ for (const f of files) {
     err(`prebaked/${f}: city/industry (${p.city}/${p.industryKey}) differ from business (${biz.city}/${biz.industry})`);
   if (p.groundingLevel !== "ungrounded" && p.live.length === 0) err(`prebaked/${f}: grounded but no live sources`);
   for (const s of p.live) if (!/^https?:\/\//.test(s.url)) err(`prebaked/${f}: invalid url ${s.url}`);
+  for (const s of p.live) if (!prebakedSourceIsOfficial(p, s)) err(`prebaked/${f}: not an official source for ${s.matchedCity ?? "national"}: ${s.url}`);
+  if (p.groundingLevel !== "ungrounded" && p.live.length < 2) err(`prebaked/${f}: grounded on fewer than 2 sources`);
   if (p.groundingLevel !== "ungrounded" && !p.synthetic) err(`prebaked/${f}: synthetic is null`);
 }
 

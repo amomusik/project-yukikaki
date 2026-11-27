@@ -140,8 +140,9 @@ async function main() {
     teamId.set(t.key, row.id);
     teamLead.set(t.key, userId.get(t.leadKey)!);
     await db.insert(schema.teamMembers).values([
-      { teamId: row.id, userId: userId.get(t.leadKey)!, role: "lead" as const },
-      ...t.memberKeys.map((k) => ({ teamId: row.id, userId: userId.get(k)!, role: "member" as const })),
+      // Demo teams: every seeded member has accepted their invitation.
+      { teamId: row.id, userId: userId.get(t.leadKey)!, role: "lead" as const, status: "accepted" as const },
+      ...t.memberKeys.map((k) => ({ teamId: row.id, userId: userId.get(k)!, role: "member" as const, status: "accepted" as const })),
     ]);
   }
 
