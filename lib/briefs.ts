@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
 import type { BriefContent } from "@/lib/db/schema";
 import { briefDraftSchema, type BriefDraft, type ParsedConversation } from "@/lib/integrations/elevenlabs";
+import { nonceFromConversation } from "@/lib/interview-nonce";
 import { inferSkills } from "@/lib/skills";
 
 /** Same text in both languages until Dify normalises/translates it. */
@@ -36,8 +37,9 @@ export async function createBriefFromDraft(
   let businessId = ctx.businessId ?? null;
   if (businessId) {
     const [b] = await db.select().from(schema.businesses).where(eq(schema.businesses.id, businessId));
-    if (!b || (ctx.ownerUserId && b.ownerUserId !== ctx.ownerUserId)) {
-      businessId = null; // unknown, or not this owner's business
+    // No owner → never attach to (or edit) an existing business, even an unowned one.
+    if (!b || !ctx.ownerUserId || b.ownerUserId !== ctx.ownerUserId) {
+      businessId = null; // unknown, ownerless caller, or not this owner's business
     } else {
       // The owner may have corrected their business details in this interview/form.
       await db
@@ -103,11 +105,24 @@ function draftFromConversation(conv: ParsedConversation): BriefDraft {
   return briefDraftSchema.parse(merged);
 }
 
-export async function ingestInterview(conv: ParsedConversation) {
-  const dv = conv.dynamicVariables;
+export class InterviewOwnershipError extends Error {}
+
+/**
+ * Ingest an analysed interview. Ownership comes ONLY from the server-signed `yk_nonce`
+ * dynamic variable (never from browser-supplied user_id/business_id).
+ * - `expectedUserId` set (the /api/interviews/complete caller): the nonce must be valid and bound
+ *   to that user, otherwise InterviewOwnershipError is thrown and nothing is stored.
+ * - Webhook (no expectedUserId): a missing/invalid nonce stores the brief with no owner and no
+ *   existing business, for host review only.
+ */
+export async function ingestInterview(conv: ParsedConversation, opts: { expectedUserId?: string; now?: number } = {}) {
+  const nonce = nonceFromConversation(conv, "interview", opts.now);
+  if (opts.expectedUserId !== undefined && (!nonce || !nonce.userId || nonce.userId !== opts.expectedUserId)) {
+    throw new InterviewOwnershipError("interview nonce missing, invalid or bound to another user");
+  }
   return createBriefFromDraft(draftFromConversation(conv), {
-    ownerUserId: typeof dv.user_id === "string" && dv.user_id ? dv.user_id : null,
-    businessId: typeof dv.business_id === "string" && dv.business_id ? dv.business_id : null,
+    ownerUserId: nonce?.userId ?? null,
+    businessId: nonce?.userId ? (nonce.businessId ?? null) : null,
     conversationId: conv.conversationId,
     transcript: conv.transcriptText,
   });

@@ -4,7 +4,8 @@ import { getDb, schema } from "@/lib/db";
 import { env, feedbackSecret } from "@/lib/env";
 import { withFallback } from "@/lib/integrations/_guard";
 import { sendImpactCheckEmail } from "@/lib/integrations/email";
-import { impactDraftSchema, roundHours, type ParsedConversation } from "@/lib/integrations/elevenlabs";
+import { agentKind, getConversation, impactDraftSchema, roundHours, type ParsedConversation } from "@/lib/integrations/elevenlabs";
+import { logFingerprint, nonceFromConversation } from "@/lib/interview-nonce";
 import { setBriefStatus } from "@/lib/pipeline/brief";
 
 const TOKEN_TTL_DAYS = 14;
@@ -79,19 +80,37 @@ export async function submitEvaluation(token: string, input: EvaluationInput, no
   return { ok: true as const, evaluationId: evaluation?.id ?? null };
 }
 
-/** Attach an analysed impact voice review to its evaluation (via conversation id or delivery_id variable). */
+export class ImpactConversationError extends Error {}
+
+/**
+ * Throws ImpactConversationError unless `conversationId` is an impact-agent conversation whose
+ * server-signed yk_nonce is bound to `deliveryId` (the feedback token's delivery). Returns the
+ * conversation. Pass `conv` if it is already loaded to skip the ElevenLabs fetch.
+ */
+export async function assertImpactConversation(conversationId: string, deliveryId: string, conv?: ParsedConversation): Promise<ParsedConversation> {
+  const c = conv ?? (await getConversation(conversationId));
+  if (c.conversationId !== conversationId) throw new ImpactConversationError("conversation id mismatch");
+  if (agentKind(c.agentId) !== "impact") throw new ImpactConversationError("not an impact-agent conversation");
+  const nonce = nonceFromConversation(c, "impact");
+  if (!nonce?.deliveryId || nonce.deliveryId !== deliveryId) throw new ImpactConversationError("impact nonce missing, invalid or bound to another delivery");
+  return c;
+}
+
+/**
+ * Attach an analysed impact voice review to its evaluation. The delivery comes ONLY from the
+ * server-signed yk_nonce (bound to the feedback token's deliveryId); the browser-supplied
+ * `delivery_id` dynamic variable is ignored.
+ */
 export async function ingestImpact(conv: ParsedConversation): Promise<{ attached: boolean }> {
+  if (agentKind(conv.agentId) !== "impact") return { attached: false };
+  const nonce = nonceFromConversation(conv, "impact");
+  if (!nonce?.deliveryId) return { attached: false };
   const db = getDb();
   const draft = impactDraftSchema.parse(conv.fields);
-  const deliveryId = typeof conv.dynamicVariables.delivery_id === "string" ? conv.dynamicVariables.delivery_id : null;
-  let [evaluation] = await db
-    .select()
-    .from(schema.evaluations)
-    .where(eq(schema.evaluations.impactConversationId, conv.conversationId));
-  if (!evaluation && deliveryId) {
-    [evaluation] = await db.select().from(schema.evaluations).where(eq(schema.evaluations.deliveryId, deliveryId));
-  }
+  const [evaluation] = await db.select().from(schema.evaluations).where(eq(schema.evaluations.deliveryId, nonce.deliveryId));
   if (!evaluation) return { attached: false };
+  // The form recorded a different call for this delivery: that one wins.
+  if (evaluation.impactConversationId && evaluation.impactConversationId !== conv.conversationId) return { attached: false };
   await db
     .update(schema.evaluations)
     .set({
@@ -139,7 +158,8 @@ export async function sendImpactCheck(deliveryId: string, locale: "ja" | "en" = 
     );
     emailed = Boolean(r.value);
   }
-  if (!emailed) console.info(`[impact-check] email not sent — share this link manually: ${link}`);
+  // Never log the raw token/link (only its hash is stored); the host UI shows the link.
+  if (!emailed) console.info(`[impact-check] email not sent for delivery ${deliveryId} (token ${tokenRow.id}, fp ${logFingerprint(token)}) — copy the link from /admin`);
   await db.update(schema.feedbackTokens).set({ emailDelivered: emailed }).where(eq(schema.feedbackTokens.id, tokenRow.id));
   return { link, emailed, to: owner?.email ?? null };
 }

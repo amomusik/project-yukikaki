@@ -156,6 +156,37 @@ describe("auth (Clerk mirrored lazily into users)", () => {
     expect((await ensureUser())?.role).toBe("host");
   });
 
+  it("revokes host when the email leaves HOST_EMAILS: restores the pre-host role and syncs Clerk", async () => {
+    const promoted = await makeUser("student", { email: "boss@town.example" });
+    clerk.userId = promoted.clerkId;
+    expect((await ensureUser())?.role).toBe("host");
+    expect(clerk.updateUserMetadata).toHaveBeenLastCalledWith(promoted.clerkId, { publicMetadata: { role: "host", preHostRole: "student" } });
+
+    env.HOST_EMAILS = "someone-else@town.example";
+    clerk.user = cu({ primaryEmailAddress: { emailAddress: "boss@town.example" }, publicMetadata: { role: "host", preHostRole: "student" } });
+    const info = vi.spyOn(console, "info").mockImplementation(() => {});
+    expect((await ensureUser())?.role).toBe("student");
+    info.mockRestore();
+    expect(clerk.updateUserMetadata).toHaveBeenLastCalledWith(promoted.clerkId, { publicMetadata: { role: "student", preHostRole: null } });
+    const [row] = await getDb().select().from(schema.users).where(eq(schema.users.id, promoted.id));
+    expect(row.role).toBe("student");
+    await expect(requireRole("ja", "host")).rejects.toMatchObject({ url: "/ja" });
+
+    // Without a recorded pre-host role → business.
+    const host = await makeUser("host", { email: "former@town.example" });
+    clerk.userId = host.clerkId;
+    clerk.user = cu({ primaryEmailAddress: { emailAddress: "former@town.example" }, publicMetadata: { role: "host" } });
+    const info2 = vi.spyOn(console, "info").mockImplementation(() => {});
+    expect((await ensureUser())?.role).toBe("business");
+    info2.mockRestore();
+
+    // Recreated DB row: stale Clerk "host" metadata is not trusted.
+    clerk.userId = `clerk_${Math.random()}`;
+    clerk.user = cu({ primaryEmailAddress: { emailAddress: "former@town.example" }, publicMetadata: { role: "host" } });
+    expect((await ensureUser())?.role).toBe("business");
+    expect(clerk.updateUserMetadata).toHaveBeenLastCalledWith(clerk.userId, { publicMetadata: { role: "business", preHostRole: null } });
+  });
+
   it("existing row without a role is updated from Clerk metadata; display name falls back to email", async () => {
     const id = `clerk_${Math.random()}`;
     const [row] = await getDb().insert(schema.users).values({ clerkId: id, email: "old@example.com", displayName: "x" }).returning();

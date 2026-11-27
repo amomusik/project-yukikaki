@@ -5,6 +5,7 @@ import { checkFeedbackToken, createFeedbackToken, hashToken, ingestImpact, sendI
 import { parseConversation } from "@/lib/integrations/elevenlabs";
 import impact from "./fixtures/elevenlabs-impact.json";
 import { impactStats } from "@/lib/queries";
+import { signInterviewNonce } from "@/lib/interview-nonce";
 import { makeBrief, makeUser } from "./helpers";
 
 async function delivered() {
@@ -63,7 +64,9 @@ describe("one-time impact links", () => {
     const { delivery } = await delivered();
     const { token } = await createFeedbackToken(delivery.id, null);
     await submitEvaluation(token, { ...answers, impactConversationId: "conv_impact_001" });
-    expect(await ingestImpact(parseConversation(impact))).toEqual({ attached: true });
+    const c = parseConversation(impact);
+    const yk_nonce = signInterviewNonce({ kind: "impact", userId: null, deliveryId: delivery.id });
+    expect(await ingestImpact({ ...c, dynamicVariables: { ...c.dynamicVariables, yk_nonce } })).toEqual({ attached: true });
     const [e] = await getDb().select().from(schema.evaluations).where(eq(schema.evaluations.deliveryId, delivery.id));
     expect(e.impactTranscript).toContain("週に5時間");
     expect(e.impactSummary).toMatchObject({ quote: "仕込みに集中できるようになりました" });

@@ -52,10 +52,16 @@ function Inner({ agent, token, dynamicVariables, labels, onEnded }: Props) {
       const qs = new URLSearchParams({ agent, ...(token ? { token } : {}) });
       const res = await fetch(`/api/elevenlabs/signed-url?${qs}`);
       if (!res.ok) throw new Error(await res.text());
-      const { signedUrl, agentId } = (await res.json()) as { signedUrl?: string; agentId?: string };
+      const { signedUrl, agentId, dynamicVariables: serverVars } = (await res.json()) as {
+        signedUrl?: string;
+        agentId?: string;
+        /** Server-signed ownership nonce ({ yk_nonce }); the only identity the server trusts. */
+        dynamicVariables?: Record<string, string>;
+      };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const session: any = signedUrl ? { signedUrl } : { agentId, connectionType: "webrtc" };
-      conversation.startSession({ ...session, dynamicVariables });
+      // Server variables go last so page-supplied values can never shadow yk_nonce.
+      conversation.startSession({ ...session, dynamicVariables: { ...dynamicVariables, ...serverVars } });
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     }

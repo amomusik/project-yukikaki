@@ -9,7 +9,12 @@ import { processBrief } from "@/lib/pipeline/brief";
 // The brief pipeline runs in after() (Linkup + Adaption + Dify); 300 s = Vercel Hobby max.
 export const maxDuration = 300;
 
-/** Production ingestion path: ElevenLabs post-call webhook (HMAC-signed). */
+/**
+ * Production ingestion path: ElevenLabs post-call webhook (HMAC-signed).
+ * Ownership comes only from the server-signed yk_nonce dynamic variable (see lib/interview-nonce.ts):
+ * an interview without a valid nonce is stored ownerless for host review; an impact review without
+ * a valid nonce is not attached.
+ */
 export async function POST(req: Request) {
   if (!env.ELEVENLABS_WEBHOOK_SECRET) return NextResponse.json({ error: "webhook not configured" }, { status: 503 });
   const raw = await req.text();
