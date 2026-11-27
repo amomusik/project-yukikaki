@@ -47,8 +47,9 @@ The server uses this key to create signed URLs for the browser (`/api/elevenlabs
 ```
 こんにちは。雪かきプロジェクトのインタビュー担当です。本日はお時間をいただき、ありがとうございます。
 これから10分ほど、お仕事の中で「時間がかかって困っていること」について伺います。お話しいただいた内容は、地元の学生チームが解決に取り組むための課題シートになります。
+この通話は録音され、文字起こしされます。内容の扱いは、開始前に画面でご確認いただいたとおりです。
 お名前や電話番号など、個人情報はお話しいただかなくて大丈夫です。
-Hello! If you prefer English, just say so and we can continue in English.
+Hello! This call is recorded and transcribed. If you prefer English, just say so and we can continue in English.
 それでは、まずお店（事業所）のお名前と、どんなお仕事をされているか教えていただけますか？
 ```
 
@@ -141,7 +142,7 @@ Repeat the steps from section 2 with these differences:
 
 ```
 こんにちは。雪かきプロジェクトです。先日は学生チームのツールを導入していただき、ありがとうございました。
-3分ほどで、使ってみたご感想を伺えますか？ English is fine too.
+3分ほどで、使ってみたご感想を伺えますか？ この通話は録音され、文字起こしされます。 English is fine too; this call is recorded.
 まず、そのツールのおかげで、1週間あたり何時間くらい作業が減りましたか？
 ```
 

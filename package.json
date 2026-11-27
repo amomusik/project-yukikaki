@@ -14,6 +14,7 @@
     "db:push": "tsx scripts/db-migrate.ts",
     "seed": "tsx scripts/seed.ts",
     "seed:events": "tsx scripts/seed-events.ts",
+    "retention": "tsx scripts/retention.ts",
     "prebake": "tsx scripts/prebake.ts",
     "graph:rebuild": "tsx scripts/graph-rebuild.ts",
     "check:services": "tsx scripts/check-services.ts",

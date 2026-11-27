@@ -1,8 +1,6 @@
-import { sum } from "drizzle-orm";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getDb, schema } from "@/lib/db";
-import { listChallenges } from "@/lib/queries";
+import { listChallenges, totalHoursSaved } from "@/lib/queries";
 import { listTestimonials, type Testimonial } from "@/lib/testimonials";
 import { ChallengeMarquee, type MarqueeChallenge } from "@/components/landing/challenge-marquee";
 import { HeroSearch } from "@/components/landing/hero-search";
@@ -19,11 +17,10 @@ import { FormatsHarness } from "@/components/landing/formats-harness";
 
 export const dynamic = "force-dynamic";
 
-async function totalHoursSaved(): Promise<number> {
+/** Real owners' reported hours only (demo/synthetic briefs excluded). 0 hides the stat. */
+async function realHoursSaved(): Promise<number> {
   try {
-    const [r] = await getDb().select({ total: sum(schema.evaluations.hoursSavedPerWeek) }).from(schema.evaluations);
-    const n = Number(r?.total ?? 0); // numeric sum comes back as a string
-    return Number.isFinite(n) ? Math.round(n * 10) / 10 : 0;
+    return await totalHoursSaved();
   } catch {
     return 0;
   }
@@ -77,7 +74,7 @@ export default async function Landing({
   const lang = locale === "en" ? "en" : "ja";
   const t = await getTranslations("landing");
   const tc = await getTranslations("common");
-  const [hours, challenges, testimonials] = await Promise.all([totalHoursSaved(), loadChallenges(lang), listTestimonials(6)]);
+  const [hours, challenges, testimonials] = await Promise.all([realHoursSaved(), loadChallenges(lang), listTestimonials(6)]);
   const facets = topFacets(challenges);
 
 

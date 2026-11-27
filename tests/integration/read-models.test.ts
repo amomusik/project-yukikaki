@@ -24,7 +24,7 @@ import { TransitionError } from "@/lib/workflow/status";
 import { makeBrief, makeUser } from "../helpers";
 
 /** A full brief → team → delivery → evaluation chain, built directly in the DB. */
-async function chain(opts: { quote?: unknown; synthetic?: boolean; hours?: number; satisfaction?: number } = {}) {
+async function chain(opts: { quote?: unknown; synthetic?: boolean; hours?: number; satisfaction?: number; consent?: boolean } = {}) {
   const db = getDb();
   const { brief, business, ownerId } = await makeBrief("evaluated", { city: "Otaru", industry: "guesthouse" });
   if (opts.synthetic) await db.update(schema.briefs).set({ isSynthetic: true }).where(eq(schema.briefs.id, brief.id));
@@ -49,6 +49,7 @@ async function chain(opts: { quote?: unknown; synthetic?: boolean; hours?: numbe
       stillInUse: true,
       wouldRecommend: true,
       impactSummary: opts.quote === undefined ? { quote: "家族と夕ごはんを食べられるようになりました。" } : { quote: opts.quote },
+      quoteConsent: opts.consent ?? true,
     })
     .returning();
   return { brief, business, ownerId, lead, member, team, delivery, evaluation };

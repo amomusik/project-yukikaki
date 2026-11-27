@@ -46,6 +46,8 @@ export type EvaluationInput = {
   issues: string;
   wouldRecommend: boolean;
   impactConversationId?: string | null;
+  /** Explicit opt-in to show the impact quote publicly. Defaults to false (no consent). */
+  quoteConsent?: boolean;
 };
 
 /** Consume the token (atomically, once) and record the evaluation; brief → evaluated. */
@@ -70,6 +72,7 @@ export async function submitEvaluation(token: string, input: EvaluationInput, no
       issues: input.issues || null,
       wouldRecommend: input.wouldRecommend,
       impactConversationId: input.impactConversationId || null,
+      quoteConsent: input.quoteConsent === true,
     })
     .onConflictDoNothing({ target: schema.evaluations.deliveryId })
     .returning();

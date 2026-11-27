@@ -174,7 +174,9 @@ async function main() {
       stillInUse: e.stillInUse,
       issues: e.issues || null,
       wouldRecommend: e.wouldRecommend,
-      impactSummary: { quote: e.quote },
+      // Demo quotes: labelled demo (synthetic brief + demo flag) and pre-consented so the landing page can show them.
+      impactSummary: { quote: e.quote, demo: true },
+      quoteConsent: true,
     });
   }
 

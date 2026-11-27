@@ -218,6 +218,10 @@ export const evaluations = pgTable("evaluations", {
   impactConversationId: text("impact_conversation_id").unique(),
   impactTranscript: text("impact_transcript"),
   impactSummary: jsonb("impact_summary").$type<Record<string, unknown>>(),
+  /** Owner ticked "May we quote you publicly?" on the written form. Testimonials require it. */
+  quoteConsent: boolean("quote_consent").notNull().default(false),
+  /** Set when the owner withdraws the quote (signed link or "Delete my data"); hides it from testimonials. */
+  quoteWithdrawnAt: timestamp("quote_withdrawn_at", { withTimezone: true }),
   submittedAt: timestamp("submitted_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

@@ -9,6 +9,7 @@ import { reEnrichBrief, startReEnrichment } from "@/lib/pipeline/brief";
 import { PermissionError } from "@/lib/teams";
 import { isUuid } from "@/lib/uuid";
 import { TransitionError } from "@/lib/workflow/status";
+import { deleteMyData } from "./delete-data";
 
 /**
  * Owner: revise a returned (rejected) brief and send it back to the host queue.
@@ -33,4 +34,18 @@ export async function resubmitBriefAction(formData: FormData) {
   revalidatePath(`/${locale}/me`);
   revalidatePath(`/${locale}/admin`);
   redirect(`/${locale}/me?resubmit=ok`);
+}
+
+/**
+ * Owner: "Delete my data" (transcripts cleared, quotes anonymized, pending drafts deleted).
+ * Two steps: /me?delete=confirm shows the confirmation form, which must include confirm=yes.
+ */
+export async function deleteMyDataAction(formData: FormData) {
+  const locale = String(formData.get("locale") ?? "ja") === "en" ? "en" : "ja";
+  const user = await requireRole(locale, "business");
+  if (formData.get("confirm") !== "yes") redirect(`/${locale}/me?delete=confirm`);
+  const r = await deleteMyData(user.id);
+  revalidatePath(`/${locale}/me`);
+  revalidatePath(`/${locale}`);
+  redirect(`/${locale}/me?deleted=${r.transcriptsCleared}-${r.quotesAnonymized}-${r.draftsDeleted}`);
 }

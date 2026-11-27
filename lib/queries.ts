@@ -277,6 +277,10 @@ export async function adminDeliveries() {
   }));
 }
 
+/**
+ * Impact read model. Only real owner reports count: evaluations on synthetic/demo briefs
+ * (briefs.is_synthetic) are excluded from rows and from every total.
+ */
 export async function impactStats() {
   const db = getDb();
   const rows = await db
@@ -286,11 +290,24 @@ export async function impactStats() {
     .innerJoin(schema.briefs, eq(schema.deliveries.briefId, schema.briefs.id))
     .innerJoin(schema.businesses, eq(schema.briefs.businessId, schema.businesses.id))
     .innerJoin(schema.teams, eq(schema.deliveries.teamId, schema.teams.id))
+    .where(eq(schema.briefs.isSynthetic, false))
     .orderBy(desc(schema.evaluations.submittedAt));
   const total = Math.round(rows.reduce((s, r) => s + Number(r.evaluation.hoursSavedPerWeek ?? 0), 0) * 10) / 10;
   const avg = rows.length ? rows.reduce((s, r) => s + r.evaluation.satisfaction, 0) / rows.length : 0;
   const inUse = rows.filter((r) => r.evaluation.stillInUse).length;
   return { rows, total, avg, inUse };
+}
+
+/** Landing-page headline: hours/week saved, as reported by real owners (demo/synthetic briefs excluded). */
+export async function totalHoursSaved(): Promise<number> {
+  const [r] = await getDb()
+    .select({ total: sql<string | null>`sum(${schema.evaluations.hoursSavedPerWeek})` })
+    .from(schema.evaluations)
+    .innerJoin(schema.deliveries, eq(schema.evaluations.deliveryId, schema.deliveries.id))
+    .innerJoin(schema.briefs, eq(schema.deliveries.briefId, schema.briefs.id))
+    .where(eq(schema.briefs.isSynthetic, false));
+  const n = Number(r?.total ?? 0); // numeric sum comes back as a string
+  return Number.isFinite(n) ? Math.round(n * 10) / 10 : 0;
 }
 
 /** Latest event per service for the admin status strip. */

@@ -98,7 +98,10 @@ function Inner({ agent, token, dynamicVariables, labels, onEnded }: Props) {
           {labels.start}
         </Button>
       )}
-      {error && <p className="text-sm text-rose-600">{error}</p>}
+      {/* Always-mounted live region so screen readers announce microphone/connection failures. */}
+      <div aria-live="assertive" aria-atomic="true">
+        {error && <p role="alert" className="text-sm text-rose-600">{error}</p>}
+      </div>
     </div>
   );
 }

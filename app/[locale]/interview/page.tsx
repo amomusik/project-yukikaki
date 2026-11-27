@@ -27,6 +27,7 @@ export default async function InterviewPage({ params }: { params: Promise<{ loca
     "start", "stop", "connecting", "listening", "speaking", "micNote", "preparing", "toMe", "voiceUnavailable", "textTitle",
     "textSubtitle", "businessName", "industry", "city", "ward", "problem", "currentProcess", "desiredOutcome", "toolsUsed",
     "hoursLost", "sensitivity", "sensPublic", "sensPrivate", "sensSynthetic", "submit",
+    "noticeTitle", "noticePurpose", "noticeRecording", "noticeProcessors", "noticeRetention", "noticePrivacyLink", "consentLabel", "consentRequired",
   ] as const;
   const labels = Object.fromEntries(keys.map((k) => [k, t(k)])) as Record<(typeof keys)[number], string>;
 

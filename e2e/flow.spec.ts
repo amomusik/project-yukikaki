@@ -63,6 +63,8 @@ test("owner files a brief with the text fallback; it lands in the host queue wit
   await signInAs(page, "owner");
   await ensureRole(page, "business");
   await page.goto("/ja/interview");
+  // The recording/processing notice must be acknowledged before anything can be sent.
+  await page.getByTestId("interview-consent").check();
   await page.fill("#business_name", businessName);
   await page.fill("#industry", "ラーメン店");
   await page.fill("#city", "札幌");
@@ -134,6 +136,10 @@ test("host sends an impact check; the link works exactly once; impact total upda
   const owner = await anon.newPage();
   await owner.goto(impactLink);
   await owner.fill("#hours", "5");
+  // No pre-selected answers: each question must be chosen explicitly.
+  await owner.locator('input[name="satisfaction"][value="4"]').check();
+  await owner.locator('input[name="stillInUse"][value="true"]').check();
+  await owner.locator('input[name="wouldRecommend"][value="true"]').check();
   await owner.getByRole("button", { name: "回答を送信" }).click();
   await expect(owner.getByTestId("feedback-thanks")).toBeVisible();
   await owner.goto(impactLink);

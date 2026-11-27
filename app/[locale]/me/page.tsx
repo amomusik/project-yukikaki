@@ -4,7 +4,8 @@ import { Link } from "@/i18n/navigation";
 import { requireUser } from "@/lib/auth";
 import { briefsForOwner, teamsForUser } from "@/lib/queries";
 import { GroundingBadge, StatusBadge } from "@/components/badges";
-import { Badge, Card, Empty, PageHeader, buttonClass } from "@/components/ui";
+import { Badge, Button, Card, Empty, PageHeader, buttonClass } from "@/components/ui";
+import { deleteMyDataAction } from "./actions";
 import { ResubmitForm } from "./resubmit-form";
 
 export const dynamic = "force-dynamic";
@@ -16,10 +17,10 @@ export default async function MePage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ resubmit?: string }>;
+  searchParams: Promise<{ resubmit?: string; delete?: string; deleted?: string }>;
 }) {
   const { locale } = await params;
-  const { resubmit } = await searchParams;
+  const { resubmit, delete: deleteStep, deleted } = await searchParams;
   setRequestLocale(locale);
   const user = await requireUser(locale);
   if (user.role === "host") redirect(`/${locale}/admin`);
@@ -37,6 +38,11 @@ export default async function MePage({
         {resubmit && (
           <p role="status" className="mb-4 rounded-lg bg-sky-50 p-3 text-sm dark:bg-sky-950" data-testid="resubmit-status">
             {resubmit === "ok" ? t("resubmitted") : t("resubmitFailed")}
+          </p>
+        )}
+        {deleted && (
+          <p role="status" className="mb-4 rounded-lg bg-emerald-50 p-3 text-sm dark:bg-emerald-950" data-testid="delete-status">
+            {t("deleteDone")}
           </p>
         )}
         <h2 className="mb-3 text-lg font-semibold">{t("myBriefs")}</h2>
@@ -68,6 +74,33 @@ export default async function MePage({
             ))}
           </div>
         )}
+        <section className="mt-10" aria-labelledby="delete-my-data">
+          <h2 id="delete-my-data" className="mb-2 text-lg font-semibold">{t("deleteTitle")}</h2>
+          <p className="mb-3 text-sm text-muted">{t("deleteExplain")}</p>
+          {deleteStep === "confirm" ? (
+            <Card className="border-rose-300" data-testid="delete-confirm">
+              <form action={deleteMyDataAction} className="space-y-3">
+                <input type="hidden" name="locale" value={locale} />
+                <p className="text-sm font-medium">{t("deleteConfirmText")}</p>
+                <label className="flex items-start gap-2 text-sm">
+                  <input type="checkbox" name="confirm" value="yes" required className="mt-1" />
+                  <span>{t("deleteConfirmCheck")}</span>
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  <Button type="submit" variant="danger">{t("deleteConfirm")}</Button>
+                  <Link href="/me" className={buttonClass("secondary")}>{t("deleteCancel")}</Link>
+                </div>
+              </form>
+            </Card>
+          ) : (
+            <Link href="/me?delete=confirm" className={buttonClass("secondary")} data-testid="delete-start">
+              {t("deleteStart")}
+            </Link>
+          )}
+          <p className="mt-3 text-xs text-muted">
+            <Link href="/privacy" className="underline">{t("privacyLink")}</Link>
+          </p>
+        </section>
       </div>
     );
   }

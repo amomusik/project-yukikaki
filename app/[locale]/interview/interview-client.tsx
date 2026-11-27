@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { VoiceSession } from "@/components/voice-session";
 import { Button, Card, Input, Label, Select, Textarea, buttonClass } from "@/components/ui";
 import { submitTextInterview } from "./actions";
+import { INTERVIEW_CONSENT_FIELD, INTERVIEW_CONSENT_VALUE } from "./consent";
 
 type Props = {
   locale: string;
@@ -16,6 +17,8 @@ type Props = {
 
 export function InterviewClient({ locale, voiceAvailable, dynamicVariables, defaults, labels: l }: Props) {
   const [done, setDone] = useState(false);
+  // Nothing is recorded or sent anywhere until the owner has read the notice and ticked the box.
+  const [consented, setConsented] = useState(false);
 
   async function onEnded(conversationId: string) {
     setDone(true);
@@ -39,8 +42,38 @@ export function InterviewClient({ locale, voiceAvailable, dynamicVariables, defa
 
   return (
     <div className="space-y-8">
+      <Card aria-labelledby="interview-notice-title" data-testid="interview-notice">
+        <h2 id="interview-notice-title" className="text-lg font-semibold">{l.noticeTitle}</h2>
+        <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm">
+          <li>{l.noticePurpose}</li>
+          <li>{l.noticeRecording}</li>
+          <li>{l.noticeProcessors}</li>
+          <li>{l.noticeRetention}</li>
+        </ul>
+        <p className="mt-3 text-sm">
+          <Link href="/privacy" className="font-medium underline">{l.noticePrivacyLink}</Link>
+        </p>
+        <label className="mt-4 flex items-start gap-2 rounded-lg border border-line p-3 text-sm font-medium">
+          <input
+            type="checkbox"
+            className="mt-1"
+            checked={consented}
+            onChange={(e) => setConsented(e.target.checked)}
+            required
+            aria-describedby="interview-notice-title"
+            data-testid="interview-consent"
+          />
+          <span>{l.consentLabel}</span>
+        </label>
+      </Card>
+
       <Card className="py-10">
-        {voiceAvailable ? (
+        {!consented ? (
+          <div className="flex flex-col items-center gap-3 text-center">
+            <Button disabled className="px-6 py-3 text-base">{l.start}</Button>
+            <p className="text-sm text-muted">{l.consentRequired}</p>
+          </div>
+        ) : voiceAvailable ? (
           <VoiceSession
             agent="interview"
             dynamicVariables={dynamicVariables}
@@ -58,6 +91,7 @@ export function InterviewClient({ locale, voiceAvailable, dynamicVariables, defa
         <form action={submitTextInterview} className="grid gap-4 sm:grid-cols-2">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="business_id" value={dynamicVariables.business_id} />
+          {consented && <input type="hidden" name={INTERVIEW_CONSENT_FIELD} value={INTERVIEW_CONSENT_VALUE} />}
           <div>
             <Label htmlFor="business_name">{l.businessName}</Label>
             <Input id="business_name" name="business_name" required defaultValue={defaults.businessName} />
@@ -103,7 +137,8 @@ export function InterviewClient({ locale, voiceAvailable, dynamicVariables, defa
             </Select>
           </div>
           <div className="sm:col-span-2">
-            <Button type="submit">{l.submit}</Button>
+            <Button type="submit" disabled={!consented}>{l.submit}</Button>
+            {!consented && <p className="mt-2 text-sm text-muted">{l.consentRequired}</p>}
           </div>
         </form>
       </Card>

@@ -57,6 +57,13 @@
       "when": 1795745516158,
       "tag": "0007_team_member_status",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1795745702806,
+      "tag": "0008_evaluation_quote_consent",
+      "breakpoints": true
     }
   ]
 }

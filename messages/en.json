@@ -414,7 +414,8 @@
         "Private data stays private",
         "One named owner"
       ]
-    }
+    },
+    "privacy": "Privacy"
   },
   "onboarding": {
     "title": "First, tell us who you are",
@@ -451,7 +452,15 @@
     "sensPublic": "Can be public",
     "sensPrivate": "Private (real data can't be shared)",
     "sensSynthetic": "Synthetic data is fine",
-    "submit": "Submit"
+    "submit": "Submit",
+    "noticeTitle": "Before you start: how your interview is used",
+    "noticePurpose": "Purpose: we turn what you tell us into a challenge brief that a town host reviews before local student teams see it.",
+    "noticeRecording": "The voice call is recorded and transcribed. The transcript and the brief are stored in our database. Please don't mention personal details such as customers' names or health matters.",
+    "noticeProcessors": "Processors (some outside Japan): ElevenLabs (voice call, recording, transcription), Dify with an OpenAI model (AI pre-review and personal-data check), Adaption Labs (synthetic stand-in data) and Linkup (search of official public sources).",
+    "noticeRetention": "Retention: transcripts are deleted 90 days after your brief is approved or delivered (or earlier with \"Delete my data\" on My page).",
+    "noticePrivacyLink": "Read the full privacy notice",
+    "consentLabel": "I have read this notice and agree that the interview is recorded and processed as described.",
+    "consentRequired": "Please tick the box above to start the interview or send the form."
   },
   "challenges": {
     "title": "Challenges",
@@ -540,7 +549,16 @@
     "resubmitHint": "Your request goes back to the host, and the sources and AI pre-check are re-run on the new text.",
     "resubmit": "Resubmit for review",
     "resubmitted": "Resubmitted. The host will review it again.",
-    "resubmitFailed": "Could not resubmit this request. It may already be back in review."
+    "resubmitFailed": "Could not resubmit this request. It may already be back in review.",
+    "deleteTitle": "Delete my data",
+    "deleteExplain": "Clears every interview and impact-review transcript you gave, removes your quotes from the homepage and deletes requests that haven't been approved yet. Approved challenges stay for the student teams, without the transcript.",
+    "deleteStart": "Delete my data…",
+    "deleteConfirmText": "This cannot be undone.",
+    "deleteConfirmCheck": "I understand that my transcripts, quotes and pending requests will be deleted.",
+    "deleteConfirm": "Delete my data",
+    "deleteCancel": "Cancel",
+    "deleteDone": "Done. Your transcripts were cleared, your quotes anonymized and your pending requests deleted.",
+    "privacyLink": "Privacy notice"
   },
   "admin": {
     "title": "Admin",
@@ -601,7 +619,18 @@
     "thanks": "Thank you for your answers!",
     "invalid": "This link is not valid.",
     "expired": "This link has expired.",
-    "used": "This check has already been answered."
+    "used": "This check has already been answered.",
+    "satisfactionScale": "1 = not satisfied at all, 5 = very satisfied.",
+    "incomplete": "Please answer every question (hours, satisfaction, still in use, would recommend).",
+    "quoteConsent": "May we quote you publicly?",
+    "quoteConsentHint": "If you tick this, one sentence from your voice review may appear on the Yukikaki homepage next to your business name. You can withdraw it at any time.",
+    "withdrawHint": "Changed your mind about being quoted?",
+    "withdrawLink": "Withdraw my quote",
+    "withdrawTitle": "Withdraw your public quote",
+    "withdrawExplain": "Your quote will no longer appear on the Yukikaki homepage. Your answers stay anonymous in the program's statistics.",
+    "withdrawConfirm": "Withdraw my quote",
+    "withdrawn": "Your quote has been withdrawn. It no longer appears publicly.",
+    "withdrawInvalid": "This withdrawal link is not valid."
   },
   "errors": {
     "generic": "Something went wrong. Please try again."
@@ -754,5 +783,59 @@
       "save": "Save changes",
       "saveDraft": "Save as draft"
     }
+  },
+  "privacy": {
+    "metaTitle": "Privacy notice",
+    "title": "Privacy notice",
+    "updated": "Last updated: 27 November 2026",
+    "intro": "Project Yukikaki connects small businesses with local student teams. This notice explains what we collect, why, who processes it, how long we keep it and how to delete it. It is written with Japan's Act on the Protection of Personal Information (APPI) in mind.",
+    "collectedTitle": "What we collect",
+    "collected": [
+      "Account details from sign-in (Clerk): name, email address, role, language and, for builders, skills.",
+      "Business details you give us: business name, city, ward and industry.",
+      "Interview content: the voice recording handled by ElevenLabs, its transcript, and the challenge brief made from it (or the text form, if you type instead).",
+      "Impact reviews: hours saved, satisfaction, whether the tool is still used, whether you'd recommend it, comments, and, if you use voice, the call transcript and an optional quote.",
+      "Teams, deliveries, event RSVPs and waitlist sign-ups (email, organisation, role).",
+      "Technical logs kept by our hosting provider (IP address, request times) for security and debugging."
+    ],
+    "purposeTitle": "Why we use it",
+    "purpose": [
+      "To turn a business owner's problem into a challenge brief, check it for personal data with AI, and let a town host approve it.",
+      "To ground briefs in official public statistics and generate synthetic stand-in data, so builders never see real private data.",
+      "To form teams, hand over deliveries and send one-time impact-check links.",
+      "To report the program's impact. Only quotes you explicitly agree to are shown publicly."
+    ],
+    "processorsTitle": "Who processes it",
+    "processorsIntro": "We use these service providers. They process data on our behalf under their own data processing terms.",
+    "processors": [
+      "ElevenLabs: voice interview and impact review calls, recording and transcription.",
+      "Dify (LangGenius) with an OpenAI model: AI pre-review of briefs and team proposals, including the personal-data check.",
+      "Adaption Labs: generates synthetic stand-in datasets from the brief text.",
+      "Linkup: searches official public sources using the city, industry and problem description.",
+      "Neon: Postgres database that stores accounts, briefs, transcripts and evaluations.",
+      "Neo4j Aura: graph database of challenges, teams and skills (no transcripts).",
+      "Resend: sends impact-check and event emails.",
+      "Clerk: sign-in and account management.",
+      "Vercel: hosts the website and keeps request logs."
+    ],
+    "transferTitle": "Transfers outside Japan (APPI Article 28)",
+    "transfer": "Most of these providers store or process data outside Japan, mainly in the United States and in EU member states. Japan's Personal Information Protection Commission recognises the EU as having an equivalent level of protection. The United States has no single comprehensive privacy law equivalent to APPI; protection there relies on sector and state laws and on each provider's contractual commitments and security measures. By ticking the notice before an interview you agree to these transfers. The PPC publishes information about foreign privacy systems on its website.",
+    "retentionTitle": "How long we keep it",
+    "retention": [
+      "Interview and impact-review transcripts: deleted 90 days after the brief is approved or delivered (operators can set TRANSCRIPT_RETENTION_DAYS; a daily job clears them).",
+      "Briefs that were never approved: until you delete them with \"Delete my data\".",
+      "Approved challenge briefs, team deliveries and impact scores: kept for the program's records. Scores are reported only as totals.",
+      "Public quotes: only shown with your opt-in, and removed as soon as you withdraw.",
+      "Account data: until you ask us to delete your account."
+    ],
+    "deleteTitle": "How to delete your data",
+    "delete": [
+      "Business owners: open My page → \"Delete my data\". This clears your transcripts, anonymizes your quotes and deletes requests not yet approved.",
+      "To withdraw a public quote, use the link shown after you sent the impact check (it also appears if you open the check link again).",
+      "For anything else, including deleting your whole account, contact us as described below."
+    ],
+    "contactTitle": "Contact",
+    "contact": "For privacy questions or deletion requests, report privately via GitHub's private reporting on the project repository (see SECURITY.md), or open an issue on the repository without including any personal details and we will reach out.",
+    "contactLink": "Contact us privately on GitHub"
   }
 }

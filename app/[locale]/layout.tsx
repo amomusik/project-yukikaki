@@ -9,6 +9,7 @@ import { authEnabled } from "@/lib/env";
 import { YukikakiMark } from "@/components/landing/mark";
 import { MobileActionBar } from "@/components/landing/mobile-action-bar";
 import { routing } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 
 // Without Clerk keys (fresh clone) there is no ClerkProvider: the app renders signed-out with sign-in disabled.
 function NoAuth({ children }: React.ComponentProps<typeof ClerkProvider>) {
@@ -106,6 +107,9 @@ export default async function LocaleLayout({
                     </svg>
                     {t("github")}
                   </a>
+                  <Link href="/privacy" className="self-start text-slate-300 hover:text-white hover:underline md:self-end">
+                    {t("privacy")}
+                  </Link>
                 </div>
               </div>
               {/* Faint wordmark: sized to the viewport so it never clips (text is ~8.4× its font size wide). */}
